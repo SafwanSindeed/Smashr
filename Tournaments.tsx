@@ -116,7 +116,7 @@ const TournamentCard = () => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8fafc",
+    backgroundColor: "#ddcc80",
   },
 
   hero: {
@@ -158,10 +158,10 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 22,
     fontWeight: "700",
-    color: "#fff",
+    color: "#a9ad92",
   },
   statLabel: {
-    color: "#dbeafe",
+    color: "#d3dbbd",
     marginTop: 4,
   },
 
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 8,
-    backgroundColor: "#e5e7eb",
+    backgroundColor: "#cccbad",
   },
   filterButtonActive: {
     backgroundColor: "#2563eb",
@@ -195,11 +195,11 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   filterTextActive: {
-    color: "#fff",
+    color: "#d5dac3",
   },
 
   card: {
-    backgroundColor: "#fff",
+    backgroundColor: "#c4ceae",
     borderRadius: 16,
     overflow: "hidden",
     shadowColor: "#000",
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   registerText: {
-    color: "#fff",
+    color: "#c2d3b2",
     fontWeight: "700",
     fontSize: 16,
   },
