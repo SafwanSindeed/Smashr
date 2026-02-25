@@ -16,8 +16,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 
-import styles from "./styles";
-import { colors } from "../constants/colors";
+import styles from "../styles";
+import { colors } from "../../constants/colors";
 
 export default function ForgetPassword() {
   const router = useRouter();

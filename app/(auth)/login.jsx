@@ -15,16 +15,17 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
-import { useRouter } from "expo-router";
+import { useRouter, useLocalSearchParams } from "expo-router"; // ✅ add useLocalSearchParams
 import { Ionicons } from "@expo/vector-icons";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
-import styles from "./styles";
-import { colors } from "../constants/colors";
-import { auth } from "../services/firebaseConfig"; // ✅ your path
+import styles from "../styles";
+import { colors } from "../../constants/colors";
+import { auth } from "../../services/firebaseConfig"; // ✅ your path
 
 export default function Login() {
   const router = useRouter();
+  const { firstTime } = useLocalSearchParams(); // ✅ "1" when coming from CreateAccount
 
   const scaleLogin = useRef(new Animated.Value(1)).current;
 
@@ -54,6 +55,15 @@ export default function Login() {
   const onLogin = async () => {
     Keyboard.dismiss();
 
+    const isFirstTime = String(firstTime) === "1";
+
+    // ✅ If they just created an account, Firebase already signed them in.
+    // Let the button simply continue to the next step (DUPR connect).
+    if (isFirstTime && auth.currentUser) {
+      router.replace("/duprconnect");
+      return;
+    }
+
     if (!email.trim() || !password) {
       Alert.alert("Missing info", "Please enter your email and password.");
       return;
@@ -64,13 +74,19 @@ export default function Login() {
 
       const userCred = await signInWithEmailAndPassword(
         auth,
-        email.trim(),
+        email.trim().toLowerCase(),
         password
       );
 
-      // ✅ You don't have a home page yet, so just confirm success
-      Alert.alert("Success", `Logged in as ${userCred.user.email}`);
       console.log("Logged in user:", userCred.user);
+
+      // ✅ FIRST TIME FLOW: Login -> DUPR Connect
+      if (isFirstTime) {
+        router.replace("/duprconnect");
+      } else {
+        // ✅ Normal flow
+        router.replace("/home");
+      }
     } catch (err) {
       Alert.alert("Login failed", err?.message || "Something went wrong.");
       console.log("Login error:", err);
@@ -92,7 +108,9 @@ export default function Login() {
               <Text style={styles.title}>Log In</Text>
 
               <Text style={loginStyles.subTitle}>
-                Welcome back — sign in to continue
+                {String(firstTime) === "1"
+                  ? "Log in to continue to DUPR connection"
+                  : "Welcome back — sign in to continue"}
               </Text>
 
               {/* EMAIL INPUT */}
@@ -183,6 +201,24 @@ export default function Login() {
                   </LinearGradient>
                 </Animated.View>
               </Pressable>
+
+              {/* ✅ DEV SHORTCUT (OPTIONAL) */}
+              {__DEV__ && (
+                <Pressable
+                  onPress={() => router.push("home/homepage")}
+                  style={{ marginTop: 14 }}
+                >
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: "red",
+                      fontWeight: "800",
+                    }}
+                  >
+                    DEV: Skip to Homepage
+                  </Text>
+                </Pressable>
+              )}
 
               {/* DIVIDER */}
               <View style={styles.divider} />

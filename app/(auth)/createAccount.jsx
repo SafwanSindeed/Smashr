@@ -19,11 +19,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
-import styles from "./styles";
-import { colors } from "../constants/colors";
+import styles from "../styles";
+import { colors } from "../../constants/colors";
 
 // ✅ Firebase Auth
-import { auth } from "../services/firebaseConfig";
+import { auth } from "../../services/firebaseConfig";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 export default function CreateAccount() {
@@ -92,26 +92,52 @@ export default function CreateAccount() {
     const cleanLast = lastName.trim();
     const cleanEmail = email.trim().toLowerCase();
 
-    if (!cleanFirst || !cleanLast || !cleanEmail || !password || !confirmPassword) {
+    if (
+      !cleanFirst ||
+      !cleanLast ||
+      !cleanEmail ||
+      !password ||
+      !confirmPassword
+    ) {
       Alert.alert("Missing Info", "Please fill out all fields.");
       return;
     }
 
     if (!passwordsMatch) {
-      Alert.alert("Passwords Don't Match", "Please make sure both passwords match.");
+      Alert.alert(
+        "Passwords Don't Match",
+        "Please make sure both passwords match."
+      );
       return;
     }
 
     setLoading(true);
     try {
-      const cred = await createUserWithEmailAndPassword(auth, cleanEmail, password);
+      const cred = await createUserWithEmailAndPassword(
+        auth,
+        cleanEmail,
+        password
+      );
 
       await updateProfile(cred.user, {
         displayName: `${cleanFirst} ${cleanLast}`.trim(),
       });
 
-      Alert.alert("Account Created", "Your account was created. Please log in.");
-      router.replace("/login");
+      // ✅ Go to login ONLY after they press OK
+      Alert.alert(
+        "Account Created",
+        "Your account was created. Please log in.",
+        [
+          {
+            text: "OK",
+            onPress: () =>
+              router.replace({
+                pathname: "/login",
+                params: { firstTime: "1" },
+              }),
+          },
+        ]
+      );
     } catch (err) {
       Alert.alert("Sign Up Failed", friendlyAuthError(err?.code));
     } finally {
@@ -277,7 +303,9 @@ export default function CreateAccount() {
                 </View>
 
                 {!passwordsMatch ? (
-                  <Text style={createStyles.errorText}>Passwords do not match.</Text>
+                  <Text style={createStyles.errorText}>
+                    Passwords do not match.
+                  </Text>
                 ) : null}
 
                 {/* CREATE BUTTON */}
@@ -307,6 +335,24 @@ export default function CreateAccount() {
                     </LinearGradient>
                   </Animated.View>
                 </Pressable>
+
+                {/* ✅ DEV SHORTCUT (OPTIONAL) */}
+                {__DEV__ && (
+                  <Pressable
+                    onPress={() => router.push("/duprconnect")}
+                    style={{ marginTop: 14 }}
+                  >
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        color: "red",
+                        fontWeight: "800",
+                      }}
+                    >
+                      DEV: Skip to DUPR Connect
+                    </Text>
+                  </Pressable>
+                )}
 
                 <View style={styles.divider} />
 
