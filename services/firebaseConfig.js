@@ -17,4 +17,3 @@ const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
 // ✅ Export Auth for your screens to use
 export const auth = getAuth(app);
-console.log("EXTRA:", extra);
