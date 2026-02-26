@@ -3,12 +3,12 @@ import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAeoyLpTeU9sdpocsvh2JigMW-zGRA5r_I",
-  authDomain: "smashr-d9077.firebaseapp.com",
-  projectId: "smashr-d9077",
-  storageBucket: "smashr-d9077.firebasestorage.app",
-  messagingSenderId: "840128243641",
-  appId: "1:840128243641:web:10731355ea58ee6dc3b868",
+  apiKey: extra.FIREBASE_API_KEY,
+  authDomain: extra.FIREBASE_AUTH_DOMAIN,
+  projectId: extra.FIREBASE_PROJECT_ID,
+  storageBucket: extra.SB,
+  messagingSenderId: extra.MSG_ID,
+  appId: extra.APP_ID,
   // measurementId removed (web analytics only)
 };
 
@@ -17,3 +17,4 @@ const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
 // ✅ Export Auth for your screens to use
 export const auth = getAuth(app);
+console.log("EXTRA:", extra);
