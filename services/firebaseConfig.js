@@ -1,6 +1,10 @@
 // services/firebaseConfig.js
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import Constants from "expo-constants";
+
+const extra = Constants.expoConfig?.extra || {};
 
 const firebaseConfig = {
   apiKey: extra.FIREBASE_API_KEY,
@@ -17,4 +21,5 @@ const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
 // ✅ Export Auth for your screens to use
 export const auth = getAuth(app);
+export const db = getFirestore(app);
 console.log("EXTRA:", extra);
