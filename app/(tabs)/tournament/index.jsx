@@ -83,10 +83,6 @@ const FilterButton = ({ label, active }) => (
 
 const TournamentCard = () => (
   <View style={styles.card}>
-    <Image
-      source={{ uri: "../Smashr-TournamentPage/assets/img/pickleballcourt.png" }}
-      style={styles.cardImage}
-    />
 
     <View style={styles.badge}>
       <Text style={styles.badgeText}>Doubles</Text>
@@ -96,11 +92,11 @@ const TournamentCard = () => (
       <Text style={styles.cardCategory}>Pickleball</Text>
       <Text style={styles.cardTitle}>Pickleball Doubles Festival</Text>
 
-      <Text style={styles.cardMeta}>📅 August 31, 2024</Text>
+      <Text style={styles.cardMeta}>📅 August 31, 2026</Text>
       <Text style={styles.cardMeta}>📍 Riverside Park Courts</Text>
       <Text style={styles.cardMeta}>👥 0 / 24 teams</Text>
-      <Text style={styles.cardMeta}>💵 $45 entry fee</Text>
-      <Text style={styles.cardMeta}>🏆 $1,200 prize pool</Text>
+      <Text style={styles.cardMeta}>💵 $2 entry fee</Text>
+      <Text style={styles.cardMeta}>🏆 $100 prize pool</Text>
 
       <Text style={styles.cardDescription}>
         Join the pickleball craze! This friendly doubles tournament welcomes
@@ -198,7 +194,6 @@ const styles = StyleSheet.create({
   filterTextActive: {
     color: colors.white,
   },
-
   card: {
     backgroundColor: "#ecece3",
     borderRadius: 16,
@@ -207,10 +202,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.08,
     shadowRadius: 10,
     elevation: 4,
-  },
-  cardImage: {
-    width: "100%",
-    height: 180,
   },
   badge: {
     position: "absolute",
@@ -250,7 +241,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#4b5563",
   },
-
   registerButton: {
     marginTop: 16,
     backgroundColor: colors.primaryEnd,
