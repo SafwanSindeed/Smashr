@@ -1,20 +1,22 @@
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
+import {useEffect, useState} from "react";
 import { colors } from "../../../constants/colors";
 import {
-  Image,
-  SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  ActivityIndicator,
+  FlatList,
+  Button,
+  Linking,
+  Alert
 } from "react-native";
+import { SafeAreaView} from "react-native-safe-area-context";
 
 export default function Screen() {
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
 
         {/* HERO SECTION */}
         <LinearGradient
@@ -33,10 +35,6 @@ export default function Screen() {
 
           <View style={styles.statsRow}>
             <View style={styles.statCard}>
-              <Text style={styles.statNumber}>1</Text>
-              <Text style={styles.statLabel}>Active Events</Text>
-            </View>
-            <View style={styles.statCard}>
               <Text style={styles.statNumber}>0</Text>
               <Text style={styles.statLabel}>Registrations</Text>
             </View>
@@ -54,11 +52,9 @@ export default function Screen() {
               <FilterButton label="Doubles"  active/>
             </View>
           </View>
-
-          <TournamentCard />
         </View>
-
-      </ScrollView>
+      {/* AVAILABLE TOURNAMENTS */}
+      <TournamentGrab/>
     </SafeAreaView>
   );
 }
@@ -81,34 +77,81 @@ const FilterButton = ({ label, active }) => (
   </TouchableOpacity>
 );
 
-const TournamentCard = () => (
-  <View style={styles.card}>
+//Global Pickeball Network API (Provides tournament information)
+const API_URL = "https://www.globalpickleball.network/component/api?apiCall=getTournaments&format=raw&devKey=264784-q4jMNhO3X";
 
-    <View style={styles.badge}>
-      <Text style={styles.badgeText}>Doubles</Text>
-    </View>
+const TournamentGrab = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    <View style={styles.cardContent}>
-      <Text style={styles.cardCategory}>Pickleball</Text>
-      <Text style={styles.cardTitle}>Pickleball Doubles Festival</Text>
+  useEffect(() => {
+    fetchTournaments();
+  }, []);
 
-      <Text style={styles.cardMeta}>📅 August 31, 2026</Text>
-      <Text style={styles.cardMeta}>📍 Riverside Park Courts</Text>
-      <Text style={styles.cardMeta}>👥 0 / 24 teams</Text>
-      <Text style={styles.cardMeta}>💵 $2 entry fee</Text>
-      <Text style={styles.cardMeta}>🏆 $100 prize pool</Text>
+  const fetchTournaments = async () => {
+    try {
+      const response = await fetch(API_URL);
+      const json = await response.json();
+      setData(json);
+    } catch (err) {
+      setError("Failed to fetch data");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      <Text style={styles.cardDescription}>
-        Join the pickleball craze! This friendly doubles tournament welcomes
-        all ages and skill levels.
-      </Text>
+  const renderItem = ({ item }) => (
+    <View style={styles.card}>
 
-      <TouchableOpacity style={styles.registerButton}>
+      <View style={styles.badge}>
+        <Text style={styles.badgeText}>{item.singlesDoubles === "S" ? "Singles" : "Doubles"}</Text>
+      </View>
+
+
+      <View style={styles.cardContent}>
+      <Text style={styles.cardTitle}>{item.name}</Text>
+
+      <Text style={styles.cardMeta}>📅 Date: {item.startDate} → {item.endDate}</Text>
+      <Text style={styles.cardMeta}>📍 Location: {item.city}, {item.country}</Text>
+      <Text style={styles.cardMeta}>👥 Registered Players: {item.totalPlayers}</Text>
+      <Text style={styles.cardMeta}>👥 Skill Level: {item.startLevel} - {item.endLevel}</Text>
+      <Text style={styles.cardMeta}>💵 Fee: {item.fee}</Text>
+      <Text style={styles.cardDescription}>Description: {item.description}</Text>
+
+      <TouchableOpacity style={styles.registerButton} onPress={() => Linking.openURL(item.url)}>
         <Text style={styles.registerText}>Register Now →</Text>
       </TouchableOpacity>
+      </View>
     </View>
-  </View>
-);
+  );
+
+  if (loading) {
+    return (
+      <View style={styles2.center}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles2.center}>
+        <Text>{error}</Text>
+      </View>
+    );
+  }
+
+  return (
+    <FlatList
+      data={data}
+      keyExtractor={(item, index) => index.toString()}
+      renderItem={renderItem}
+      contentContainerStyle={styles.list}
+    />
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -229,6 +272,7 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 20,
     fontWeight: "700",
+    marginTop: 20,
     marginBottom: 12,
   },
   cardMeta: {
@@ -255,3 +299,24 @@ const styles = StyleSheet.create({
   },
 });
 
+const styles2 = StyleSheet.create({
+  list: {
+    padding: 10,
+  },
+  card: {
+    backgroundColor: "#f2f2f2",
+    padding: 12,
+    marginBottom: 10,
+    borderRadius: 8,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  center: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
