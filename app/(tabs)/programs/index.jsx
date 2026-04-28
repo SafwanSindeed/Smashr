@@ -1,6 +1,6 @@
 // app/(tabs)/programs/index.jsx
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   Modal,
   StyleSheet,
   ActivityIndicator,
+  Linking,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -71,57 +72,53 @@ const CATEGORIES = [
   { id: "leagues", label: "Leagues" },
 ];
 
-// ─── Mock data (replace with real API later) ──────────────────────────────────
-const MOCK_SESSIONS = [
-  {
-    _id: "1",
-    start_time: new Date().setHours(9, 0),
-    end_time: new Date().setHours(10, 30),
-    spots_remaining: 5,
-    price: 20,
-    category: "open-play",
-    instructor_name: "Coach Mike",
-    notes: "Bring your own paddle.",
-    program_id: { name: "Morning Open Play", level: "all", description: "Open play for all skill levels. Come join the fun!" },
-    location_id: { name: "Court A", address: "123 Main St", city: "New York" },
-  },
-  {
-    _id: "2",
-    start_time: new Date().setHours(11, 0),
-    end_time: new Date().setHours(12, 0),
-    spots_remaining: 1,
-    price: 35,
-    category: "clinics",
-    instructor_name: "Coach Sarah",
-    notes: null,
-    program_id: { name: "Beginner Clinic", level: "beginner", description: "Learn the basics of pickleball in a fun, supportive environment." },
-    location_id: { name: "Court B", address: "123 Main St", city: "New York" },
-  },
-  {
-    _id: "3",
-    start_time: new Date().setHours(14, 0),
-    end_time: new Date().setHours(16, 0),
-    spots_remaining: 0,
-    price: 15,
-    category: "leagues",
-    instructor_name: null,
-    notes: "Round-robin format.",
-    program_id: { name: "Afternoon League", level: "intermediate", description: "Competitive league play for intermediate players." },
-    location_id: { name: "Court C", address: "123 Main St", city: "New York" },
-  },
-  {
-    _id: "4",
-    start_time: new Date().setHours(17, 0),
-    end_time: new Date().setHours(18, 30),
-    spots_remaining: 8,
-    price: 25,
-    category: "clinics",
-    instructor_name: "Coach Alex",
-    notes: null,
-    program_id: { name: "Advanced Drills", level: "advanced", description: "High-intensity drill sessions for advanced players." },
-    location_id: { name: "Court A", address: "123 Main St", city: "New York" },
-  },
-];
+// ─── Global Pickleball Network API ──────────────────────────────────────────
+const GPN_BASE = "https://www.globalpickleball.network/component/api";
+const GPN_DEV_KEY = "264784-q4jMNhO3X";
+
+// ─── Helper: map a GPN level range to a single level string ────────────────
+function mapLevel(startLevel, endLevel) {
+  const start = parseFloat(startLevel) || 0;
+  const end = parseFloat(endLevel) || start;
+  const avg = (start + end) / 2;
+  if (avg <= 2.5) return "beginner";
+  if (avg <= 3.5) return "intermediate";
+  if (avg > 3.5) return "advanced";
+  return "all";
+}
+
+// ─── Helper: map singlesDoubles field to a category ────────────────────────
+function mapCategory(singlesDoubles) {
+  if (singlesDoubles === "S") return "open-play";
+  if (singlesDoubles === "D") return "leagues";
+  return "clinics";
+}
+
+// ─── Helper: transform a GPN tournament into a session object ──────────────
+function mapTournamentToSession(item, index) {
+  return {
+    _id: String(item.tournamentID || index),
+    start_time: new Date(item.startDate).getTime(),
+    end_time: new Date(item.endDate).getTime(),
+    spots_remaining: Math.max(0, (parseInt(item.maxPlayers, 10) || 32) - (parseInt(item.totalPlayers, 10) || 0)),
+    price: parseFloat(item.fee) || 0,
+    category: mapCategory(item.singlesDoubles),
+    instructor_name: item.directorName || null,
+    notes: item.description || null,
+    url: item.url || null,
+    program_id: {
+      name: item.name || "Unnamed Tournament",
+      level: mapLevel(item.startLevel, item.endLevel),
+      description: item.description || "No description available.",
+    },
+    location_id: {
+      name: item.venueName || item.city || "TBD",
+      address: item.address || "",
+      city: item.city ? `${item.city}, ${item.country || ""}`.trim() : "TBD",
+    },
+  };
+}
+
 
 // ─── Program Detail Modal ─────────────────────────────────────────────────────
 function ProgramDetailModal({ session, onClose }) {
@@ -231,10 +228,18 @@ function ProgramDetailModal({ session, onClose }) {
               </View>
             )}
 
-            {/* Book button */}
-            <TouchableOpacity style={styles.bookButton} onPress={onClose}>
+            {/* Register / Book button */}
+            <TouchableOpacity
+              style={styles.bookButton}
+              onPress={() => {
+                if (session.url) {
+                  Linking.openURL(session.url);
+                }
+                onClose();
+              }}
+            >
               <Text style={styles.bookButtonText}>
-                {isFull ? "Join Waitlist" : "Book Now"}
+                {session.url ? "Register Now" : isFull ? "Join Waitlist" : "Book Now"}
               </Text>
             </TouchableOpacity>
           </ScrollView>
@@ -249,18 +254,59 @@ export default function Programs() {
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSession, setSelectedSession] = useState(null);
+  const [sessions, setSessions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Build next 4 days
-  const dates = Array.from({ length: 4 }, (_, i) => {
+  // ── Fetch tournaments from Global Pickleball Network API ──
+  useEffect(() => {
+    const fetchPrograms = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const url = `${GPN_BASE}?apiCall=getTournaments&format=raw&devKey=${GPN_DEV_KEY}`;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const json = await response.json();
+        const mapped = (Array.isArray(json) ? json : []).map(mapTournamentToSession);
+        setSessions(mapped);
+      } catch (err) {
+        console.error("Failed to fetch programs:", err);
+        setError("Unable to load programs. Pull down to retry.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPrograms();
+  }, []);
+
+  // Build next 7 days
+  const dates = Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
     d.setDate(d.getDate() + i);
     return d;
   });
 
-  // Filter sessions by category
-  const filteredSessions = MOCK_SESSIONS.filter(
-    (s) => !selectedCategory || s.category === selectedCategory
-  );
+  // Helper: check if a date falls within a tournament's date range
+  const fallsOnDate = (session, date) => {
+    const dayStart = new Date(date);
+    dayStart.setHours(0, 0, 0, 0);
+    const dayEnd = new Date(date);
+    dayEnd.setHours(23, 59, 59, 999);
+
+    const sessionStart = new Date(session.start_time);
+    const sessionEnd = new Date(session.end_time);
+
+    // Tournament overlaps with selected day if it starts before day ends AND ends after day starts
+    return sessionStart <= dayEnd && sessionEnd >= dayStart;
+  };
+
+  // Filter sessions by selected date AND category
+  const filteredSessions = sessions.filter((s) => {
+    const matchesDate = fallsOnDate(s, dates[selectedDateIndex]);
+    const matchesCategory = !selectedCategory || s.category === selectedCategory;
+    return matchesDate && matchesCategory;
+  });
 
   return (
     <SafeAreaView style={styles.safe} edges={["left", "right"]}>
@@ -321,15 +367,27 @@ export default function Programs() {
 
       {/* ── Section Header ── */}
       <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>{formatDateLabel(dates[selectedDateIndex])}</Text>
+        <Text style={styles.sectionTitle}>Upcoming Programs</Text>
         <View style={styles.sessionCountBadge}>
-          <Text style={styles.sessionCountText}>{filteredSessions.length} sessions</Text>
+          <Text style={styles.sessionCountText}>
+            {loading ? "..." : `${filteredSessions.length} sessions`}
+          </Text>
         </View>
       </View>
 
       {/* ── Sessions List ── */}
       <ScrollView contentContainerStyle={styles.sessionsList}>
-        {filteredSessions.length === 0 ? (
+        {loading ? (
+          <View style={styles.emptyContainer}>
+            <ActivityIndicator size="large" color={colors.primaryEnd} />
+            <Text style={styles.emptyText}>Loading programs...</Text>
+          </View>
+        ) : error ? (
+          <View style={styles.emptyContainer}>
+            <Ionicons name="cloud-offline-outline" size={64} color={colors.textGray} />
+            <Text style={styles.emptyText}>{error}</Text>
+          </View>
+        ) : filteredSessions.length === 0 ? (
           <View style={styles.emptyContainer}>
             <Ionicons name="calendar-outline" size={64} color={colors.textGray} />
             <Text style={styles.emptyText}>No sessions available for this date</Text>
