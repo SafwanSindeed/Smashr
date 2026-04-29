@@ -14,17 +14,13 @@ import ConfirmDialog from '../../../components/ConfirmDialog';
 import { auth } from '../../../services/firebaseConfig';
 
 export default function BookingScreen() {
-  const currentUserId = auth.currentUser?.uid || null;
+  const currentUserId = auth.currentUser?.uid || 'test-user';
 
   const { bookings, loading } = useBookings(currentUserId);
-  const [activeTab, setActiveTab] = useState('verse');
+  const [activeTab, setActiveTab] = useState('tournament');
   const [cancelTarget, setCancelTarget] = useState(null);
 
-  const filteredBookings = bookings.filter((item) =>
-    activeTab === 'verse'
-      ? item.type === 'verse' || !item.type
-      : item.type === 'tournament'
-  );
+  const filteredBookings = bookings;
 
   const handleCancel = async () => {
     if (!cancelTarget?.bookingId) return;
@@ -88,7 +84,7 @@ export default function BookingScreen() {
         ) : (
           filteredBookings.map((item) => (
             <BookingCard
-              key={item.bookingId}
+              key={item.bookingId || item.id || item.url || item.name}
               booking={item}
               onCancel={setCancelTarget}
             />

@@ -2,35 +2,47 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const BookingCard = ({ booking, onCancel }) => {
-  const isTournament = booking?.type === 'tournament';
+  const title =
+    booking?.tournamentName ||
+    booking?.name ||
+    booking?.opponentName ||
+    'Tournament';
+
+  const dateText =
+    booking?.date ||
+    booking?.startDate ||
+    booking?.eventDate ||
+    'No date';
+
+  const timeText =
+    booking?.time ||
+    booking?.endDate ||
+    '';
+
+  const locationText =
+    booking?.location ||
+    [booking?.city, booking?.state, booking?.country].filter(Boolean).join(', ') ||
+    'No location';
+
+  const statusText = booking?.status || 'registered';
 
   return (
     <View style={styles.card}>
       <View style={styles.info}>
         <View style={styles.row}>
-          <Text style={styles.name}>
-            {isTournament
-              ? booking?.tournamentName || 'Tournament'
-              : booking?.opponentName || 'Verse Match'}
-          </Text>
-
-          {isTournament && (
-            <Text style={styles.badge}>
-              {booking?.opponentDup || 'DUPR'}
-            </Text>
-          )}
+          <Text style={styles.name}>{title}</Text>
         </View>
 
         <Text style={styles.details}>
-          {booking?.date || 'No date'} • {booking?.time || 'No time'}
+          {dateText}{timeText ? ` • ${timeText}` : ''}
         </Text>
 
         <Text style={styles.details}>
-          {booking?.location || 'No location'}
+          {locationText}
         </Text>
 
         <Text style={styles.status}>
-          Status: {booking?.status || 'active'}
+          Status: {statusText}
         </Text>
       </View>
 
@@ -65,6 +77,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginRight: 8,
+    flexShrink: 1,
   },
   details: {
     color: '#666',
@@ -75,14 +88,6 @@ const styles = StyleSheet.create({
     color: '#007AFF',
     fontSize: 13,
     marginTop: 6,
-  },
-  badge: {
-    backgroundColor: '#fff3cd',
-    color: '#856404',
-    fontSize: 10,
-    paddingVertical: 3,
-    paddingHorizontal: 8,
-    borderRadius: 10,
   },
   cancelBtn: {
     alignSelf: 'flex-start',

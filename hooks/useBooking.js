@@ -3,6 +3,7 @@ import {
   getUserInfoByEmailTest,
   getUsersTournamentsByUserIdTest,
 } from '../services/bookingService';
+import { auth } from '../services/firebaseConfig';
 
 export const useBookings = (userId) => {
   const [bookings, setBookings] = useState([]);
@@ -20,7 +21,15 @@ export const useBookings = (userId) => {
           return;
         }
 
-        const userInfo = await getUserInfoByEmailTest('nealbbayla@gmail.com');
+        // Use the currently logged-in user's email instead of a hardcoded one
+        const email = auth.currentUser?.email;
+        if (!email) {
+          console.log('No email found for current user');
+          setBookings([]);
+          return;
+        }
+
+        const userInfo = await getUserInfoByEmailTest(email);
         console.log('GPN user info:', userInfo);
 
         if (!userInfo?.id) {
