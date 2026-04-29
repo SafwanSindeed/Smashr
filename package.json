@@ -17,6 +17,7 @@
     "expo-font": "~14.0.11",
     "expo-linear-gradient": "~15.0.8",
     "expo-linking": "~8.0.11",
+    "expo-location": "~19.0.8",
     "expo-random": "^14.0.1",
     "expo-router": "~6.0.23",
     "expo-status-bar": "~3.0.9",
@@ -28,5 +29,8 @@
     "react-native-screens": "~4.16.0",
     "react-native-web": "^0.21.0"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "@types/react-native": "^0.73.0"
+  }
 }

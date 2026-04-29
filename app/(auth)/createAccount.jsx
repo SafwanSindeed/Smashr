@@ -354,6 +354,24 @@ export default function CreateAccount() {
                   </Pressable>
                 )}
 
+                {/* ✅ DEV SHORTCUT (OPTIONAL) */}
+                {__DEV__ && (
+                  <Pressable
+                    onPress={() => router.push("/gpnconnect")}
+                    style={{ marginTop: 14 }}
+                  >
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        color: "red",
+                        fontWeight: "800",
+                      }}
+                    >
+                      DEV: Skip to GPN Connect
+                    </Text>
+                  </Pressable>
+                )}
+
                 <View style={styles.divider} />
 
                 <Pressable onPress={() => router.push("/login")}>

@@ -115,6 +115,21 @@ export default function TabsLayout() {
         }}
       />
 
+      {/* Friends */}
+      <Tabs.Screen
+        name="friends/index"
+        options={{
+          tabBarLabel: "Friends",
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? "people" : "people-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+
       {/* Hide any accidental auto-generated index route */}
       <Tabs.Screen name="index" options={{ href: null }} />
 

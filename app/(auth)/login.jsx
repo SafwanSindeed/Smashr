@@ -85,7 +85,7 @@ export default function Login() {
         router.replace("/duprconnect");
       } else {
         // ✅ Normal flow
-        router.replace("/home");
+        router.replace("home/homepage");
       }
     } catch (err) {
       Alert.alert("Login failed", err?.message || "Something went wrong.");

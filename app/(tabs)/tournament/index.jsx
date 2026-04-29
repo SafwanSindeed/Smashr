@@ -8,9 +8,8 @@ import {
   View,
   ActivityIndicator,
   FlatList,
-  Button,
   Linking,
-  Alert
+  Pressable,
 } from "react-native";
 import { SafeAreaView} from "react-native-safe-area-context";
 
@@ -45,43 +44,21 @@ export default function Screen() {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>✨ Available Tournaments</Text>
-
-            <View style={styles.filters}>
-              <FilterButton label="All Events" active />
-              <FilterButton label="Singles"  active/>
-              <FilterButton label="Doubles"  active/>
-            </View>
+            <TournamentGrab/>
           </View>
         </View>
-      {/* AVAILABLE TOURNAMENTS */}
-      <TournamentGrab/>
     </SafeAreaView>
   );
 }
 
-const FilterButton = ({ label, active }) => (
-  <TouchableOpacity
-    style={[
-      styles.filterButton,
-      active && styles.filterButtonActive,
-    ]}
-  >
-    <Text
-      style={[
-        styles.filterText,
-        active && styles.filterTextActive,
-      ]}
-    >
-      {label}
-    </Text>
-  </TouchableOpacity>
-);
 
 //Global Pickeball Network API (Provides tournament information)
-const API_URL = "https://www.globalpickleball.network/component/api?apiCall=getTournaments&format=raw&devKey=264784-q4jMNhO3X";
+const API_URL = "https://www.globalpickleball.network/component/api?apiCall=getTournaments&format=raw&devKey=264784-q4jMNhO3X&limit=100";
+const categories = ['All', 'Singles', 'Doubles'];
 
 const TournamentGrab = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([]); //Full
+  const [displayedData, setDisplayedData] = useState([]); //Filtered
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -94,6 +71,7 @@ const TournamentGrab = () => {
       const response = await fetch(API_URL);
       const json = await response.json();
       setData(json);
+      setDisplayedData(data);
     } catch (err) {
       setError("Failed to fetch data");
       console.error(err);
@@ -101,6 +79,34 @@ const TournamentGrab = () => {
       setLoading(false);
     }
   };
+
+  const filterByCategory = (category) => {
+    if (category === 'All') {
+      setDisplayedData(data);
+    } else {
+      const filtered = data.filter(item => item.singlesDoubles === category);
+      setDisplayedData(filtered);
+    }
+  };
+
+  const FilterButton = ({ label, active, category }) => (
+  <TouchableOpacity
+    style={[
+      styles.filterButton,
+      active && styles.filterButtonActive,
+    ]}
+    onPress={() => filterByCategory("All")}
+  >
+    <Text
+      style={[
+        styles.filterText,
+        active && styles.filterTextActive,
+      ]}
+    >
+      {label}
+    </Text>
+  </TouchableOpacity>
+);
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
@@ -144,14 +150,24 @@ const TournamentGrab = () => {
   }
 
   return (
-    <FlatList
+    <View style={{}}>
+      <View style={styles.filters}>
+        <FilterButton label="All Events" active category="All"/>
+        <FilterButton label="Singles" active category="S"/>
+        <FilterButton label="Doubles" active category="D"/>
+      </View>
+
+      <FlatList
       data={data}
       keyExtractor={(item, index) => index.toString()}
       renderItem={renderItem}
       contentContainerStyle={styles.list}
-    />
+      />
+    </View>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   container: {
