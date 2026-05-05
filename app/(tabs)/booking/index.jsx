@@ -13,6 +13,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useBookings } from "../../../hooks/useBooking";
+import { colors } from "../../../constants/colors";
 import { auth } from "../../../services/firebaseConfig";
 
 const TABS = [
