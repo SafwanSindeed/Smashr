@@ -15,10 +15,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../../../constants/colors";
 
-<<<<<<< HEAD
-// ─── Helper: format a Date into "9:00 AM" style ───────────────────────────────
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
 function formatTime(dateStr) {
   const d = new Date(dateStr);
   let hours = d.getHours();
@@ -28,10 +24,6 @@ function formatTime(dateStr) {
   return `${hours}:${mins} ${ampm}`;
 }
 
-<<<<<<< HEAD
-// ─── Helper: format a Date into "Mon 3/24" style ──────────────────────────────
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
 function formatDateLabel(date) {
   const today = new Date();
   const tomorrow = new Date();
@@ -49,10 +41,6 @@ function formatDateLabel(date) {
   return `${days[date.getDay()]} ${date.getMonth() + 1}/${date.getDate()}`;
 }
 
-<<<<<<< HEAD
-// ─── Helper: status badge info based on spots left ───────────────────────────
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
 function getStatusInfo(spotsRemaining) {
   if (spotsRemaining <= 0)
     return { text: "WAITLIST", bg: "#FEF3C7", color: "#D97706" };
@@ -63,10 +51,6 @@ function getStatusInfo(spotsRemaining) {
   return { text: "AVAILABLE", bg: "#D1FAE5", color: "#059669" };
 }
 
-<<<<<<< HEAD
-// ─── Helper: level badge color ────────────────────────────────────────────────
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
 function getLevelColor(level) {
   const map = {
     all: "#3B82F6",
@@ -77,27 +61,15 @@ function getLevelColor(level) {
   return map[level] || "#6B7280";
 }
 
-<<<<<<< HEAD
-// ─── Categories ───────────────────────────────────────────────────────────────
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
 const CATEGORIES = [
   { id: "open-play", label: "Open Play" },
   { id: "clinics", label: "Clinics" },
   { id: "leagues", label: "Leagues" },
 ];
 
-<<<<<<< HEAD
-// ─── Global Pickleball Network API ──────────────────────────────────────────
 const GPN_BASE = "https://www.globalpickleball.network/component/api";
 const GPN_DEV_KEY = "264784-q4jMNhO3X";
 
-// ─── Helper: map a GPN level range to a single level string ────────────────
-=======
-const GPN_BASE = "https://www.globalpickleball.network/component/api";
-const GPN_DEV_KEY = "264784-q4jMNhO3X";
-
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
 function mapLevel(startLevel, endLevel) {
   const start = parseFloat(startLevel) || 0;
   const end = parseFloat(endLevel) || start;
@@ -108,33 +80,21 @@ function mapLevel(startLevel, endLevel) {
   return "all";
 }
 
-<<<<<<< HEAD
-// ─── Helper: map singlesDoubles field to a category ────────────────────────
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
 function mapCategory(singlesDoubles) {
   if (singlesDoubles === "S") return "open-play";
   if (singlesDoubles === "D") return "leagues";
   return "clinics";
 }
 
-<<<<<<< HEAD
-// ─── Helper: transform a GPN tournament into a session object ──────────────
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
 function mapTournamentToSession(item, index) {
   return {
     _id: String(item.tournamentID || index),
     start_time: new Date(item.startDate).getTime(),
     end_time: new Date(item.endDate).getTime(),
-<<<<<<< HEAD
-    spots_remaining: Math.max(0, (parseInt(item.maxPlayers, 10) || 32) - (parseInt(item.totalPlayers, 10) || 0)),
-=======
     spots_remaining: Math.max(
       0,
       (parseInt(item.maxPlayers, 10) || 32) - (parseInt(item.totalPlayers, 10) || 0)
     ),
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
     price: parseFloat(item.fee) || 0,
     category: mapCategory(item.singlesDoubles),
     instructor_name: item.directorName || null,
@@ -153,11 +113,6 @@ function mapTournamentToSession(item, index) {
   };
 }
 
-<<<<<<< HEAD
-
-// ─── Program Detail Modal ─────────────────────────────────────────────────────
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
 function ProgramDetailModal({ session, onClose }) {
   if (!session) return null;
 
@@ -171,10 +126,6 @@ function ProgramDetailModal({ session, onClose }) {
     <Modal visible transparent animationType="slide" onRequestClose={onClose}>
       <TouchableOpacity style={styles.modalOverlay} onPress={onClose} activeOpacity={1}>
         <TouchableOpacity style={styles.modalContent} activeOpacity={1}>
-<<<<<<< HEAD
-          {/* Modal Header */}
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
           <View style={styles.modalHeader}>
             <Text style={styles.modalTitle}>Program Details</Text>
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
@@ -183,25 +134,13 @@ function ProgramDetailModal({ session, onClose }) {
           </View>
 
           <ScrollView style={styles.modalBody} showsVerticalScrollIndicator={false}>
-<<<<<<< HEAD
-            {/* Image placeholder */}
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
             <View style={styles.imagePlaceholder}>
               <Ionicons name="calendar" size={64} color={colors.primaryEnd} />
             </View>
 
-<<<<<<< HEAD
-            {/* Program name & description */}
             <Text style={styles.programTitle}>{program.name}</Text>
             <Text style={styles.programDescription}>{program.description}</Text>
 
-            {/* Details */}
-=======
-            <Text style={styles.programTitle}>{program.name}</Text>
-            <Text style={styles.programDescription}>{program.description}</Text>
-
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
             <View style={styles.detailsGrid}>
               <View style={styles.detailItem}>
                 <Ionicons name="time-outline" size={20} color={colors.primaryEnd} />
@@ -255,17 +194,12 @@ function ProgramDetailModal({ session, onClose }) {
               </View>
             </View>
 
-<<<<<<< HEAD
-            {/* Capacity */}
-            <View style={[styles.capacityInfo, isFull ? styles.capacityWarning : styles.capacitySuccess]}>
-=======
             <View
               style={[
                 styles.capacityInfo,
                 isFull ? styles.capacityWarning : styles.capacitySuccess,
               ]}
             >
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
               <Ionicons
                 name="alert-circle-outline"
                 size={20}
@@ -278,10 +212,6 @@ function ProgramDetailModal({ session, onClose }) {
               </Text>
             </View>
 
-<<<<<<< HEAD
-            {/* Notes */}
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
             {session.notes && (
               <View style={styles.notesContainer}>
                 <Text style={styles.notesLabel}>Notes</Text>
@@ -289,20 +219,10 @@ function ProgramDetailModal({ session, onClose }) {
               </View>
             )}
 
-<<<<<<< HEAD
-            {/* Register / Book button */}
-            <TouchableOpacity
-              style={styles.bookButton}
-              onPress={() => {
-                if (session.url) {
-                  Linking.openURL(session.url);
-                }
-=======
             <TouchableOpacity
               style={styles.bookButton}
               onPress={() => {
                 if (session.url) Linking.openURL(session.url);
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
                 onClose();
               }}
             >
@@ -317,10 +237,6 @@ function ProgramDetailModal({ session, onClose }) {
   );
 }
 
-<<<<<<< HEAD
-// ─── Main Programs Screen ─────────────────────────────────────────────────────
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
 export default function Programs() {
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -329,10 +245,6 @@ export default function Programs() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-<<<<<<< HEAD
-  // ── Fetch tournaments from Global Pickleball Network API ──
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
   useEffect(() => {
     const fetchPrograms = async () => {
       try {
@@ -354,42 +266,22 @@ export default function Programs() {
     fetchPrograms();
   }, []);
 
-<<<<<<< HEAD
-  // Build next 7 days
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
   const dates = Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
     d.setDate(d.getDate() + i);
     return d;
   });
 
-<<<<<<< HEAD
-  // Helper: check if a date falls within a tournament's date range
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
   const fallsOnDate = (session, date) => {
     const dayStart = new Date(date);
     dayStart.setHours(0, 0, 0, 0);
     const dayEnd = new Date(date);
     dayEnd.setHours(23, 59, 59, 999);
-<<<<<<< HEAD
-
-    const sessionStart = new Date(session.start_time);
-    const sessionEnd = new Date(session.end_time);
-
-    // Tournament overlaps with selected day if it starts before day ends AND ends after day starts
-    return sessionStart <= dayEnd && sessionEnd >= dayStart;
-  };
-
-  // Filter sessions by selected date AND category
-=======
     const sessionStart = new Date(session.start_time);
     const sessionEnd = new Date(session.end_time);
     return sessionStart <= dayEnd && sessionEnd >= dayStart;
   };
 
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
   const filteredSessions = sessions.filter((s) => {
     const matchesDate = fallsOnDate(s, dates[selectedDateIndex]);
     const matchesCategory = !selectedCategory || s.category === selectedCategory;
@@ -397,11 +289,7 @@ export default function Programs() {
   });
 
   return (
-    <SafeAreaView style={styles.safe} edges={["left", "right"]}>
-<<<<<<< HEAD
-      {/* ── Header ── */}
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
+    <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Programs</Text>
         <View style={styles.headerActions}>
@@ -414,10 +302,6 @@ export default function Programs() {
         </View>
       </View>
 
-<<<<<<< HEAD
-      {/* ── Date Selector ── */}
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -430,14 +314,10 @@ export default function Programs() {
             style={[styles.dateButton, selectedDateIndex === index && styles.dateButtonActive]}
           >
             <Text
-<<<<<<< HEAD
-              style={[styles.dateButtonText, selectedDateIndex === index && styles.dateButtonTextActive]}
-=======
               style={[
                 styles.dateButtonText,
                 selectedDateIndex === index && styles.dateButtonTextActive,
               ]}
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
             >
               {formatDateLabel(date)}
             </Text>
@@ -445,10 +325,6 @@ export default function Programs() {
         ))}
       </ScrollView>
 
-<<<<<<< HEAD
-      {/* ── Category Tabs ── */}
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -457,13 +333,6 @@ export default function Programs() {
         {CATEGORIES.map((cat) => (
           <TouchableOpacity
             key={cat.id}
-<<<<<<< HEAD
-            onPress={() => setSelectedCategory(selectedCategory === cat.id ? null : cat.id)}
-            style={[styles.categoryButton, selectedCategory === cat.id && styles.categoryButtonActive]}
-          >
-            <Text
-              style={[styles.categoryText, selectedCategory === cat.id && styles.categoryTextActive]}
-=======
             onPress={() =>
               setSelectedCategory(selectedCategory === cat.id ? null : cat.id)
             }
@@ -477,7 +346,6 @@ export default function Programs() {
                 styles.categoryText,
                 selectedCategory === cat.id && styles.categoryTextActive,
               ]}
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
             >
               {cat.label}
             </Text>
@@ -485,10 +353,6 @@ export default function Programs() {
         ))}
       </ScrollView>
 
-<<<<<<< HEAD
-      {/* ── Section Header ── */}
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Upcoming Programs</Text>
         <View style={styles.sessionCountBadge}>
@@ -498,10 +362,6 @@ export default function Programs() {
         </View>
       </View>
 
-<<<<<<< HEAD
-      {/* ── Sessions List ── */}
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
       <ScrollView contentContainerStyle={styles.sessionsList}>
         {loading ? (
           <View style={styles.emptyContainer}>
@@ -532,10 +392,6 @@ export default function Programs() {
                 onPress={() => setSelectedSession(session)}
                 activeOpacity={0.8}
               >
-<<<<<<< HEAD
-                {/* Card top: time + status */}
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
                 <View style={styles.cardTop}>
                   <View style={styles.timeInfo}>
                     <Ionicons name="time-outline" size={16} color={colors.textGray} />
@@ -550,24 +406,13 @@ export default function Programs() {
                   </View>
                 </View>
 
-<<<<<<< HEAD
-                {/* Program name */}
                 <Text style={styles.programName}>{program.name}</Text>
 
-                {/* Location */}
-=======
-                <Text style={styles.programName}>{program.name}</Text>
-
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
                 <View style={styles.locationInfo}>
                   <Ionicons name="location-outline" size={16} color={colors.textGray} />
                   <Text style={styles.locationText}>{location.name}</Text>
                 </View>
 
-<<<<<<< HEAD
-                {/* Card footer: level + price */}
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
                 <View style={styles.cardFooter}>
                   <View style={[styles.levelBadge, { backgroundColor: levelColor }]}>
                     <Ionicons name="cellular-outline" size={12} color="#fff" />
@@ -583,10 +428,6 @@ export default function Programs() {
         )}
       </ScrollView>
 
-<<<<<<< HEAD
-      {/* ── Detail Modal ── */}
-=======
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
       <ProgramDetailModal
         session={selectedSession}
         onClose={() => setSelectedSession(null)}
@@ -595,20 +436,9 @@ export default function Programs() {
   );
 }
 
-<<<<<<< HEAD
-// ─── Styles ───────────────────────────────────────────────────────────────────
 const styles = StyleSheet.create({
-  safe: {
-    flex: 1,
-    backgroundColor: "#F9FAFB",
-  },
+  safe: { flex: 1, backgroundColor: colors.background },
 
-  // Header
-=======
-const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F9FAFB" },
-
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -619,25 +449,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
-<<<<<<< HEAD
-  headerTitle: {
-    fontSize: 26,
-    fontWeight: "900",
-    color: colors.textDark,
-  },
-  headerActions: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 16,
-  },
-  bellContainer: {
-    position: "relative",
-  },
-=======
   headerTitle: { fontSize: 26, fontWeight: "900", color: colors.textDark },
   headerActions: { flexDirection: "row", alignItems: "center", gap: 16 },
   bellContainer: { position: "relative" },
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
   notificationDot: {
     position: "absolute",
     top: -1,
@@ -650,138 +464,57 @@ const styles = StyleSheet.create({
     borderColor: colors.white,
   },
 
-<<<<<<< HEAD
-  // Date Selector
-  dateSelector: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    gap: 8,
-  },
-=======
-  dateSelector: { paddingHorizontal: 16, paddingVertical: 12, gap: 8 },
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
+  dateSelector: { paddingHorizontal: 12, paddingVertical: 8, gap: 6 },
   dateButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 12,
-    backgroundColor: "#F3F4F6",
-    marginRight: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+    backgroundColor: colors.border,
+    marginRight: 6,
   },
-<<<<<<< HEAD
-  dateButtonActive: {
-    backgroundColor: colors.primaryEnd,
-  },
-  dateButtonText: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: "#374151",
-  },
-  dateButtonTextActive: {
-    color: colors.white,
-    fontWeight: "600",
-  },
-
-  // Category Tabs
-  categoryTabs: {
-    paddingHorizontal: 16,
-    paddingBottom: 12,
-    gap: 8,
-  },
-=======
   dateButtonActive: { backgroundColor: colors.primaryEnd },
-  dateButtonText: { fontSize: 14, fontWeight: "500", color: "#374151" },
+  dateButtonText: { fontSize: 12, fontWeight: "500", color: colors.textDark },
   dateButtonTextActive: { color: colors.white, fontWeight: "600" },
 
-  categoryTabs: { paddingHorizontal: 16, paddingBottom: 12, gap: 8 },
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
+  categoryTabs: { paddingHorizontal: 12, paddingBottom: 8, gap: 6 },
   categoryButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 8,
-    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderRadius: 14,
     borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: colors.white,
-    marginRight: 8,
+    marginRight: 6,
   },
-<<<<<<< HEAD
-  categoryButtonActive: {
-    backgroundColor: colors.primaryEnd,
-    borderColor: colors.primaryEnd,
-  },
-  categoryText: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: "#374151",
-  },
-  categoryTextActive: {
-    color: colors.white,
-    fontWeight: "600",
-  },
-
-  // Section Header
-=======
   categoryButtonActive: { backgroundColor: colors.primaryEnd, borderColor: colors.primaryEnd },
-  categoryText: { fontSize: 14, fontWeight: "500", color: "#374151" },
+  categoryText: { fontSize: 12, fontWeight: "500", color: colors.textDark },
   categoryTextActive: { color: colors.white, fontWeight: "600" },
 
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 16,
-    paddingBottom: 12,
-  },
-<<<<<<< HEAD
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: colors.textDark,
-  },
-=======
-  sectionTitle: { fontSize: 18, fontWeight: "700", color: colors.textDark },
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
-  sessionCountBadge: {
-    backgroundColor: "#F3F4F6",
     paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 12,
+    paddingBottom: 8,
   },
-<<<<<<< HEAD
-  sessionCountText: {
-    fontSize: 12,
-    color: colors.textGray,
-    fontWeight: "500",
+  sectionTitle: { fontSize: 15, fontWeight: "700", color: colors.textDark },
+  sessionCountBadge: {
+    backgroundColor: colors.border,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 8,
   },
+  sessionCountText: { fontSize: 11, color: colors.textGray, fontWeight: "500" },
 
-  // Sessions List
-  sessionsList: {
-    paddingHorizontal: 16,
-    paddingBottom: 24,
-    gap: 12,
-  },
-=======
-  sessionCountText: { fontSize: 12, color: colors.textGray, fontWeight: "500" },
-
-  sessionsList: { paddingHorizontal: 16, paddingBottom: 24, gap: 12 },
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
+  sessionsList: { paddingHorizontal: 12, paddingBottom: 24, gap: 8 },
   emptyContainer: {
     alignItems: "center",
     justifyContent: "center",
     paddingTop: 64,
     gap: 12,
   },
-<<<<<<< HEAD
-  emptyText: {
-    fontSize: 16,
-    color: colors.textGray,
-  },
-
-  // Session Card
-=======
   emptyText: { fontSize: 16, color: colors.textGray },
 
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
   sessionCard: {
     backgroundColor: colors.white,
     borderRadius: 16,
@@ -801,52 +534,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
   },
-<<<<<<< HEAD
-  timeInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-  },
-  timeText: {
-    fontSize: 14,
-    color: colors.textGray,
-  },
-  statusBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 8,
-  },
-  statusText: {
-    fontSize: 10,
-    fontWeight: "700",
-  },
-=======
   timeInfo: { flexDirection: "row", alignItems: "center", gap: 6 },
   timeText: { fontSize: 14, color: colors.textGray },
   statusBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
   statusText: { fontSize: 10, fontWeight: "700" },
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
-  programName: {
-    fontSize: 17,
-    fontWeight: "800",
-    color: colors.textDark,
-    marginBottom: 6,
-  },
-<<<<<<< HEAD
-  locationInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    marginBottom: 12,
-  },
-  locationText: {
-    fontSize: 14,
-    color: colors.textGray,
-  },
-=======
+  programName: { fontSize: 17, fontWeight: "800", color: colors.textDark, marginBottom: 6 },
   locationInfo: { flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 12 },
   locationText: { fontSize: 14, color: colors.textGray },
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
   cardFooter: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -863,24 +557,9 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 8,
   },
-<<<<<<< HEAD
-  levelBadgeText: {
-    fontSize: 12,
-    fontWeight: "700",
-    color: colors.white,
-  },
-  price: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: colors.textDark,
-  },
-
-  // Modal
-=======
   levelBadgeText: { fontSize: 12, fontWeight: "700", color: colors.white },
   price: { fontSize: 16, fontWeight: "700", color: colors.textDark },
 
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
   modalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -900,23 +579,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
-<<<<<<< HEAD
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: "800",
-    color: colors.textDark,
-  },
-  closeButton: {
-    padding: 4,
-  },
-  modalBody: {
-    padding: 16,
-  },
-=======
   modalTitle: { fontSize: 18, fontWeight: "800", color: colors.textDark },
   closeButton: { padding: 4 },
   modalBody: { padding: 16 },
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
   imagePlaceholder: {
     width: "100%",
     height: 180,
@@ -926,57 +591,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 16,
   },
-<<<<<<< HEAD
-  programTitle: {
-    fontSize: 22,
-    fontWeight: "900",
-    color: colors.textDark,
-    marginBottom: 6,
-  },
-=======
   programTitle: { fontSize: 22, fontWeight: "900", color: colors.textDark, marginBottom: 6 },
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
-  programDescription: {
-    fontSize: 15,
-    color: colors.textGray,
-    lineHeight: 22,
-    marginBottom: 20,
-  },
-<<<<<<< HEAD
-  detailsGrid: {
-    gap: 16,
-    marginBottom: 20,
-  },
-  detailItem: {
-    flexDirection: "row",
-    gap: 12,
-    alignItems: "flex-start",
-  },
-  detailContent: {
-    flex: 1,
-  },
-  detailLabel: {
-    fontSize: 12,
-    color: colors.textGray,
-    fontWeight: "500",
-    marginBottom: 2,
-  },
-  detailValue: {
-    fontSize: 15,
-    fontWeight: "600",
-    color: colors.textDark,
-  },
-  detailSubtext: {
-    fontSize: 13,
-    color: colors.textGray,
-    marginTop: 2,
-  },
-  priceValue: {
-    fontSize: 26,
-    fontWeight: "900",
-    color: colors.textDark,
-  },
-=======
+  programDescription: { fontSize: 15, color: colors.textGray, lineHeight: 22, marginBottom: 20 },
   detailsGrid: { gap: 16, marginBottom: 20 },
   detailItem: { flexDirection: "row", gap: 12, alignItems: "flex-start" },
   detailContent: { flex: 1 },
@@ -984,7 +600,6 @@ const styles = StyleSheet.create({
   detailValue: { fontSize: 15, fontWeight: "600", color: colors.textDark },
   detailSubtext: { fontSize: 13, color: colors.textGray, marginTop: 2 },
   priceValue: { fontSize: 26, fontWeight: "900", color: colors.textDark },
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
   capacityInfo: {
     flexDirection: "row",
     alignItems: "center",
@@ -993,44 +608,12 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 14,
   },
-<<<<<<< HEAD
-  capacitySuccess: {
-    backgroundColor: "#D1FAE5",
-  },
-  capacityWarning: {
-    backgroundColor: "#FEF3C7",
-  },
-  capacityText: {
-    fontSize: 15,
-    fontWeight: "600",
-  },
-=======
   capacitySuccess: { backgroundColor: "#D1FAE5" },
   capacityWarning: { backgroundColor: "#FEF3C7" },
   capacityText: { fontSize: 15, fontWeight: "600" },
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
-  notesContainer: {
-    backgroundColor: "#F9FAFB",
-    borderRadius: 12,
-    padding: 14,
-    marginBottom: 14,
-  },
-<<<<<<< HEAD
-  notesLabel: {
-    fontSize: 13,
-    fontWeight: "700",
-    color: "#374151",
-    marginBottom: 6,
-  },
-  notesText: {
-    fontSize: 14,
-    color: colors.textGray,
-    lineHeight: 20,
-  },
-=======
+  notesContainer: { backgroundColor: "#F9FAFB", borderRadius: 12, padding: 14, marginBottom: 14 },
   notesLabel: { fontSize: 13, fontWeight: "700", color: "#374151", marginBottom: 6 },
   notesText: { fontSize: 14, color: colors.textGray, lineHeight: 20 },
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)
   bookButton: {
     backgroundColor: colors.primaryEnd,
     borderRadius: 12,
@@ -1039,14 +622,5 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 24,
   },
-<<<<<<< HEAD
-  bookButtonText: {
-    color: colors.white,
-    fontSize: 17,
-    fontWeight: "700",
-  },
-});
-=======
   bookButtonText: { color: colors.white, fontSize: 17, fontWeight: "700" },
 });
->>>>>>> e1be83f (Merge all branches and finish Tournament, Programs, Booking, Account pages)

@@ -101,7 +101,7 @@ export default function MyBookings() {
   const displayed = activeTab === "upcoming" ? upcoming : past;
 
   return (
-    <SafeAreaView style={styles.safe} edges={["left", "right"]}>
+    <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>My Bookings</Text>
         {bookings.length > 0 && (
@@ -156,7 +156,7 @@ export default function MyBookings() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F9FAFB" },
+  safe: { flex: 1, backgroundColor: colors.background },
 
   header: {
     flexDirection: "row",

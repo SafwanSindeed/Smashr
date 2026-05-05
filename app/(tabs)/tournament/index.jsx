@@ -108,7 +108,7 @@ export default function Screen() {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={["left", "right"]}>
+    <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
       <FlatList
         data={displayedData}
         keyExtractor={(item, index) => String(item.tournamentID ?? index)}

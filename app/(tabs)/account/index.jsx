@@ -65,7 +65,7 @@ export default function Account() {
   };
 
   return (
-    <SafeAreaView style={styles.safe} edges={["left", "right"]}>
+    <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
       <ScrollView contentContainerStyle={styles.scroll}>
         {/* Profile Header */}
         <LinearGradient
@@ -150,7 +150,7 @@ export default function Account() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F9FAFB" },
+  safe: { flex: 1, backgroundColor: colors.background },
   scroll: { paddingBottom: 40 },
 
   profileHeader: {
