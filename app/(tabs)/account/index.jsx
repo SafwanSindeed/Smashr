@@ -150,7 +150,7 @@ export default function Account() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.background },
+  safe: { flex: 1, backgroundColor: colors.white },
   scroll: { paddingBottom: 40 },
 
   profileHeader: {

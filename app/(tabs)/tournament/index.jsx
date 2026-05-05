@@ -177,7 +177,7 @@ export default function Screen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
+  container: { flex: 1, backgroundColor: "#1e40af" },
 
   hero: { padding: 24, paddingBottom: 40 },
   heroBadge: { color: colors.primaryStart, fontWeight: "600", marginBottom: 12 },

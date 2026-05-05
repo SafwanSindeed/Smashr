@@ -157,7 +157,7 @@ export default function MyBookings() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.background },
+  safe: { flex: 1, backgroundColor: colors.white },
 
   header: {
     flexDirection: "row",
