@@ -6,11 +6,14 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
+  Pressable,
   StyleSheet,
   ActivityIndicator,
   Linking,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useBookings } from "../../../hooks/useBooking";
 import { colors } from "../../../constants/colors";
@@ -85,6 +88,8 @@ function BookingCard({ item }) {
 }
 
 export default function MyBookings() {
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState("upcoming");
   const userId = auth.currentUser?.uid;
   const { bookings, loading } = useBookings(userId);
@@ -102,15 +107,19 @@ export default function MyBookings() {
   const displayed = activeTab === "upcoming" ? upcoming : past;
 
   return (
-    <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
-      <View style={styles.header}>
+    <SafeAreaView style={styles.safe} edges={["left", "right"]}>
+      <LinearGradient
+        colors={[colors.primaryStart, colors.primaryEnd]}
+        style={[styles.header, { paddingTop: insets.top + 10 }]}
+      >
+        <Pressable hitSlop={10} onPress={() => router.push("/(tabs)/friends")}>
+          <Ionicons name="people-outline" size={28} color={colors.white} />
+        </Pressable>
         <Text style={styles.headerTitle}>My Bookings</Text>
-        {bookings.length > 0 && (
-          <View style={styles.countBadge}>
-            <Text style={styles.countBadgeText}>{bookings.length}</Text>
-          </View>
-        )}
-      </View>
+        <Pressable hitSlop={10}>
+          <Ionicons name="calendar-outline" size={28} color={colors.white} />
+        </Pressable>
+      </LinearGradient>
 
       <View style={styles.tabs}>
         {TABS.map((tab) => (
@@ -130,7 +139,7 @@ export default function MyBookings() {
 
       {loading ? (
         <View style={styles.center}>
-          <ActivityIndicator size="large" color="#3274EF" />
+          <ActivityIndicator size="large" color={colors.primaryEnd} />
           <Text style={styles.centerText}>Loading your bookings...</Text>
         </View>
       ) : displayed.length === 0 ? (
@@ -157,32 +166,28 @@ export default function MyBookings() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.white },
+  safe: { flex: 1, backgroundColor: colors.background },
 
   header: {
+    width: "100%",
+    paddingHorizontal: 18,
+    paddingBottom: 14,
     flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
-    gap: 10,
+    alignItems: "flex-end",
+    justifyContent: "space-between",
   },
-  headerTitle: { fontSize: 26, fontWeight: "900", color: "#212325" },
-  countBadge: {
-    backgroundColor: "#3274EF",
-    borderRadius: 12,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
+  headerTitle: {
+    color: colors.white,
+    fontSize: 20,
+    fontWeight: "900",
+    letterSpacing: 0.3,
   },
-  countBadgeText: { color: "#fff", fontSize: 12, fontWeight: "700" },
 
   tabs: {
     flexDirection: "row",
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
+    borderBottomColor: colors.border,
   },
   tab: {
     flex: 1,
@@ -191,9 +196,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: "transparent",
   },
-  tabActive: { borderBottomColor: "#3274EF" },
-  tabText: { fontSize: 15, fontWeight: "600", color: "#6B7280" },
-  tabTextActive: { color: "#3274EF" },
+  tabActive: { borderBottomColor: colors.primaryEnd },
+  tabText: { fontSize: 15, fontWeight: "600", color: colors.textGray },
+  tabTextActive: { color: colors.primaryEnd },
 
   center: {
     flex: 1,
@@ -202,18 +207,18 @@ const styles = StyleSheet.create({
     gap: 12,
     paddingHorizontal: 32,
   },
-  centerText: { fontSize: 15, color: "#6B7280", marginTop: 8 },
+  centerText: { fontSize: 15, color: colors.textGray, marginTop: 8 },
   emptyTitle: { fontSize: 18, fontWeight: "700", color: "#374151", textAlign: "center" },
   emptySubtitle: { fontSize: 14, color: "#9CA3AF", textAlign: "center", lineHeight: 20 },
 
   list: { padding: 16, gap: 12 },
 
   card: {
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     borderRadius: 16,
     padding: 16,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: colors.border,
     marginBottom: 12,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
@@ -244,7 +249,7 @@ const styles = StyleSheet.create({
 
   viewButton: {
     marginTop: 12,
-    backgroundColor: "#3274EF",
+    backgroundColor: colors.primaryEnd,
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 16,

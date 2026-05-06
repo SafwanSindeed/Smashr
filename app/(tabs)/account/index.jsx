@@ -5,11 +5,12 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Pressable,
   StyleSheet,
   ScrollView,
   Alert,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -31,6 +32,7 @@ function MenuItem({ icon, label, onPress, danger }) {
 
 export default function Account() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const user = auth.currentUser;
   const [signingOut, setSigningOut] = useState(false);
 
@@ -65,19 +67,29 @@ export default function Account() {
   };
 
   return (
-    <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
+    <SafeAreaView style={styles.safe} edges={["left", "right"]}>
+      <LinearGradient
+        colors={[colors.primaryStart, colors.primaryEnd]}
+        style={[styles.header, { paddingTop: insets.top + 10 }]}
+      >
+        <Pressable hitSlop={10} onPress={() => router.push("/(tabs)/friends")}>
+          <Ionicons name="people-outline" size={28} color={colors.white} />
+        </Pressable>
+        <Text style={styles.headerTitle}>Account</Text>
+        <Pressable hitSlop={10}>
+          <Ionicons name="settings-outline" size={28} color={colors.white} />
+        </Pressable>
+      </LinearGradient>
+
       <ScrollView contentContainerStyle={styles.scroll}>
-        {/* Profile Header */}
-        <LinearGradient
-          colors={[colors.primaryStart, colors.primaryEnd]}
-          style={styles.profileHeader}
-        >
+        {/* Profile Card */}
+        <View style={styles.profileCard}>
           <View style={styles.avatar}>
             <Text style={styles.avatarText}>{initials}</Text>
           </View>
           <Text style={styles.displayName}>{displayName}</Text>
           <Text style={styles.email}>{email}</Text>
-        </LinearGradient>
+        </View>
 
         {/* Stats Row */}
         <View style={styles.statsRow}>
@@ -150,41 +162,65 @@ export default function Account() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.white },
+  safe: { flex: 1, backgroundColor: colors.background },
+
+  header: {
+    width: "100%",
+    paddingHorizontal: 18,
+    paddingBottom: 14,
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "space-between",
+  },
+  headerTitle: {
+    color: colors.white,
+    fontSize: 20,
+    fontWeight: "900",
+    letterSpacing: 0.3,
+  },
+
   scroll: { paddingBottom: 40 },
 
-  profileHeader: {
+  profileCard: {
     alignItems: "center",
-    paddingTop: 32,
-    paddingBottom: 32,
+    paddingTop: 28,
+    paddingBottom: 24,
     paddingHorizontal: 20,
+    backgroundColor: colors.white,
+    marginHorizontal: 16,
+    marginTop: 16,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   avatar: {
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: "rgba(255,255,255,0.25)",
+    backgroundColor: colors.primaryEnd,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 12,
-    borderWidth: 2,
-    borderColor: "rgba(255,255,255,0.5)",
   },
   avatarText: { fontSize: 28, fontWeight: "900", color: "#fff" },
-  displayName: { fontSize: 22, fontWeight: "800", color: "#fff" },
-  email: { fontSize: 14, color: "rgba(255,255,255,0.8)", marginTop: 4 },
+  displayName: { fontSize: 20, fontWeight: "800", color: colors.textDark },
+  email: { fontSize: 14, color: colors.textGray, marginTop: 4 },
 
   statsRow: {
     flexDirection: "row",
-    backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
+    backgroundColor: colors.white,
+    borderRadius: 16,
+    marginHorizontal: 16,
+    marginTop: 12,
+    borderWidth: 1,
+    borderColor: colors.border,
+    overflow: "hidden",
   },
   statBox: { flex: 1, alignItems: "center", paddingVertical: 16 },
   statBoxBorder: {
     borderLeftWidth: 1,
     borderRightWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: colors.border,
   },
   statValue: { fontSize: 20, fontWeight: "900", color: colors.textDark },
   statLabel: { fontSize: 12, color: colors.textGray, marginTop: 2, fontWeight: "500" },
@@ -205,7 +241,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginHorizontal: 16,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: colors.border,
     overflow: "hidden",
   },
   menuItem: {

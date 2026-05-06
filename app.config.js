@@ -7,11 +7,11 @@ export default {
     slug: "smashr",
     version: "1.0.0",
     orientation: "portrait",
-    icon: "./assets/icon.png",
+    icon: "./assets/img/Logo.jpg",
     userInterfaceStyle: "light",
     newArchEnabled: true,
     splash: {
-      image: "./assets/splash-icon.png",
+      image: "./assets/img/Logo.jpg",
       resizeMode: "contain",
       backgroundColor: "#FFF8EB",
     },
@@ -20,13 +20,13 @@ export default {
     },
     android: {
       adaptiveIcon: {
-        foregroundImage: "./assets/adaptive-icon.png",
+        foregroundImage: "./assets/img/Logo.jpg",
         backgroundColor: "#FFF8EB",
       },
       edgeToEdgeEnabled: true,
     },
     web: {
-      favicon: "./assets/favicon.png",
+      favicon: "./assets/img/Logo.jpg",
     },
     plugins: ["expo-router"],
     extra: {

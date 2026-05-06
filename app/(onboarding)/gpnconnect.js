@@ -16,9 +16,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 
+import { useRouter } from "expo-router";
 import { colors } from "../../constants/colors";
 
 export default function GPNConnect() {
+  const router = useRouter();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
@@ -39,28 +41,27 @@ export default function GPNConnect() {
   const pressOut = () =>
     Animated.spring(scaleBtn, { toValue: 1, friction: 4, useNativeDriver: true }).start();
 
-  const onConnect = (fname,lname,uname,email,country,state,city,level,gender,bdate) => {
+  const onConnect = async () => {
     Keyboard.dismiss();
     try {
-      const response = await fetch(`https://www.globalpickleball.network/component/api?apiCall=registerUser&format=raw&devKey=264784-q4jMNhO3X&firstName=${fname}&lastName=${lname}&username=${uname}&email=${email}&country=${country}&state=${state}&city=${city}&level=${level}&gender=${gender}&birthdate=${birthdate}`);
-    
+      const response = await fetch(
+        `https://www.globalpickleball.network/component/api?apiCall=registerUser&format=raw&devKey=264784-q4jMNhO3X&firstName=${firstName}&lastName=${lastName}&username=${username}&email=${email}&country=${country}&state=${state}&city=${city}&level=${level}&gender=${gender}&birthdate=${birthDate}`
+      );
+
       if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
 
-      // Check if the property 'message' exists in the parsed data
-      if (Object.hasOwn(data, 'message')) {
+      if (Object.hasOwn(data, "message")) {
         Alert.alert(data.message);
-        return
       } else {
         router.replace("home/homepage");
-        return;
       }
-    } 
-    catch (error) {
+    } catch (error) {
       console.error("Fetch Error:", error.message);
+      Alert.alert("Error", error.message);
     }
   };
 

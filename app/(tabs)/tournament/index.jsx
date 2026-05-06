@@ -2,18 +2,21 @@
 
 import { useState, useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 import { colors } from "../../../constants/colors";
 import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  Pressable,
   View,
   ActivityIndicator,
   FlatList,
   Linking,
   ScrollView,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 const GPN_URL =
   "https://www.globalpickleball.network/component/api?apiCall=getTournaments&format=raw&devKey=264784-q4jMNhO3X&limit=100";
@@ -75,6 +78,8 @@ function TournamentCard({ item }) {
 }
 
 export default function Screen() {
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
   const [allData, setAllData] = useState([]);
   const [displayedData, setDisplayedData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -85,12 +90,21 @@ export default function Screen() {
     const fetchTournaments = async () => {
       try {
         const response = await fetch(GPN_URL);
-        const json = await response.json();
+        const text = await response.text();
+
+        // GPN returns XML on auth failure — catch it before JSON.parse
+        if (text.trim().startsWith("<")) {
+          const match = text.match(/<message>(.*?)<\/message>/i);
+          throw new Error(match ? match[1] : "GPN API error");
+        }
+
+        const json = JSON.parse(text);
+        if (!Array.isArray(json)) throw new Error("Unexpected response from GPN");
         setAllData(json);
         setDisplayedData(json);
       } catch (err) {
-        setError("Failed to load tournaments. Check your connection.");
-        console.error(err);
+        setError(err.message || "Failed to load tournaments.");
+        console.error("[GPN]", err.message);
       } finally {
         setLoading(false);
       }
@@ -108,7 +122,20 @@ export default function Screen() {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
+    <SafeAreaView style={styles.safe} edges={["left", "right"]}>
+      <LinearGradient
+        colors={[colors.primaryStart, colors.primaryEnd]}
+        style={[styles.header, { paddingTop: insets.top + 10 }]}
+      >
+        <Pressable hitSlop={10} onPress={() => router.push("/(tabs)/friends")}>
+          <Ionicons name="people-outline" size={28} color={colors.white} />
+        </Pressable>
+        <Text style={styles.headerTitle}>Tournaments</Text>
+        <Pressable hitSlop={10}>
+          <Ionicons name="trophy-outline" size={28} color={colors.white} />
+        </Pressable>
+      </LinearGradient>
+
       <FlatList
         data={displayedData}
         keyExtractor={(item, index) => String(item.tournamentID ?? index)}
@@ -125,29 +152,13 @@ export default function Screen() {
         }
         ListHeaderComponent={
           <>
-            <LinearGradient colors={["#1e40af", "#2563eb"]} style={styles.hero}>
-              <Text style={styles.heroBadge}>🏆 Pickleball Tournaments</Text>
-              <Text style={styles.heroTitle}>
-                Find Your Next{"\n"}
-                <Text style={styles.heroHighlight}>Pickleball Match</Text>
-              </Text>
-              <Text style={styles.heroSubtitle}>
-                Register for singles or doubles pickleball tournaments and
-                compete with the best players in your area
-              </Text>
-
-              <View style={styles.statsRow}>
-                <View style={styles.statCard}>
-                  <Text style={styles.statNumber}>
-                    {loading ? "…" : displayedData.length}
-                  </Text>
-                  <Text style={styles.statLabel}>Active Events</Text>
-                </View>
-              </View>
-            </LinearGradient>
-
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>✨ Available Tournaments</Text>
+              <View style={styles.sectionRow}>
+                <Text style={styles.sectionTitle}>Available Tournaments</Text>
+                <Text style={styles.sectionCount}>
+                  {loading ? "…" : `${displayedData.length} events`}
+                </Text>
+              </View>
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -177,25 +188,32 @@ export default function Screen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#1e40af" },
+  safe: { flex: 1, backgroundColor: colors.background },
 
-  hero: { padding: 24, paddingBottom: 40 },
-  heroBadge: { color: colors.primaryStart, fontWeight: "600", marginBottom: 12 },
-  heroTitle: { fontSize: 34, fontWeight: "800", color: colors.white, lineHeight: 40 },
-  heroHighlight: { color: "#93c5fd" },
-  heroSubtitle: { marginTop: 12, fontSize: 16, color: colors.white, maxWidth: 340 },
-  statsRow: { flexDirection: "row", marginTop: 24, gap: 16 },
-  statCard: {
-    backgroundColor: "rgba(255,255,255,0.15)",
-    padding: 16,
-    borderRadius: 12,
-    minWidth: 140,
+  header: {
+    width: "100%",
+    paddingHorizontal: 18,
+    paddingBottom: 14,
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "space-between",
   },
-  statNumber: { fontSize: 22, fontWeight: "700", color: colors.white },
-  statLabel: { color: colors.white, marginTop: 4 },
+  headerTitle: {
+    color: colors.white,
+    fontSize: 20,
+    fontWeight: "900",
+    letterSpacing: 0.3,
+  },
 
-  section: { padding: 20, paddingBottom: 4 },
-  sectionTitle: { fontSize: 22, fontWeight: "700", marginBottom: 12 },
+  section: { padding: 20, paddingBottom: 8 },
+  sectionRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  sectionTitle: { fontSize: 18, fontWeight: "700", color: colors.textDark },
+  sectionCount: { fontSize: 13, color: colors.textGray, fontWeight: "600" },
   filters: { gap: 10, paddingBottom: 4 },
   filterButton: {
     paddingHorizontal: 14,
@@ -203,8 +221,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: colors.white,
     marginRight: 8,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
-  filterButtonActive: { backgroundColor: colors.primaryEnd },
+  filterButtonActive: { backgroundColor: colors.primaryEnd, borderColor: colors.primaryEnd },
   filterText: { color: "#374151", fontWeight: "600" },
   filterTextActive: { color: colors.white },
 
@@ -213,7 +233,7 @@ const styles = StyleSheet.create({
   emptyText: { fontSize: 15, color: colors.textGray, textAlign: "center" },
 
   card: {
-    backgroundColor: "#ecece3",
+    backgroundColor: colors.white,
     borderRadius: 16,
     overflow: "hidden",
     shadowColor: "#000",
@@ -221,6 +241,8 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 4,
     marginBottom: 16,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   badge: {
     position: "absolute",
@@ -234,7 +256,7 @@ const styles = StyleSheet.create({
   },
   badgeText: { color: colors.white, fontWeight: "700", fontSize: 12 },
   cardContent: { padding: 16 },
-  cardTitle: { fontSize: 18, fontWeight: "700", marginTop: 16, marginBottom: 10 },
+  cardTitle: { fontSize: 18, fontWeight: "700", marginTop: 16, marginBottom: 10, color: colors.textDark },
   cardMeta: { fontSize: 14, marginBottom: 4, color: "#374151" },
   cardDescription: { marginTop: 10, fontSize: 14, color: "#4b5563" },
   registerButton: {
