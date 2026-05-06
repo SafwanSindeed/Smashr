@@ -10,6 +10,7 @@ import {
   FlatList,
   Linking,
   Pressable,
+  Alert
 } from "react-native";
 import { SafeAreaView} from "react-native-safe-area-context";
 
@@ -61,9 +62,15 @@ const TournamentGrab = () => {
   const [displayedData, setDisplayedData] = useState([]); //Filtered
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const test = async () => {
+    const result = await getUserSessionId();
+     Alert.alert(result);
+     return
+  }
 
   useEffect(() => {
     fetchTournaments();
+    test();
   }, []);
 
   const fetchTournaments = async () => {
