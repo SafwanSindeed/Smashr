@@ -14,6 +14,8 @@ import {
   ActivityIndicator,
   FlatList,
   Linking,
+  Pressable,
+  Alert,
   ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -186,6 +188,130 @@ export default function Screen() {
     </SafeAreaView>
   );
 }
+
+
+//Global Pickeball Network API (Provides tournament information)
+const API_URL = "https://www.globalpickleball.network/component/api?apiCall=getTournaments&format=raw&devKey=264784-q4jMNhO3X&limit=100";
+const categories = ['All', 'Singles', 'Doubles'];
+
+const TournamentGrab = () => {
+  const [data, setData] = useState([]); //Full
+  const [displayedData, setDisplayedData] = useState([]); //Filtered
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const test = async () => {
+    const result = await getUserSessionId();
+     Alert.alert(result);
+     return
+  }
+
+  useEffect(() => {
+    fetchTournaments();
+    test();
+  }, []);
+
+  const fetchTournaments = async () => {
+    try {
+      const response = await fetch(API_URL);
+      const json = await response.json();
+      setData(json);
+      setDisplayedData(data);
+    } catch (err) {
+      setError("Failed to fetch data");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filterByCategory = (category) => {
+    if (category === 'All') {
+      setDisplayedData(data);
+    } else {
+      const filtered = data.filter(item => item.singlesDoubles === category);
+      setDisplayedData(filtered);
+    }
+  };
+
+  const FilterButton = ({ label, active, category }) => (
+  <TouchableOpacity
+    style={[
+      styles.filterButton,
+      active && styles.filterButtonActive,
+    ]}
+    onPress={() => filterByCategory("All")}
+  >
+    <Text
+      style={[
+        styles.filterText,
+        active && styles.filterTextActive,
+      ]}
+    >
+      {label}
+    </Text>
+  </TouchableOpacity>
+);
+
+  const renderItem = ({ item }) => (
+    <View style={styles.card}>
+
+      <View style={styles.badge}>
+        <Text style={styles.badgeText}>{item.singlesDoubles === "S" ? "Singles" : "Doubles"}</Text>
+      </View>
+
+
+      <View style={styles.cardContent}>
+      <Text style={styles.cardTitle}>{item.name}</Text>
+
+      <Text style={styles.cardMeta}>📅 Date: {item.startDate} → {item.endDate}</Text>
+      <Text style={styles.cardMeta}>📍 Location: {item.city}, {item.country}</Text>
+      <Text style={styles.cardMeta}>👥 Registered Players: {item.totalPlayers}</Text>
+      <Text style={styles.cardMeta}>👥 Skill Level: {item.startLevel} - {item.endLevel}</Text>
+      <Text style={styles.cardMeta}>💵 Fee: {item.fee}</Text>
+      <Text style={styles.cardDescription}>Description: {item.description}</Text>
+
+      <TouchableOpacity style={styles.registerButton} onPress={() => Linking.openURL(item.url)}>
+        <Text style={styles.registerText}>Register Now →</Text>
+      </TouchableOpacity>
+      </View>
+    </View>
+  );
+
+  if (loading) {
+    return (
+      <View style={styles2.center}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles2.center}>
+        <Text>{error}</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={{}}>
+      <View style={styles.filters}>
+        <FilterButton label="All Events" active category="All"/>
+        <FilterButton label="Singles" active category="S"/>
+        <FilterButton label="Doubles" active category="D"/>
+      </View>
+
+      <FlatList
+      data={data}
+      keyExtractor={(item, index) => index.toString()}
+      renderItem={renderItem}
+      contentContainerStyle={styles.list}
+      />
+    </View>
+  );
+};
+
+
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },

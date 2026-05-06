@@ -15,17 +15,17 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
-import { useRouter, useLocalSearchParams } from "expo-router"; // ✅ add useLocalSearchParams
+import { useRouter, useLocalSearchParams } from "expo-router"; 
 import { Ionicons } from "@expo/vector-icons";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 import styles from "../styles";
 import { colors } from "../../constants/colors";
-import { auth } from "../../services/firebaseConfig"; // ✅ your path
+import { auth } from "../../services/firebaseConfig"; 
 
 export default function Login() {
   const router = useRouter();
-  const { firstTime } = useLocalSearchParams(); // ✅ "1" when coming from CreateAccount
+  const { firstTime } = useLocalSearchParams();
 
   const scaleLogin = useRef(new Animated.Value(1)).current;
 
@@ -54,13 +54,14 @@ export default function Login() {
 
   const onLogin = async () => {
     Keyboard.dismiss();
-
+    
     const isFirstTime = String(firstTime) === "1";
 
     // ✅ If they just created an account, Firebase already signed them in.
     // Let the button simply continue to the next step (DUPR connect).
     if (isFirstTime && auth.currentUser) {
-      router.replace("/duprconnect");
+      //router.replace("/duprconnect");
+      router.replace("/gpnconnect");
       return;
     }
 
@@ -78,8 +79,26 @@ export default function Login() {
         password
       );
 
-      console.log("Logged in user:", userCred.user);
+      // const idToken = await userCred.user.getIdToken(true);
+      // console.log("Login token ready:", {
+      //   uid: userCred.user.uid,
+      //   authCurrentUid: auth.currentUser?.uid,
+      //   hasToken: Boolean(idToken),
+      // });
 
+      // let userSnapshot = await callFunction("getUser", {}, { idToken });
+
+      // if (!userSnapshot.data) {
+      //   await callFunction("createUser", {
+      //     displayName: userCred.user.displayName || "",
+      //   }, { idToken });
+      //   userSnapshot = await callFunction("getUser", {}, { idToken });
+      // }
+
+      console.log("Logged in user:", userCred.user);
+      //console.log("Firestore user:", userSnapshot.data);
+
+      
       // ✅ FIRST TIME FLOW: Login -> DUPR Connect
       if (isFirstTime) {
         router.replace("/duprconnect");
@@ -87,6 +106,7 @@ export default function Login() {
         // ✅ Normal flow
         router.replace("home/homepage");
       }
+      
     } catch (err) {
       Alert.alert("Login failed", err?.message || "Something went wrong.");
       console.log("Login error:", err);
@@ -109,17 +129,11 @@ export default function Login() {
 
               <Text style={loginStyles.subTitle}>
                 {String(firstTime) === "1"
-                  ? "Log in to continue to DUPR connection"
+                  ? "Log in "
                   : "Welcome back — sign in to continue"}
               </Text>
 
               {/* EMAIL INPUT */}
-              <View
-                style={[
-                  loginStyles.inputWrap,
-                  isEmailFocused && loginStyles.inputWrapFocused,
-                ]}
-              >
                 <TextInput
                   placeholder="Email"
                   placeholderTextColor={colors.textGray}
@@ -134,15 +148,8 @@ export default function Login() {
                   onFocus={() => setIsEmailFocused(true)}
                   onBlur={() => setIsEmailFocused(false)}
                 />
-              </View>
 
               {/* PASSWORD INPUT */}
-              <View
-                style={[
-                  loginStyles.inputWrap,
-                  isPassFocused && loginStyles.inputWrapFocused,
-                ]}
-              >
                 <TextInput
                   placeholder="Password"
                   placeholderTextColor={colors.textGray}
@@ -170,7 +177,6 @@ export default function Login() {
                     color={colors.textGray}
                   />
                 </Pressable>
-              </View>
 
               {/* FORGOT PASSWORD */}
               <Pressable onPress={() => router.push("/forgetpassword")}>
@@ -201,24 +207,6 @@ export default function Login() {
                   </LinearGradient>
                 </Animated.View>
               </Pressable>
-
-              {/* ✅ DEV SHORTCUT (OPTIONAL) */}
-              {__DEV__ && (
-                <Pressable
-                  onPress={() => router.push("home/homepage")}
-                  style={{ marginTop: 14 }}
-                >
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      color: "red",
-                      fontWeight: "800",
-                    }}
-                  >
-                    DEV: Skip to Homepage
-                  </Text>
-                </Pressable>
-              )}
 
               {/* DIVIDER */}
               <View style={styles.divider} />
@@ -269,10 +257,16 @@ const loginStyles = {
     elevation: 2,
   },
 
-  input: {
-    fontSize: 18,
-    color: colors.textDark,
-    fontWeight: "600",
+  input: { fontSize: 18, color: colors.textDark, 
+    fontWeight: "600", 
+    borderWidth: 1, 
+    borderRadius: 14, 
+    width: "100%", 
+    height: 72, 
+    borderColor: colors.border, 
+    paddingHorizontal: 20,
+    justifyContent: 20,
+    marginBottom: 14 
   },
 
   eyeButton: {

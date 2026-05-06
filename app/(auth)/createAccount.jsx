@@ -1,4 +1,3 @@
-// app/createAccount.js
 
 import React, { useRef, useState } from "react";
 import {
@@ -16,7 +15,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
-import { useRouter } from "expo-router";
+import { router, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 import styles from "../styles";
@@ -25,6 +24,10 @@ import { colors } from "../../constants/colors";
 // ✅ Firebase Auth
 import { auth } from "../../services/firebaseConfig";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+
+// ✅ Firestore
+import { createUser } from "../../functions/DatabaseFunctions.js";
+
 
 export default function CreateAccount() {
   const router = useRouter();
@@ -40,13 +43,11 @@ export default function CreateAccount() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const [focused, setFocused] = useState({
-    first: false,
-    last: false,
-    email: false,
-    pass: false,
-    confirm: false,
-  });
+  const [isFirstFocused, setIsFirstFocused] = useState(false);
+  const [isLastFocused, setIsLastFocused] = useState(false);
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
+  const [isPassFocused, setIsPassFocused] = useState(false);
+  const [isPassConfFocused, setIsPassConfFocused] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -84,66 +85,37 @@ export default function CreateAccount() {
     }
   };
 
-  const onCreate = async () => {
-    Keyboard.dismiss();
-    if (loading) return;
+  const onCreateAccount = async () => {
+  if (!firstName || !lastName || !email || !password) {
+    Alert.alert("Missing Fields", "Please fill in all required fields.");
+    return;
+  }
 
-    const cleanFirst = firstName.trim();
-    const cleanLast = lastName.trim();
-    const cleanEmail = email.trim().toLowerCase();
-
-    if (
-      !cleanFirst ||
-      !cleanLast ||
-      !cleanEmail ||
-      !password ||
-      !confirmPassword
-    ) {
-      Alert.alert("Missing Info", "Please fill out all fields.");
-      return;
-    }
-
-    if (!passwordsMatch) {
-      Alert.alert(
-        "Passwords Don't Match",
-        "Please make sure both passwords match."
-      );
-      return;
-    }
-
+  try {
     setLoading(true);
-    try {
-      const cred = await createUserWithEmailAndPassword(
-        auth,
-        cleanEmail,
-        password
-      );
 
-      await updateProfile(cred.user, {
-        displayName: `${cleanFirst} ${cleanLast}`.trim(),
-      });
+    // 1. Create Firebase Auth user
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email.trim(),
+      password
+    );
 
-      // ✅ Go to login ONLY after they press OK
-      Alert.alert(
-        "Account Created",
-        "Your account was created. Please log in.",
-        [
-          {
-            text: "OK",
-            onPress: () =>
-              router.replace({
-                pathname: "/login",
-                params: { firstTime: "1" },
-              }),
-          },
-        ]
-      );
-    } catch (err) {
-      Alert.alert("Sign Up Failed", friendlyAuthError(err?.code));
-    } finally {
-      setLoading(false);
-    }
-  };
+    const uid = userCredential.user.uid;
+
+    // 2. Create Firestore user
+    await createUser(uid, firstName, lastName, email);
+
+    // 3. Navigate to GPN page
+    router.replace("/gpnconnect");
+
+  } catch (error) {
+    console.error(error);
+    Alert.alert("Error", error.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <SafeAreaView style={styles.safe} edges={["top", "bottom"]}>
@@ -164,143 +136,83 @@ export default function CreateAccount() {
                 </Text>
 
                 {/* FIRST NAME */}
-                <View
-                  style={[
-                    createStyles.inputWrap,
-                    focused.first && createStyles.inputWrapFocused,
-                  ]}
-                >
-                  <TextInput
-                    placeholder="First Name"
-                    placeholderTextColor={colors.textGray}
-                    value={firstName}
-                    onChangeText={setFirstName}
-                    style={createStyles.input}
-                    autoCapitalize="words"
-                    autoCorrect={false}
-                    textContentType="givenName"
-                    returnKeyType="next"
-                    onFocus={() => setFocused((p) => ({ ...p, first: true }))}
-                    onBlur={() => setFocused((p) => ({ ...p, first: false }))}
-                  />
-                </View>
+                <TextInput
+                  placeholder="First Name"
+                  placeholderTextColor={colors.textGray}
+                  value={firstName}
+                  onChangeText={setFirstName}
+                  style={createStyles.input}
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  textContentType="givenName"
+                  returnKeyType="next"
+                  onFocus={() => setIsFirstFocused(true)}
+                  onBlur={() => setIsFirstFocused(false)}
+                />
 
                 {/* LAST NAME */}
-                <View
-                  style={[
-                    createStyles.inputWrap,
-                    focused.last && createStyles.inputWrapFocused,
-                  ]}
-                >
-                  <TextInput
-                    placeholder="Last Name"
-                    placeholderTextColor={colors.textGray}
-                    value={lastName}
-                    onChangeText={setLastName}
-                    style={createStyles.input}
-                    autoCapitalize="words"
-                    autoCorrect={false}
-                    textContentType="familyName"
-                    returnKeyType="next"
-                    onFocus={() => setFocused((p) => ({ ...p, last: true }))}
-                    onBlur={() => setFocused((p) => ({ ...p, last: false }))}
-                  />
-                </View>
+                <TextInput
+                  placeholder="Last Name"
+                  placeholderTextColor={colors.textGray}
+                  value={lastName}
+                  onChangeText={setLastName}
+                  style={createStyles.input}
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  textContentType="familyName"
+                  returnKeyType="next"
+                  onFocus={() => setIsLastFocused(true)}
+                  onBlur={() => setIsLastFocused(false)}
+                />
 
                 {/* EMAIL */}
-                <View
-                  style={[
-                    createStyles.inputWrap,
-                    focused.email && createStyles.inputWrapFocused,
-                  ]}
-                >
-                  <TextInput
-                    placeholder="Email"
-                    placeholderTextColor={colors.textGray}
-                    value={email}
-                    onChangeText={setEmail}
-                    style={createStyles.input}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    keyboardType="email-address"
-                    textContentType="emailAddress"
-                    returnKeyType="next"
-                    onFocus={() => setFocused((p) => ({ ...p, email: true }))}
-                    onBlur={() => setFocused((p) => ({ ...p, email: false }))}
-                  />
-                </View>
+                <TextInput
+                  placeholder="Email"
+                  placeholderTextColor={colors.textGray}
+                  value={email}
+                  onChangeText={setEmail}
+                  style={createStyles.input}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="email-address"
+                  textContentType="emailAddress"
+                  returnKeyType="next"
+                  onFocus={() => setIsEmailFocused(true)}
+                  onBlur={() => setIsEmailFocused(false)}
+                />
 
                 {/* PASSWORD */}
-                <View
-                  style={[
-                    createStyles.inputWrap,
-                    focused.pass && createStyles.inputWrapFocused,
-                  ]}
-                >
-                  <TextInput
-                    placeholder="Password"
-                    placeholderTextColor={colors.textGray}
-                    value={password}
-                    onChangeText={setPassword}
-                    style={[createStyles.input, { paddingRight: 44 }]}
-                    secureTextEntry={!showPassword}
-                    textContentType="newPassword"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    returnKeyType="next"
-                    onFocus={() => setFocused((p) => ({ ...p, pass: true }))}
-                    onBlur={() => setFocused((p) => ({ ...p, pass: false }))}
-                  />
-
-                  <Pressable
-                    onPress={() => setShowPassword((v) => !v)}
-                    hitSlop={10}
-                    style={createStyles.eyeButton}
-                  >
-                    <Ionicons
-                      name={showPassword ? "eye-off" : "eye"}
-                      size={20}
-                      color={colors.textGray}
-                    />
-                  </Pressable>
-                </View>
+                <TextInput
+                  placeholder="Password"
+                  placeholderTextColor={colors.textGray}
+                  value={password}
+                  onChangeText={setPassword}
+                  style={[createStyles.input, { paddingRight: 44 }]}
+                  secureTextEntry={!showPassword}
+                  textContentType="newPassword"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  returnKeyType="next"
+                  onFocus={() => setIsPassFocused(true)}
+                  onBlur={() => setIsPassFocused(false)}
+                />
 
                 {/* CONFIRM PASSWORD */}
-                <View
-                  style={[
-                    createStyles.inputWrap,
-                    focused.confirm && createStyles.inputWrapFocused,
-                    !passwordsMatch && createStyles.inputWrapError,
-                  ]}
-                >
-                  <TextInput
-                    placeholder="Confirm Password"
-                    placeholderTextColor={colors.textGray}
-                    value={confirmPassword}
-                    onChangeText={setConfirmPassword}
-                    style={[createStyles.input, { paddingRight: 44 }]}
-                    secureTextEntry={!showConfirm}
-                    textContentType="newPassword"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    returnKeyType="done"
-                    onSubmitEditing={onCreate}
-                    onFocus={() => setFocused((p) => ({ ...p, confirm: true }))}
-                    onBlur={() => setFocused((p) => ({ ...p, confirm: false }))}
-                  />
-
-                  <Pressable
-                    onPress={() => setShowConfirm((v) => !v)}
-                    hitSlop={10}
-                    style={createStyles.eyeButton}
-                  >
-                    <Ionicons
-                      name={showConfirm ? "eye-off" : "eye"}
-                      size={20}
-                      color={colors.textGray}
-                    />
-                  </Pressable>
-                </View>
+                <TextInput
+                  placeholder="Confirm Password"
+                  placeholderTextColor={colors.textGray}
+                  value={confirmPassword}
+                  onChangeText={setConfirmPassword}
+                  style={[createStyles.input, { paddingRight: 44 }]}
+                  secureTextEntry={!showConfirm}
+                  textContentType="newPassword"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  returnKeyType="done"
+                  onSubmitEditing={onCreateAccount}
+                  onFocus={() => setIsPassConfFocused(true)}
+                  onBlur={() => setIsPassConfFocused(false)}
+                />
 
                 {!passwordsMatch ? (
                   <Text style={createStyles.errorText}>
@@ -310,7 +222,7 @@ export default function CreateAccount() {
 
                 {/* CREATE BUTTON */}
                 <Pressable
-                  onPress={onCreate}
+                  onPress={onCreateAccount}
                   onPressIn={() => pressIn(scaleCreate)}
                   onPressOut={() => pressOut(scaleCreate)}
                   style={styles.buttonWrapper}
@@ -418,7 +330,19 @@ const createStyles = {
     elevation: 2,
   },
   inputWrapError: { borderColor: "#EF4444" },
-  input: { fontSize: 18, color: colors.textDark, fontWeight: "600" },
+  input: {
+    fontSize: 18,
+    color: colors.textDark,
+    fontWeight: "600",
+    borderWidth: 1,
+    borderRadius: 14,
+    width: "100%",
+    height: 72,
+    borderColor: colors.border,
+    paddingHorizontal: 20,
+    justifyContent: 20,
+    marginBottom: 14,
+  },
   eyeButton: {
     position: "absolute",
     right: 14,
