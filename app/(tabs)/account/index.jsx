@@ -113,7 +113,7 @@ export default function Account() {
           <MenuItem
             icon="person-outline"
             label="Edit Profile"
-            onPress={() => Alert.alert("Coming soon", "Profile editing is coming soon.")}
+            onPress={() => router.push("/edit-profile")}
           />
           <View style={styles.divider} />
           <MenuItem
@@ -125,7 +125,7 @@ export default function Account() {
           <MenuItem
             icon="notifications-outline"
             label="Notifications"
-            onPress={() => Alert.alert("Coming soon", "Notification settings are coming soon.")}
+            onPress={() => router.push("/notifications")}
           />
         </View>
 
@@ -135,13 +135,13 @@ export default function Account() {
           <MenuItem
             icon="help-circle-outline"
             label="Help & FAQ"
-            onPress={() => Alert.alert("Coming soon", "Help center is coming soon.")}
+            onPress={() => router.push("/help-faq")}
           />
           <View style={styles.divider} />
           <MenuItem
             icon="shield-checkmark-outline"
             label="Privacy Policy"
-            onPress={() => Alert.alert("Coming soon", "Privacy policy is coming soon.")}
+            onPress={() => router.push("/privacy-policy")}
           />
         </View>
 
