@@ -1,9 +1,12 @@
+import { View } from "react-native";
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../../constants/colors";
+import ChatBot from "../../components/ChatBot";
 
 export default function TabsLayout() {
   return (
+    <View style={{ flex: 1 }}>
     <Tabs
       screenOptions={{
         headerShown: false,
@@ -102,5 +105,7 @@ export default function TabsLayout() {
       {/* Suppress auto-generated index */}
       <Tabs.Screen name="index" options={{ href: null }} />
     </Tabs>
+    <ChatBot tabBarHeight={68} />
+    </View>
   );
 }
