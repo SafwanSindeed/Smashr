@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
+  SectionList,
   ScrollView,
-  FlatList,
   TouchableOpacity,
   Pressable,
   Modal,
@@ -53,21 +53,7 @@ function formatDateLabel(date) {
   if (sameDay(date, today)) return "Today";
   if (sameDay(date, tomorrow)) return "Tomorrow";
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  return `${days[date.getDay()]} ${date.getMonth() + 1}/${date.getDate()}`;
-}
-
-function formatDateTabLabel(date) {
-  const today = new Date();
-  const tomorrow = new Date();
-  tomorrow.setDate(today.getDate() + 1);
-  const sameDay = (a, b) =>
-    a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate();
-  if (sameDay(date, today)) return "Today";
-  if (sameDay(date, tomorrow)) return "Tomorrow";
   const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
   return `${days[date.getDay()]} ${months[date.getMonth()]} ${date.getDate()}`;
 }
 
@@ -107,8 +93,8 @@ function ProgramDetailModal({ session, onClose, bookedIds, onBooked }) {
       onBooked(session._id);
       Alert.alert("Booked!", "Check your Bookings tab.");
       onClose();
-    } catch (_) {
-      Alert.alert("Error", "Could not complete booking. Please try again.");
+    } catch (err) {
+      Alert.alert("Booking Failed", err?.message || "Could not complete booking. Please try again.");
     }
   };
 
@@ -257,6 +243,7 @@ function SessionRow({ session, onPress, isLast }) {
 export default function Programs() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const sectionListRef = useRef(null);
 
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -292,22 +279,39 @@ export default function Programs() {
     setBookedIds((prev) => new Set([...prev, id]));
   };
 
-  const filtered = sessions.filter((s) => {
-    const matchDate = fallsOnDate(s, dates[selectedDateIndex]);
-    const matchCat  = !selectedCategory || s.category === selectedCategory;
-    return matchDate && matchCat;
-  });
+  // Build sections: all 7 days, filtered by category only (date tabs just scroll)
+  const sections = dates
+    .map((date) => ({
+      title: formatDateLabel(date),
+      date,
+      data: sessions.filter(
+        (s) => fallsOnDate(s, date) && (!selectedCategory || s.category === selectedCategory)
+      ),
+    }))
+    .filter((s) => s.data.length > 0);
 
-  const listItems = [];
-  let lastLabel = null;
-  filtered.forEach((session, i) => {
-    const label = formatDateLabel(new Date(session.start_time));
-    if (label !== lastLabel) {
-      listItems.push({ type: "header", label, key: `h-${label}` });
-      lastLabel = label;
+  const handleDateTabPress = (index) => {
+    setSelectedDateIndex(index);
+    const targetDate = dates[index];
+    const sectionIdx = sections.findIndex((s) => {
+      const sd = s.date;
+      return (
+        sd.getFullYear() === targetDate.getFullYear() &&
+        sd.getMonth() === targetDate.getMonth() &&
+        sd.getDate() === targetDate.getDate()
+      );
+    });
+    if (sectionIdx >= 0 && sectionListRef.current) {
+      try {
+        sectionListRef.current.scrollToLocation({
+          sectionIndex: sectionIdx,
+          itemIndex: 0,
+          animated: true,
+          viewOffset: 0,
+        });
+      } catch (_) {}
     }
-    listItems.push({ type: "session", session, key: session._id, index: i });
-  });
+  };
 
   return (
     <SafeAreaView style={styles.safe} edges={["left", "right"]}>
@@ -315,8 +319,8 @@ export default function Programs() {
         colors={[colors.primaryStart, colors.primaryEnd]}
         style={[styles.header, { paddingTop: insets.top + 10 }]}
       >
-        <Pressable hitSlop={10} onPress={() => router.push("/(tabs)/friends")}>
-          <Ionicons name="people-outline" size={28} color={colors.white} />
+        <Pressable hitSlop={10} onPress={() => router.push("/(tabs)/home/homepage")}>
+          <Ionicons name="arrow-back" size={28} color={colors.white} />
         </Pressable>
         <Text style={styles.headerTitle}>Programs</Text>
         <Pressable hitSlop={10}>
@@ -324,6 +328,7 @@ export default function Programs() {
         </Pressable>
       </LinearGradient>
 
+      {/* Date tabs — tap to scroll to that section */}
       <View style={styles.dateSelectorWrapper}>
         <ScrollView
           horizontal
@@ -336,10 +341,10 @@ export default function Programs() {
               <TouchableOpacity
                 key={index}
                 style={[styles.dateTab, active && styles.dateTabActive]}
-                onPress={() => setSelectedDateIndex(index)}
+                onPress={() => handleDateTabPress(index)}
               >
                 <Text style={[styles.dateTabText, active && styles.dateTabTextActive]}>
-                  {formatDateTabLabel(date)}
+                  {formatDateLabel(date)}
                 </Text>
               </TouchableOpacity>
             );
@@ -347,6 +352,7 @@ export default function Programs() {
         </ScrollView>
       </View>
 
+      {/* Category chips — filter sessions */}
       <View style={styles.chipRow}>
         <ScrollView
           horizontal
@@ -376,35 +382,32 @@ export default function Programs() {
         </ScrollView>
       </View>
 
-      <FlatList
-        data={listItems}
-        keyExtractor={(item) => item.key}
+      <SectionList
+        ref={sectionListRef}
+        sections={sections}
+        keyExtractor={(item) => item._id}
+        stickySectionHeadersEnabled={false}
+        onScrollToIndexFailed={() => {}}
+        renderSectionHeader={({ section }) => (
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionHeaderText}>{section.title}</Text>
+          </View>
+        )}
+        renderItem={({ item, section, index }) => {
+          const isLast = index === section.data.length - 1;
+          return (
+            <SessionRow session={item} onPress={setSelectedSession} isLast={isLast} />
+          );
+        }}
         ListEmptyComponent={
           <View style={styles.center}>
             <Ionicons name="calendar-outline" size={56} color="#D1D5DB" />
-            <Text style={styles.emptyTitle}>No sessions today</Text>
-            <Text style={styles.emptySubtitle}>Try a different date or category</Text>
+            <Text style={styles.emptyTitle}>No sessions found</Text>
+            <Text style={styles.emptySubtitle}>Try a different category</Text>
           </View>
         }
-        renderItem={({ item, index }) => {
-          if (item.type === "header") {
-            return (
-              <View style={styles.sectionHeader}>
-                <Text style={styles.sectionHeaderText}>{item.label}</Text>
-              </View>
-            );
-          }
-          const next = listItems[index + 1];
-          const isLast = !next || next.type === "header";
-          return (
-            <SessionRow
-              session={item.session}
-              onPress={setSelectedSession}
-              isLast={isLast}
-            />
-          );
-        }}
         contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
       />
 
       <ProgramDetailModal

@@ -72,8 +72,8 @@ export default function Account() {
         colors={[colors.primaryStart, colors.primaryEnd]}
         style={[styles.header, { paddingTop: insets.top + 10 }]}
       >
-        <Pressable hitSlop={10} onPress={() => router.push("/(tabs)/friends")}>
-          <Ionicons name="people-outline" size={28} color={colors.white} />
+        <Pressable hitSlop={10} onPress={() => router.push("/(tabs)/home/homepage")}>
+          <Ionicons name="arrow-back" size={28} color={colors.white} />
         </Pressable>
         <Text style={styles.headerTitle}>Account</Text>
         <Pressable hitSlop={10}>

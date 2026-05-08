@@ -24,6 +24,7 @@ import {
   setDoc,
   deleteDoc,
   getDocs,
+  onSnapshot,
   query,
   where,
   serverTimestamp,
@@ -180,6 +181,8 @@ export default function FindMatch() {
 
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
+  const myLocationRef = useRef(null);
+  const lobbyUnsubRef = useRef(null);
 
   useEffect(() => {
     Animated.loop(
@@ -192,12 +195,35 @@ export default function FindMatch() {
     Animated.timing(fadeAnim, { toValue: 1, duration: 400, useNativeDriver: true }).start();
 
     return () => {
+      if (lobbyUnsubRef.current) lobbyUnsubRef.current();
       const uid = auth.currentUser?.uid;
       if (uid) deleteDoc(doc(db, "vsv_lobby", uid)).catch(() => {});
     };
   }, []);
 
   const startSearch = async () => {
+    const user = auth.currentUser;
+    if (!user) {
+      Alert.alert("Not signed in", "Please log in and try again.");
+      return;
+    }
+
+    // ── Friendly: load friends list, no GPS needed ──────────────────────────
+    if (type === "friendly") {
+      setPhase(PHASES.SEARCHING);
+      try {
+        const snap = await getDocs(collection(db, "users", user.uid, "friends"));
+        const friends = snap.docs.map((d) => ({ uid: d.id, ...d.data() }));
+        setPlayers(friends);
+        setPhase(PHASES.PLAYERS);
+      } catch (err) {
+        Alert.alert("Error", err?.message || "Could not load your friends list.");
+        setPhase(PHASES.START);
+      }
+      return;
+    }
+
+    // ── Singles / Doubles: GPS + lobby search ───────────────────────────────
     setPhase(PHASES.LOCATING);
     try {
       const { status, canAskAgain } = await Location.requestForegroundPermissionsAsync();
@@ -234,13 +260,8 @@ export default function FindMatch() {
       }
       const { latitude: lat, longitude: lng } = loc.coords;
       setMyLocation({ lat, lng });
+      myLocationRef.current = { lat, lng };
 
-      const user = auth.currentUser;
-      if (!user) {
-        Alert.alert("Not signed in", "Please log in and try again.");
-        setPhase(PHASES.START);
-        return;
-      }
       await setDoc(doc(db, "vsv_lobby", user.uid), {
         uid: user.uid,
         displayName: user.displayName || user.email?.split("@")[0] || "Player",
@@ -252,23 +273,30 @@ export default function FindMatch() {
 
       setPhase(PHASES.SEARCHING);
 
-      const snap = await getDocs(
-        query(collection(db, "vsv_lobby"), where("gameType", "==", type), where("status", "==", "searching"))
+      if (lobbyUnsubRef.current) lobbyUnsubRef.current();
+      lobbyUnsubRef.current = onSnapshot(
+        query(
+          collection(db, "vsv_lobby"),
+          where("gameType", "==", type),
+          where("status", "==", "searching")
+        ),
+        (snap) => {
+          const myLoc = myLocationRef.current;
+          if (!myLoc) return;
+          const nearby = [];
+          snap.forEach((d) => {
+            const data = d.data();
+            if (data.uid === user.uid) return;
+            const dist = distanceKm(myLoc.lat, myLoc.lng, data.lat, data.lng);
+            if (dist <= 25) nearby.push({ ...data, distanceKm: dist });
+          });
+          nearby.sort((a, b) => a.distanceKm - b.distanceKm);
+          setPlayers(nearby);
+          setPhase(PHASES.PLAYERS);
+        },
+        () => setPhase(PHASES.PLAYERS)
       );
-
-      const nearby = [];
-      snap.forEach((d) => {
-        const data = d.data();
-        if (data.uid === user.uid) return;
-        const dist = distanceKm(lat, lng, data.lat, data.lng);
-        if (dist <= 25) nearby.push({ ...data, distanceKm: dist });
-      });
-      nearby.sort((a, b) => a.distanceKm - b.distanceKm);
-
-      setPlayers(nearby);
-      setPhase(PHASES.PLAYERS);
     } catch (err) {
-      console.error(err);
       const msg = err?.code === "permission-denied"
         ? "Firebase permissions error. Contact support."
         : err?.message || "Something went wrong. Please try again.";
@@ -281,12 +309,43 @@ export default function FindMatch() {
     setSelectedPlayer(player);
     setPhase(PHASES.COURTS);
     try {
-      const mid = midpoint(myLocation.lat, myLocation.lng, player.lat, player.lng);
-      let found = await fetchNearbyCourts(mid.lat, mid.lng, 15000);
-      if (found.length === 0) found = await fetchNearbyCourts(mid.lat, mid.lng, 30000);
+      let searchLat, searchLng, myLat, myLng;
+
+      if (type === "friendly") {
+        // Get user's location now (skipped during friend-list load)
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          Alert.alert("Location Required", "We need your location to suggest a nearby court.");
+          setPhase(PHASES.PLAYERS);
+          return;
+        }
+        let loc = null;
+        try { loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced }); }
+        catch { loc = await Location.getLastKnownPositionAsync(); }
+        if (!loc) {
+          Alert.alert("Location unavailable", "Could not get your location.");
+          setPhase(PHASES.PLAYERS);
+          return;
+        }
+        myLat = loc.coords.latitude;
+        myLng = loc.coords.longitude;
+        setMyLocation({ lat: myLat, lng: myLng });
+        myLocationRef.current = { lat: myLat, lng: myLng };
+        searchLat = myLat;
+        searchLng = myLng;
+      } else {
+        myLat = myLocation.lat;
+        myLng = myLocation.lng;
+        const mid = midpoint(myLat, myLng, player.lat, player.lng);
+        searchLat = mid.lat;
+        searchLng = mid.lng;
+      }
+
+      let found = await fetchNearbyCourts(searchLat, searchLng, 15000);
+      if (found.length === 0) found = await fetchNearbyCourts(searchLat, searchLng, 30000);
 
       if (found.length === 0) {
-        Alert.alert("No Courts Found", "We couldn't find any courts near your midpoint. Try a different area.");
+        Alert.alert("No Courts Found", "We couldn't find any courts near you. Try a different area.");
         setPhase(PHASES.PLAYERS);
         return;
       }
@@ -294,17 +353,16 @@ export default function FindMatch() {
       const scored = found
         .map((court) => ({
           ...court,
-          myDist: distanceKm(myLocation.lat, myLocation.lng, court.lat, court.lng),
-          theirDist: distanceKm(player.lat, player.lng, court.lat, court.lng),
+          myDist: distanceKm(myLat, myLng, court.lat, court.lng),
+          theirDist: player.lat != null ? distanceKm(player.lat, player.lng, court.lat, court.lng) : null,
         }))
-        .map((c) => ({ ...c, totalDist: c.myDist + c.theirDist }))
+        .map((c) => ({ ...c, totalDist: c.myDist + (c.theirDist ?? 0) }))
         .sort((a, b) => a.totalDist - b.totalDist);
 
       setCourts(scored.slice(0, 5));
       setBestCourt(scored[0]);
       setPhase(PHASES.MATCHED);
     } catch (err) {
-      console.error(err);
       Alert.alert("Error", "Could not find courts. Please try again.");
       setPhase(PHASES.PLAYERS);
     }
@@ -352,8 +410,8 @@ export default function FindMatch() {
               {/* Action button */}
               <TouchableOpacity style={styles.actionButton} onPress={startSearch} activeOpacity={0.85}>
                 <LinearGradient colors={meta.colors} style={styles.actionGradient}>
-                  <Ionicons name="location-outline" size={22} color={colors.white} />
-                  <Text style={styles.actionText}>Find Players Near Me</Text>
+                  <Ionicons name={type === "friendly" ? "people-outline" : "location-outline"} size={22} color={colors.white} />
+                  <Text style={styles.actionText}>{type === "friendly" ? "Choose a Friend" : "Find Players Near Me"}</Text>
                 </LinearGradient>
               </TouchableOpacity>
 
@@ -428,9 +486,13 @@ export default function FindMatch() {
                 <View style={styles.statusBarLeft}>
                   <View style={[styles.statusDot, { backgroundColor: meta.accentColor }]} />
                   <Text style={[styles.statusBarText, { color: meta.accentColor }]}>
-                    {players.length > 0
-                      ? `${players.length} player${players.length !== 1 ? "s" : ""} found nearby`
-                      : "No players found right now"}
+                    {type === "friendly"
+                      ? players.length > 0
+                        ? `${players.length} friend${players.length !== 1 ? "s" : ""} available`
+                        : "No friends added yet"
+                      : players.length > 0
+                        ? `${players.length} player${players.length !== 1 ? "s" : ""} found nearby`
+                        : "No players found right now"}
                   </Text>
                 </View>
                 <TouchableOpacity onPress={() => setPhase(PHASES.START)} hitSlop={8}>
@@ -443,10 +505,13 @@ export default function FindMatch() {
                   <View style={[styles.emptyIconWrap, { backgroundColor: meta.accentBg }]}>
                     <Ionicons name="people-outline" size={42} color={meta.accentColor} />
                   </View>
-                  <Text style={styles.emptyTitle}>No one nearby yet</Text>
+                  <Text style={styles.emptyTitle}>
+                    {type === "friendly" ? "No friends yet" : "No one nearby yet"}
+                  </Text>
                   <Text style={styles.emptyText}>
-                    No one is searching for a {meta.label} match within 25 km right now.
-                    Share the app with friends to grow the network!
+                    {type === "friendly"
+                      ? "Add friends from the Friends tab first, then come back to challenge them."
+                      : `No one is searching for a ${meta.label} match within 25 km right now. Share the app with friends to grow the network!`}
                   </Text>
                   <TouchableOpacity
                     style={[styles.retryButton, { borderColor: meta.accentColor }]}
@@ -467,7 +532,7 @@ export default function FindMatch() {
                       activeOpacity={0.85}
                     >
                       {/* Rank badge */}
-                      {index === 0 && (
+                      {index === 0 && type !== "friendly" && (
                         <View style={styles.closestBadge}>
                           <Text style={styles.closestBadgeText}>Closest</Text>
                         </View>
@@ -480,10 +545,19 @@ export default function FindMatch() {
                       <View style={styles.playerInfo}>
                         <Text style={styles.playerName}>{player.displayName}</Text>
                         <View style={styles.playerMetaRow}>
-                          <Ionicons name="location-outline" size={12} color={colors.textGray} />
-                          <Text style={styles.playerDist}>{fmtDist(player.distanceKm)} away</Text>
-                          <View style={styles.playerDot} />
-                          <Text style={styles.playerType}>{meta.label}</Text>
+                          {type === "friendly" ? (
+                            <>
+                              <Ionicons name="people-outline" size={12} color={meta.accentColor} />
+                              <Text style={[styles.playerDist, { color: meta.accentColor }]}>Friend</Text>
+                            </>
+                          ) : (
+                            <>
+                              <Ionicons name="location-outline" size={12} color={colors.textGray} />
+                              <Text style={styles.playerDist}>{fmtDist(player.distanceKm)} away</Text>
+                              <View style={styles.playerDot} />
+                              <Text style={styles.playerType}>{meta.label}</Text>
+                            </>
+                          )}
                         </View>
                       </View>
                       <LinearGradient colors={meta.colors} style={styles.challengeBtn}>
@@ -576,24 +650,28 @@ export default function FindMatch() {
                       {fmtDist(bestCourt.myDist)}
                     </Text>
                   </View>
-                  <View style={styles.distDivider} />
-                  <View style={styles.distItem}>
-                    <View style={styles.distIconWrap}>
-                      <Ionicons name="people-outline" size={14} color={meta.accentColor} />
-                    </View>
-                    <Text style={styles.distLabel}>Their drive</Text>
-                    <Text style={[styles.distValue, { color: meta.accentColor }]}>
-                      {fmtDist(bestCourt.theirDist)}
-                    </Text>
-                  </View>
+                  {bestCourt.theirDist != null && (
+                    <>
+                      <View style={styles.distDivider} />
+                      <View style={styles.distItem}>
+                        <View style={styles.distIconWrap}>
+                          <Ionicons name="people-outline" size={14} color={meta.accentColor} />
+                        </View>
+                        <Text style={styles.distLabel}>Their drive</Text>
+                        <Text style={[styles.distValue, { color: meta.accentColor }]}>
+                          {fmtDist(bestCourt.theirDist)}
+                        </Text>
+                      </View>
+                    </>
+                  )}
                   <View style={styles.distDivider} />
                   <View style={styles.distItem}>
                     <View style={styles.distIconWrap}>
                       <Ionicons name="git-merge-outline" size={14} color={meta.accentColor} />
                     </View>
-                    <Text style={styles.distLabel}>Combined</Text>
+                    <Text style={styles.distLabel}>Distance</Text>
                     <Text style={[styles.distValue, { color: meta.accentColor }]}>
-                      {fmtDist(bestCourt.totalDist)}
+                      {fmtDist(bestCourt.myDist)}
                     </Text>
                   </View>
                 </View>

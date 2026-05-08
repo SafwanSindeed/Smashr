@@ -17,7 +17,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 import styles from "../styles";
 import { colors } from "../../constants/colors";
@@ -88,16 +88,7 @@ export default function Login() {
     }
     try {
       setLoading(true);
-      const { user } = await signInWithEmailAndPassword(auth, email.trim().toLowerCase(), password);
-      if (!user.emailVerified) {
-        await signOut(auth);
-        Alert.alert(
-          "Email not verified",
-          "Please check your inbox and click the verification link before logging in.",
-          [{ text: "OK" }]
-        );
-        return;
-      }
+      await signInWithEmailAndPassword(auth, email.trim().toLowerCase(), password);
       router.replace("/(tabs)/home/homepage");
     } catch (err) {
       Alert.alert("Login failed", err?.message || "Something went wrong.");
