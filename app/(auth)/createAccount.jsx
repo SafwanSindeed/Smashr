@@ -19,7 +19,7 @@ import { Ionicons } from "@expo/vector-icons";
 import styles from "../styles";
 import { colors } from "../../constants/colors";
 import { auth } from "../../services/firebaseConfig";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
 import { createUser } from "../../functions/DatabaseFunctions.js";
 
 export default function CreateAccount() {
@@ -65,7 +65,8 @@ export default function CreateAccount() {
       const uid = userCredential.user.uid;
       await updateProfile(userCredential.user, { displayName: `${firstName.trim()} ${lastName.trim()}` });
       await createUser(uid, firstName.trim(), lastName.trim(), email.trim().toLowerCase());
-      router.replace("/(tabs)/home/homepage");
+      await sendEmailVerification(userCredential.user);
+      router.replace("/verify-email");
     } catch (err) {
       Alert.alert("Error", err?.message || "Could not create your account.");
     } finally {
