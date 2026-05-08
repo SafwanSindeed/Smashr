@@ -236,6 +236,11 @@ export default function FindMatch() {
       setMyLocation({ lat, lng });
 
       const user = auth.currentUser;
+      if (!user) {
+        Alert.alert("Not signed in", "Please log in and try again.");
+        setPhase(PHASES.START);
+        return;
+      }
       await setDoc(doc(db, "vsv_lobby", user.uid), {
         uid: user.uid,
         displayName: user.displayName || user.email?.split("@")[0] || "Player",
