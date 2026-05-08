@@ -24,7 +24,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../constants/colors";
 
 // ─── Gemini config ───────────────────────────────────────────────────────────
-const GEMINI_KEY = "AIzaSyC0U25_F7mW-AzXEYaarYKl_zYewi-ACDw";
+const GEMINI_KEY = process.env.EXPO_PUBLIC_GEMINI_KEY;
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_KEY}`;
 
 const SYSTEM_PROMPT = `You are Smashr's AI pickleball assistant — friendly, knowledgeable, and concise.
