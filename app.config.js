@@ -17,6 +17,10 @@ export default {
     },
     ios: {
       supportsTablet: true,
+      infoPlist: {
+        NSLocationWhenInUseUsageDescription:
+          "Smashr uses your location to find nearby pickleball players and courts.",
+      },
     },
     android: {
       adaptiveIcon: {
@@ -24,11 +28,24 @@ export default {
         backgroundColor: "#FFF8EB",
       },
       edgeToEdgeEnabled: true,
+      permissions: [
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+      ],
     },
     web: {
       favicon: "./assets/img/Logo.jpg",
     },
-    plugins: ["expo-router"],
+    plugins: [
+      "expo-router",
+      [
+        "expo-location",
+        {
+          locationWhenInUsePermission:
+            "Smashr uses your location to find nearby pickleball players and courts.",
+        },
+      ],
+    ],
     extra: {
       FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
       FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN,

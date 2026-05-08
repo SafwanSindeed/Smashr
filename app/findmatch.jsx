@@ -218,7 +218,21 @@ export default function FindMatch() {
         return;
       }
 
-      const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+      let loc = null;
+      try {
+        loc = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Balanced,
+          timeInterval: 5000,
+          mayShowUserSettingsDialog: true,
+        });
+      } catch {
+        loc = await Location.getLastKnownPositionAsync();
+      }
+      if (!loc) {
+        Alert.alert("Location unavailable", "Could not get your location. Make sure GPS is enabled and try again.");
+        setPhase(PHASES.START);
+        return;
+      }
       const { latitude: lat, longitude: lng } = loc.coords;
       setMyLocation({ lat, lng });
 
