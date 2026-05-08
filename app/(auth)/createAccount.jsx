@@ -65,8 +65,8 @@ export default function CreateAccount() {
       const uid = userCredential.user.uid;
       await updateProfile(userCredential.user, { displayName: `${firstName.trim()} ${lastName.trim()}` });
       await createUser(uid, firstName.trim(), lastName.trim(), email.trim().toLowerCase());
-      await sendEmailVerification(userCredential.user);
-      router.replace("/verify-email");
+      sendEmailVerification(userCredential.user).catch(() => {});
+      router.replace("/(tabs)/home/homepage");
     } catch (err) {
       Alert.alert("Error", err?.message || "Could not create your account.");
     } finally {

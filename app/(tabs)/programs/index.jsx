@@ -93,8 +93,8 @@ function ProgramDetailModal({ session, onClose, bookedIds, onBooked }) {
       onBooked(session._id);
       Alert.alert("Booked!", "Check your Bookings tab.");
       onClose();
-    } catch (_) {
-      Alert.alert("Error", "Could not complete booking. Please try again.");
+    } catch (err) {
+      Alert.alert("Booking Failed", err?.message || "Could not complete booking. Please try again.");
     }
   };
 

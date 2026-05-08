@@ -1,20 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
   ScrollView,
   TouchableOpacity,
   Pressable,
+  Modal,
   StyleSheet,
   ActivityIndicator,
+  Animated,
 } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { doc, deleteDoc } from "firebase/firestore";
+import { db, auth } from "../../../services/firebaseConfig";
 import { useBookings } from "../../../hooks/useBooking";
 import { colors } from "../../../constants/colors";
-import { auth } from "../../../services/firebaseConfig";
 
 const TABS = [
   { id: "upcoming", label: "Upcoming" },
@@ -41,7 +44,60 @@ function getBadgeLabel(item) {
   return "Program";
 }
 
-function BookingCard({ item }) {
+// ─── Cancel Confirmation Modal ────────────────────────────────────────────────
+
+function CancelModal({ booking, onConfirm, onDismiss }) {
+  const scale = useRef(new Animated.Value(0.85)).current;
+  const opacity = useRef(new Animated.Value(0)).current;
+  const visible = !!booking;
+
+  useEffect(() => {
+    if (visible) {
+      scale.setValue(0.85);
+      opacity.setValue(0);
+      Animated.parallel([
+        Animated.spring(scale, { toValue: 1, tension: 70, friction: 8, useNativeDriver: true }),
+        Animated.timing(opacity, { toValue: 1, duration: 180, useNativeDriver: true }),
+      ]).start();
+    }
+  }, [visible]);
+
+  if (!booking) return null;
+
+  return (
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={onDismiss}>
+      <Pressable style={cm.backdrop} onPress={onDismiss}>
+        <Animated.View
+          style={[cm.box, { transform: [{ scale }], opacity }]}
+          // prevent backdrop tap from closing when tapping inside box
+        >
+          <Pressable onPress={() => {}}>
+            <View style={cm.iconWrap}>
+              <Ionicons name="trash-outline" size={30} color="#EF4444" />
+            </View>
+            <Text style={cm.title}>Cancel Booking?</Text>
+            <Text style={cm.subtitle} numberOfLines={2}>
+              {booking.name || "This booking"}
+            </Text>
+            <Text style={cm.body}>
+              This will remove it from your bookings. This cannot be undone.
+            </Text>
+            <TouchableOpacity style={cm.confirmBtn} onPress={onConfirm} activeOpacity={0.85}>
+              <Text style={cm.confirmText}>Yes, Cancel It</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={cm.keepBtn} onPress={onDismiss} activeOpacity={0.8}>
+              <Text style={cm.keepText}>Keep Booking</Text>
+            </TouchableOpacity>
+          </Pressable>
+        </Animated.View>
+      </Pressable>
+    </Modal>
+  );
+}
+
+// ─── Booking Card ─────────────────────────────────────────────────────────────
+
+function BookingCard({ item, onCancel }) {
   const startDate = new Date(item.startDate || "");
   const isValid = !isNaN(startDate.getTime());
   const isPast = isValid && startDate < new Date();
@@ -71,9 +127,7 @@ function BookingCard({ item }) {
       {item.location ? (
         <View style={styles.cardMeta}>
           <Ionicons name="location-outline" size={15} color={colors.textGray} />
-          <Text style={styles.cardMetaText} numberOfLines={1}>
-            {item.location}
-          </Text>
+          <Text style={styles.cardMetaText} numberOfLines={1}>{item.location}</Text>
         </View>
       ) : null}
 
@@ -96,14 +150,24 @@ function BookingCard({ item }) {
           {isPast ? "Completed" : "Confirmed"}
         </Text>
       </View>
+
+      {!isPast && (
+        <TouchableOpacity style={styles.cancelBtn} onPress={() => onCancel(item)} activeOpacity={0.8}>
+          <Ionicons name="trash-outline" size={14} color="#EF4444" />
+          <Text style={styles.cancelBtnText}>Cancel Booking</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
+
+// ─── Main Screen ──────────────────────────────────────────────────────────────
 
 export default function MyBookings() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState("upcoming");
+  const [cancelTarget, setCancelTarget] = useState(null);
   const userId = auth.currentUser?.uid;
   const { bookings, loading } = useBookings(userId);
 
@@ -118,6 +182,14 @@ export default function MyBookings() {
   });
 
   const displayed = activeTab === "upcoming" ? upcoming : past;
+
+  const handleCancel = async () => {
+    if (!cancelTarget || !userId) return;
+    try {
+      await deleteDoc(doc(db, "users", userId, "bookings", cancelTarget.id));
+    } catch (_) {}
+    setCancelTarget(null);
+  };
 
   return (
     <SafeAreaView style={styles.safe} edges={["left", "right"]}>
@@ -170,13 +242,21 @@ export default function MyBookings() {
       ) : (
         <ScrollView contentContainerStyle={styles.list}>
           {displayed.map((item, i) => (
-            <BookingCard key={item.id ?? i} item={item} />
+            <BookingCard key={item.id ?? i} item={item} onCancel={setCancelTarget} />
           ))}
         </ScrollView>
       )}
+
+      <CancelModal
+        booking={cancelTarget}
+        onConfirm={handleCancel}
+        onDismiss={() => setCancelTarget(null)}
+      />
     </SafeAreaView>
   );
 }
+
+// ─── Styles ───────────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
@@ -188,12 +268,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     justifyContent: "space-between",
   },
-  headerTitle: {
-    color: colors.white,
-    fontSize: 20,
-    fontWeight: "900",
-    letterSpacing: 0.3,
-  },
+  headerTitle: { color: colors.white, fontSize: 20, fontWeight: "900", letterSpacing: 0.3 },
   tabs: {
     flexDirection: "row",
     backgroundColor: colors.white,
@@ -240,11 +315,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
   },
-  cardBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 3,
-    borderRadius: 8,
-  },
+  cardBadge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 8 },
   cardBadgeText: { fontSize: 12, fontWeight: "700" },
   statusDot: { width: 10, height: 10, borderRadius: 5 },
   statusUpcoming: { backgroundColor: "#22C55E" },
@@ -263,4 +334,68 @@ const styles = StyleSheet.create({
   statusBannerUpcoming: { backgroundColor: "#D1FAE5" },
   statusBannerPast: { backgroundColor: "#F3F4F6" },
   statusBannerText: { fontSize: 13, fontWeight: "600" },
+  cancelBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    marginTop: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#FECACA",
+    backgroundColor: "#FEF2F2",
+    alignSelf: "flex-start",
+  },
+  cancelBtnText: { fontSize: 13, fontWeight: "700", color: "#EF4444" },
+});
+
+const cm = StyleSheet.create({
+  backdrop: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 24,
+  },
+  box: {
+    backgroundColor: colors.white,
+    borderRadius: 24,
+    padding: 28,
+    width: "100%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowRadius: 20,
+    elevation: 10,
+  },
+  iconWrap: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: "#FEF2F2",
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
+    marginBottom: 16,
+  },
+  title: { fontSize: 20, fontWeight: "900", color: colors.textDark, textAlign: "center", marginBottom: 4 },
+  subtitle: { fontSize: 15, fontWeight: "700", color: colors.primaryEnd, textAlign: "center", marginBottom: 10 },
+  body: { fontSize: 14, color: colors.textGray, textAlign: "center", lineHeight: 21, marginBottom: 24 },
+  confirmBtn: {
+    backgroundColor: "#EF4444",
+    borderRadius: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 32,
+    width: "100%",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  confirmText: { fontSize: 15, fontWeight: "800", color: "#fff" },
+  keepBtn: {
+    paddingVertical: 12,
+    width: "100%",
+    alignItems: "center",
+  },
+  keepText: { fontSize: 15, fontWeight: "700", color: colors.textGray },
 });

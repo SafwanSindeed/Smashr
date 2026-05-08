@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   FlatList,
   StyleSheet,
-  KeyboardAvoidingView,
+  Keyboard,
   Platform,
   Animated,
   ActivityIndicator,
@@ -207,6 +207,7 @@ export default function ChatBot({ tabBarHeight = 68 }) {
   const [messages, setMessages] = useState([GREET]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [kbHeight, setKbHeight] = useState(0);
   const listRef = useRef(null);
   const fabScale = useRef(new Animated.Value(1)).current;
   const slideAnim = useRef(new Animated.Value(SLIDE_OUT)).current;
@@ -243,6 +244,14 @@ export default function ChatBot({ tabBarHeight = 68 }) {
   useEffect(() => {
     if (open) scrollBottom();
   }, [messages, open]);
+
+  useEffect(() => {
+    const showEvent = Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+    const hideEvent = Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+    const onShow = Keyboard.addListener(showEvent, (e) => setKbHeight(e.endCoordinates.height));
+    const onHide = Keyboard.addListener(hideEvent, () => setKbHeight(0));
+    return () => { onShow.remove(); onHide.remove(); };
+  }, []);
 
   const send = async () => {
     const text = input.trim();
@@ -328,14 +337,9 @@ export default function ChatBot({ tabBarHeight = 68 }) {
           <Pressable style={StyleSheet.absoluteFill} onPress={closeSheet} />
         </Animated.View>
 
-        <KeyboardAvoidingView
-          style={styles.sheetWrapper}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={0}
-        >
-          <Animated.View style={{ transform: [{ translateY: slideAnim }] }}>
+        <Animated.View style={[styles.sheetWrapper, { transform: [{ translateY: slideAnim }] }]}>
           <View style={[styles.sheet, { paddingBottom: insets.bottom + 8 }]}>
-            {/* ── Header ── */}
+            {/* ── Header — always visible, never affected by keyboard ── */}
             <LinearGradient
               colors={[colors.primaryStart, colors.primaryEnd]}
               style={styles.sheetHeader}
@@ -354,47 +358,49 @@ export default function ChatBot({ tabBarHeight = 68 }) {
               </TouchableOpacity>
             </LinearGradient>
 
-            {/* ── Messages ── */}
-            <FlatList
-              ref={listRef}
-              data={messages}
-              keyExtractor={(m) => m.id}
-              renderItem={({ item }) => <MessageBubble msg={item} />}
-              contentContainerStyle={styles.messageList}
-              showsVerticalScrollIndicator={false}
-              onContentSizeChange={scrollBottom}
-              ListFooterComponent={loading ? <TypingDots /> : null}
-            />
-
-            {/* ── Input bar ── */}
-            <View style={styles.inputBar}>
-              <TextInput
-                style={styles.input}
-                value={input}
-                onChangeText={setInput}
-                placeholder="Ask about pickleball…"
-                placeholderTextColor="#9CA3AF"
-                multiline
-                maxLength={500}
-                onSubmitEditing={send}
-                returnKeyType="send"
+            {/* ── Content: shrinks when keyboard opens via paddingBottom ── */}
+            <View style={{ flex: 1, paddingBottom: kbHeight }}>
+              {/* ── Messages ── */}
+              <FlatList
+                ref={listRef}
+                data={messages}
+                keyExtractor={(m) => m.id}
+                renderItem={({ item }) => <MessageBubble msg={item} />}
+                contentContainerStyle={styles.messageList}
+                showsVerticalScrollIndicator={false}
+                onContentSizeChange={scrollBottom}
+                ListFooterComponent={loading ? <TypingDots /> : null}
               />
-              <TouchableOpacity
-                style={[styles.sendBtn, (!input.trim() || loading) && styles.sendBtnDisabled]}
-                onPress={send}
-                disabled={!input.trim() || loading}
-                activeOpacity={0.8}
-              >
-                {loading ? (
-                  <ActivityIndicator size="small" color={colors.white} />
-                ) : (
-                  <Ionicons name="arrow-up" size={18} color={colors.white} />
-                )}
-              </TouchableOpacity>
+
+              {/* ── Input bar ── */}
+              <View style={styles.inputBar}>
+                <TextInput
+                  style={styles.input}
+                  value={input}
+                  onChangeText={setInput}
+                  placeholder="Ask about pickleball…"
+                  placeholderTextColor="#9CA3AF"
+                  multiline
+                  maxLength={500}
+                  onSubmitEditing={send}
+                  returnKeyType="send"
+                />
+                <TouchableOpacity
+                  style={[styles.sendBtn, (!input.trim() || loading) && styles.sendBtnDisabled]}
+                  onPress={send}
+                  disabled={!input.trim() || loading}
+                  activeOpacity={0.8}
+                >
+                  {loading ? (
+                    <ActivityIndicator size="small" color={colors.white} />
+                  ) : (
+                    <Ionicons name="arrow-up" size={18} color={colors.white} />
+                  )}
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-          </Animated.View>
-        </KeyboardAvoidingView>
+        </Animated.View>
       </Modal>
     </>
   );
