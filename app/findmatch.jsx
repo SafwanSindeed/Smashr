@@ -231,7 +231,7 @@ export default function FindMatch() {
         const data = d.data();
         if (data.uid === user.uid) return;
         const dist = distanceKm(lat, lng, data.lat, data.lng);
-        if (dist <= 50) nearby.push({ ...data, distanceKm: dist });
+        if (dist <= 25) nearby.push({ ...data, distanceKm: dist });
       });
       nearby.sort((a, b) => a.distanceKm - b.distanceKm);
 
@@ -359,7 +359,7 @@ export default function FindMatch() {
               <Text style={styles.bigSub}>
                 {phase === PHASES.LOCATING
                   ? "Allow location access when prompted"
-                  : "Scanning for players within 50 km"}
+                  : "Scanning for players within 25 km"}
               </Text>
 
               <View style={styles.loadingSteps}>
@@ -412,7 +412,7 @@ export default function FindMatch() {
                   </View>
                   <Text style={styles.emptyTitle}>No one nearby yet</Text>
                   <Text style={styles.emptyText}>
-                    No one is searching for a {meta.label} match within 50 km right now.
+                    No one is searching for a {meta.label} match within 25 km right now.
                     Share the app with friends to grow the network!
                   </Text>
                   <TouchableOpacity

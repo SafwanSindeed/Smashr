@@ -8,14 +8,17 @@ import {
   ScrollView,
   Pressable,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { colors } from "../../../constants/colors";
 
 export default function FriendsScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const [search, setSearch] = useState("");
 
   return (
@@ -24,11 +27,14 @@ export default function FriendsScreen() {
         colors={[colors.primaryStart, colors.primaryEnd]}
         style={[styles.header, { paddingTop: insets.top + 10 }]}
       >
-        <Pressable hitSlop={10}>
-          <Ionicons name="menu" size={28} color={colors.white} />
+        <Pressable hitSlop={10} onPress={() => router.back()}>
+          <Ionicons name="arrow-back" size={28} color={colors.white} />
         </Pressable>
         <Text style={styles.headerTitle}>Friends</Text>
-        <Pressable hitSlop={10}>
+        <Pressable
+          hitSlop={10}
+          onPress={() => Alert.alert("Add Friend", "Enter a player's username or email to send them a friend request.\n\nFriend requests coming soon!", [{ text: "OK" }])}
+        >
           <Ionicons name="person-add-outline" size={28} color={colors.white} />
         </Pressable>
       </LinearGradient>

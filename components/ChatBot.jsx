@@ -331,7 +331,7 @@ export default function ChatBot({ tabBarHeight = 68 }) {
                 </View>
                 <View>
                   <Text style={styles.sheetTitle}>Smashr AI</Text>
-                  <Text style={styles.sheetSubtitle}>Pickleball assistant · Gemini 3 Flash</Text>
+                  <Text style={styles.sheetSubtitle}>Pickleball assistant</Text>
                 </View>
               </View>
               <TouchableOpacity onPress={closeSheet} hitSlop={12} style={styles.closeBtn}>

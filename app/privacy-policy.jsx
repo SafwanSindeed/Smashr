@@ -40,42 +40,41 @@ export default function PrivacyPolicy() {
         <Text style={styles.lastUpdated}>Last updated: May 2026</Text>
 
         <Text style={styles.intro}>
-          Smashr ("we", "our", or "us") is a pickleball matchmaking and tournament
-          discovery app. This Privacy Policy explains what information we collect, how
-          we use it, and your rights regarding that information. By using Smashr you
-          agree to this policy.
+          Smashr is a pickleball matchmaking and tournament discovery app. This Privacy
+          Policy explains what information is collected, how it is used, and your rights
+          regarding that information. By using Smashr you agree to this policy.
         </Text>
 
-        <Section title="1. Information We Collect">
-          {"Account information: When you register, we collect your email address and create a Firebase Authentication account. Your display name is stored in Firebase.\n\nLocation data: When you use the VsV (Versus) match-finding feature, we request your device's GPS coordinates. Location is used only in the moment to find nearby players and courts — we do not store your GPS history.\n\nMatch data: Scores, game types (singles/doubles/friendly), and opponent identifiers from completed matches are saved to Firestore to support DUPR rating submission.\n\nGPN data: If you create a Global Pickleball Network account through Smashr, your GPN credentials (ID, username, session token) are stored in your user profile in Firestore.\n\nDevice information: We do not collect device identifiers, advertising IDs, or crash logs beyond what Expo and Firebase provide by default."}
+        <Section title="1. Information Collected">
+          {"Account information: At registration, an email address is collected and a Firebase Authentication account is created. Display names are stored in Firebase.\n\nLocation data: When using the VsV (Versus) match-finding feature, device GPS coordinates are requested. Location is used only in the moment to find nearby players and courts — GPS history is not stored.\n\nMatch data: Scores, game types (singles/doubles/friendly), and opponent identifiers from completed matches are saved to Firestore to support DUPR rating submission.\n\nGPN data: If a Global Pickleball Network account is created through Smashr, GPN credentials (ID, username, session token) are stored in the user profile in Firestore.\n\nDevice information: Smashr does not collect device identifiers, advertising IDs, or crash logs beyond what Expo and Firebase provide by default."}
         </Section>
 
-        <Section title="2. How We Use Your Information">
-          {"Match-finding: Your real-time GPS coordinates are shared temporarily with Firestore to display you in the nearby player lobby. This data is deleted when you leave the match-finding screen.\n\nRating submission: Match results are queued in Firestore and submitted to DUPR (Dynamic Universal Pickleball Rating) when our API credentials are activated. This is the core purpose of match logging.\n\nTournament access: Your GPN credentials are used to display tournaments you have registered for in the My Bookings tab.\n\nApp improvement: We use aggregate, anonymized usage patterns to improve features. We do not sell individual user data."}
+        <Section title="2. How Information Is Used">
+          {"Match-finding: Real-time GPS coordinates are shared temporarily with Firestore to display players in the nearby lobby. This data is deleted when leaving the match-finding screen.\n\nRating submission: Match results are queued in Firestore and submitted to DUPR (Dynamic Universal Pickleball Rating) when API credentials are activated. This is the core purpose of match logging.\n\nTournament access: GPN credentials are used to display tournaments registered for in the My Bookings tab.\n\nApp improvement: Aggregate, anonymized usage patterns are used to improve features. Individual user data is not sold."}
         </Section>
 
         <Section title="3. Third-Party Services">
-          {"Firebase (Google): Provides authentication and our Firestore database. Firebase processes data under Google's privacy policy. Project: smashr-55708.\n\nGlobal Pickleball Network (GPN): A third-party tournament platform. When you create a GPN account or register for tournaments, your information is also governed by GPN's own privacy policy at globalpickleball.network.\n\nDUPR (Dynamic Universal Pickleball Rating): Match results are submitted to DUPR to update your official rating. DUPR's privacy policy applies to data they receive.\n\nOpenStreetMap / Overpass API: Used to find nearby courts. Only the GPS midpoint between two matched players is sent — no personal identifiers.\n\nExpo: The app build platform. Expo collects minimal telemetry under their own policy."}
+          {"Firebase (Google): Provides authentication and the Firestore database. Firebase processes data under Google's privacy policy. Project: smashr-55708.\n\nGlobal Pickleball Network (GPN): A third-party tournament platform. When creating a GPN account or registering for tournaments, information is also governed by GPN's privacy policy at globalpickleball.network.\n\nDUPR (Dynamic Universal Pickleball Rating): Match results are submitted to DUPR to update official ratings. DUPR's privacy policy applies to data they receive.\n\nOpenStreetMap / Overpass API: Used to find nearby courts. Only the GPS midpoint between two matched players is sent — no personal identifiers are included.\n\nExpo: The app build platform. Expo collects minimal telemetry under their own policy."}
         </Section>
 
         <Section title="4. Data Retention">
-          {"Match records in Firestore are kept indefinitely to maintain your match history and support retroactive DUPR submission. You may request deletion at any time (see Section 7).\n\nLobby data (vsv_lobby) is ephemeral — entries are removed when you leave the matchmaking screen or the app goes to the background.\n\nAccount data persists until you delete your account."}
+          {"Match records in Firestore are kept indefinitely to maintain match history and support retroactive DUPR submission. Deletion can be requested at any time (see Section 7).\n\nLobby data (vsv_lobby) is ephemeral — entries are removed when leaving the matchmaking screen or when the app goes to the background.\n\nAccount data persists until the account is deleted."}
         </Section>
 
         <Section title="5. Data Security">
-          {"Your data is stored in Google Firebase, which is protected by Google's enterprise-grade security infrastructure. We use Firebase Security Rules to ensure users can only read and write their own data. Passwords are never stored by Smashr — Firebase Authentication handles credential security.\n\nNo system is 100% secure. If you believe your account has been compromised, contact us immediately."}
+          {"All data is stored in Google Firebase, protected by Google's enterprise-grade security infrastructure. Firebase Security Rules ensure each user can only read and write their own data. Passwords are never stored by Smashr — Firebase Authentication handles all credential security.\n\nNo system is 100% secure. If an account appears to be compromised, contact the support team immediately."}
         </Section>
 
         <Section title="6. Children's Privacy">
-          {"Smashr is not directed at children under 13. We do not knowingly collect personal information from children under 13. If you believe a child has provided us with personal information, please contact us and we will delete it promptly."}
+          {"Smashr is not directed at children under 13. Personal information from children under 13 is not knowingly collected. If a child appears to have provided personal information, contact support and it will be deleted promptly."}
         </Section>
 
         <Section title="7. Your Rights">
-          {"You have the right to:\n\n• Access the personal data we hold about you\n• Request correction of inaccurate data\n• Request deletion of your account and associated data\n• Withdraw consent for location access at any time via device settings\n• Opt out of DUPR submission by not using the VsV match feature\n\nTo exercise any of these rights, contact us at the address below."}
+          {"Users have the right to:\n\n• Access the personal data held on their account\n• Request correction of inaccurate data\n• Request deletion of their account and associated data\n• Withdraw consent for location access at any time via device settings\n• Opt out of DUPR submission by not using the VsV match feature\n\nTo exercise any of these rights, contact Smashr at the address below."}
         </Section>
 
         <Section title="8. Changes to This Policy">
-          {"We may update this policy as the app grows. When we make material changes, we will update the 'Last updated' date at the top and notify users via the app. Continued use after changes constitutes acceptance."}
+          {"This policy may be updated as the app grows. When material changes are made, the 'Last updated' date at the top will be revised and users will be notified via the app. Continued use after changes constitutes acceptance."}
         </Section>
 
         <View style={styles.contactBox}>
