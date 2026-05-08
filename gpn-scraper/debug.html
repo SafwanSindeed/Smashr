@@ -1,0 +1,1247 @@
+
+<!DOCTYPE html>
+<html xml:lang="en-gb" lang="en-gb" data-bs-theme="light">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-title" content="Global Pickleball Network" />
+<meta property="og:image" content="https://www.globalpickleball.network/images/ogimagemain.png" />		<meta name="theme-color" content="#94a105" />
+
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/logos/Favicon2.png">
+		<link rel="icon" sizes="192x192" href="/images/logos/Favicon2.png">
+
+		<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+		
+		<link href="/templates/bootstrap/css/bootstrap.custom.css?v=1.43" rel="stylesheet">
+		<link href="/templates/bootstrap/css/template.css?v=1.67" rel="stylesheet">
+
+		<!--<link href="/templates/bootstrap/css/vuetify.custom.css" rel="stylesheet">-->
+		
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		
+		<script src="/media/jui/js/jquery.min.js"></script>
+		<script src="/media/jui/js/jquery-noconflict.js"></script>
+		<script src="/media/jui/js/jquery-migrate.min.js"></script>
+
+		<script src="/resources/helpers.js?v=1.6" type="text/javascript"></script>
+		<script src="/includes/js/listjs/list.min.js" type="text/javascript" defer="defer"></script>
+
+		<link rel="manifest" href="/manifest.json">
+
+		<base href="https://www.globalpickleball.network/pickleball-tournaments/tournaments" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="pickleball tournaments near you, pickleball brackets near you" />
+	<meta name="description" content="Find a pickleball tournament near you. Join a pickleball tournament near you." />
+	<meta name="generator" content="Joomla! - Open Source Content Management" />
+	<title>Find a Pickleball Tournament Near You</title>
+	<link href="/templates/bootstrap/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+	<script type="application/json" class="joomla-script-options new">{"csrf.token":"12e143aa7c42ebac91364157f81c6031","system.paths":{"root":"","base":""},"system.keepalive":{"interval":840000,"uri":"\/component\/ajax\/?format=json"}}</script>
+	<script src="/media/system/js/core.js?1a448d9be15947775b077ad2de9e69f5" type="text/javascript"></script>
+	<!--[if lt IE 9]><script src="/media/system/js/polyfill.event.js?1a448d9be15947775b077ad2de9e69f5" type="text/javascript"></script><![endif]-->
+	<script src="/media/system/js/keepalive.js?1a448d9be15947775b077ad2de9e69f5" type="text/javascript"></script>
+	<link rel="canonical" href="https://www.globalpickleball.network/pickleball-tournaments/tournaments">
+	<style type="text/css"> @media (max-width: 991px) { main { padding-top: calc(1.5rem + 56px + 44px); } } </style>
+
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVNXi734tFVgqfHWDFm_Uv7RJkSrYEKFw&libraries=places&language=en" type="text/javascript" defer="defer"></script>
+			<script src="https://www.googletagmanager.com/gtag/js?id=GT-MJWWHH33" async></script>
+			<script>
+				window.dataLayer = window.dataLayer || [];
+				function gtag(){dataLayer.push(arguments);}
+				gtag('js', new Date());
+				gtag('config', 'GT-MJWWHH33');
+				//gtag('config', 'AW-1069455612');
+			</script>
+			<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" defer></script>
+			<script>
+				window.OneSignal = window.OneSignal || [];
+				OneSignal.push(function() {
+					OneSignal.init({
+						appId: "398ac5ab-648b-4b36-82dc-db9d80e5db2a",
+					});
+				});
+			</script>
+		<style>
+			.overlay-open {
+				overflow: hidden;
+			}
+		
+			body header.header-static {
+				box-shadow: 0 0 0 0 rgba(0,0,0,0);
+				transition: box-shadow 200ms ease-in-out;
+			}
+		</style>
+	</head>
+	<body class="bootstrap-wrapper">
+				<style>
+		@keyframes pulse {
+			0% {
+				box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.6);
+			}
+			70% {
+				box-shadow: 0 0 0 10px rgba(13, 110, 253, 0);
+			}
+			100% {
+				box-shadow: 0 0 0 0 rgba(13, 110, 253, 0);
+			}
+		}
+
+		.pulse {
+			animation: pulse 1.8s infinite;
+			border-radius: 50%;
+		}
+	</style>
+
+	<div id="modalLogIn" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3>Sign in to see more</h3>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div>
+<form action="https://www.globalpickleball.network/pickleball-partners/partners/profile-page/login" method="post" id="login-form" class="form-inline cbLoginForm">
+	<input type="hidden" name="option" value="com_comprofiler" />
+	<input type="hidden" name="view" value="login" />
+	<input type="hidden" name="op2" value="login" />
+	<input type="hidden" name="return" value="B:aW5kZXgucGhwP29wdGlvbj1jb21fZHluYW1pY3BhZ2VzJnRhc2s9bG9naW5SZWRpcmVjdA==" />
+	<input type="hidden" name="message" value="0" />
+	<input type="hidden" name="loginfrom" value="loginmodule" />
+	<input type="hidden" name="cbsecuritym3" value="cbm_592fca6c_4d4f7ca0_cc9f931bffeac439a09ee730de72541b" />
+						<div class="userdata">
+			<div id="form-login-username" class="control-group">
+				<div class="controls">
+																									<div class="input-group mb-3">
+								<span class="input-group-text">
+									<span class="cbModuleUsernameIcon bi bi-person-fill" title="Username or email"></span>
+								</span>
+								<input id="modlgn-username" type="text" name="username" class="form-control"  size="14" placeholder="Username or email" />
+							</div>
+															</div>
+			</div>
+			<div id="form-login-password" class="control-group">
+				<div class="controls">
+																									<div class="input-group mb-3">
+								<span class="input-group-text">
+									<span class="cbModulePasswordIcon fa fa-lock" title="Password"></span>
+								</span>
+								<input id="modlgn-passwd" type="password" name="passwd" class="form-control" size="14" placeholder="Password"  />
+							</div>
+															</div>
+			</div>
+										<input id="modlgn-remember" type="hidden" name="remember" class="inputbox" value="yes" />
+									<div id="form-login-submit" class="mb-3">
+				<div class="d-grid">
+					<button type="submit" name="Submit" class="btn btn-sm btn-primary">
+																			Login											</button>
+				</div>
+			</div>
+					</div>
+				<ul id="form-login-links" class="list-unstyled">
+							<li id="form-login-forgot">
+					<i class="fa fa-question-circle"></i> 
+					<a href="https://www.globalpickleball.network/pickleball-partners/partners/profile-page/lostpassword" rel="nofollow">
+																			Forgot username or password?											</a>
+				</li>
+										<li id="form-login-register">
+					<div class="bg-light p-3 mb-3" style="margin-top:20px;">
+						Don't have an account? Come join <b>185,106</b> other players and register now!
+						
+						<div style="margin-top:10px;">
+							<a href="/register" class="btn btn-sm btn-primary" style="color:#fff;" rel="nofollow">Register</a>
+						</div>
+					</div>
+					
+				</li>
+					</ul>
+				</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- NAV BAR /  $leftNavigationLoaded ? ' elevation-0' : '' -->
+	<header class="navbar-light fixed-top header-static bg-mode" style="box-shadow: var(--elevate-menu-down);">
+
+		<!-- Logo Nav START -->
+		<nav class="navbar navbar-expand-lg">
+
+			<div class="container">
+
+				<!-- Responsive navbar toggler -->
+				<button class="navbar-toggler bg-white focus-ring me-2 icon-sm p-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-animation">
+						<span></span>
+						<span></span>
+						<span></span>
+					</span>
+				</button>
+
+				<!-- Logo START -->
+				<a class="navbar-brand me-auto my-2 p-0 focus-ring" href="/pickleball">
+					<!-- <img class="d-block d-ss-none light-mode-item navbar-brand-item" src="/images/logos/--><!---ball-dark-60.png" alt="logo" style="margin: 2px 0;"> -->
+					<img class="d-none d-ss-block light-mode-item navbar-brand-item" src="/images/logos/GPN-Flat-300.png" alt="logo" style="margin: 2px 0;">
+					<img class="dark-mode-item navbar-brand-item" src="/images/logos/Ball-White-60px.png" alt="logo">
+				</a>
+				<!-- Logo END -->
+
+				<!-- Main navbar START -->
+				<div class="collapse navbar-collapse" id="navbarCollapse">
+
+					<!-- Nav Search START -->
+					<div class="nav mt-3 mt-lg-0 flex-nowrap align-items-center px-4 px-lg-0 ms-4">
+						<div class="nav-item w-100 d-none d-lg-flex ">
+
+							<div class="dropdown">
+								<button class="btn btn-sm btn-light dropdown-toggle text-muted text-truncate" style="max-width:250px; font-size: 0.875rem; line-height: 1.393;" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+<i class="bi bi-geo-alt-fill me-1"></i>Worldwide								</button>
+								<ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start" aria-labelledby="dropdownMenuButton1">
+									<div class="align-items-center d-flex ms-1 mt-3" style="padding: 0 0.75rem;">
+		<label class="flex-grow-1 fw-bold text-muted">View By Location</label>
+		<small>
+			<a class="iframeModal" href="/index.php?option=com_tennissearch&Itemid=384&task=locationPage&currentItemID=136">change</a>
+			<i class="bi bi-pencil-square ms-2 me-2 blue-500-text"></i>
+		</small>
+	</div>
+	<li style="margin: 0 0.75rem;">
+		<a class="align-items-center border-0 border-top border-light-subtle d-flex mt-2 w-100" href="/pickleball" style="padding: 0.75rem 0;">
+			<span class="avatar avatar-sm" style="margin-right: 0.75rem;">
+				<div class="avatar-img rounded-circle bg-light"><i class="bi bi-geo-alt-fill text-body-secondary opacity-5 position-absolute top-50 start-50 translate-middle"></i></div>
+			</span>
+			<small class="fw-bold text-truncate" style="width: calc(100% - 5.5rem);">
+				Worldwide
+			</small>
+			<span class="btn btn-link" style="margin-left: 0.75rem; width: 24px;">
+				<i class="bi bi-chevron-right"></i>
+			</span>
+		</a>
+	</li>								</ul>
+							</div>
+
+<!--							<form class="rounded position-relative">-->
+<!--								<input class="form-control ps-5 bg-light" type="search" placeholder="Search..." aria-label="Search">-->
+<!--								<button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit"><i class="bi bi-search fs-5"> </i></button>-->
+<!--							</form>-->
+						</div>
+					</div>
+					<!-- Nav Search END -->
+
+					<ul class="navbar-nav navbar-nav-scroll ms-auto">
+						<li class="nav-item dropdown">
+							<button type="button" class="nav-link dropdown-toggle" id="pagesMenu" data-bs-toggle="dropdown" aria-expanded="false" role="menu">Features</button>
+							<ul class="dropdown-menu" aria-labelledby="pagesMenu">
+								<li> <a class="dropdown-item" href="/network/home/2051-global-pickleball-demo-network">Live Demo</a></li>
+								<li> <a class="dropdown-item" href="/pickleball-networks/learn-more">Club Management</a></li>
+								<li> <a class="dropdown-item" href="/ladder-leagues/learn-more">Ladder Leagues</a></li>
+								<li> <a class="dropdown-item" href="/team-leagues/learn-more">Team Leagues</a></li>
+								<li> <a class="dropdown-item" href="/pickleball-tournaments/learn-more">Tournaments</a></li>
+								<li> <a class="dropdown-item" href="/calculated-playing-levels">Calculated Playing Levels</a></li>
+								<li> <a class="dropdown-item" href="/pickleball-court-reservation-software">Court Reservations</a></li>
+							</ul>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link" href="/pricing">Pricing</a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link" href="/help-desk">Help</a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link" href="/pickleball-blog">Blog</a>
+						</li>
+
+						<li class="nav-item dropdown">
+							<button type="button" class="nav-link dropdown-toggle" id="sponsorsMenu" data-bs-toggle="dropdown" aria-expanded="false" role="menu">Sponsors</button>
+							<ul class="dropdown-menu" aria-labelledby="sponsorsMenu">
+								<li> <a class="dropdown-item" href="/sponsors">Sponsors</a></li>
+								<li> <a class="dropdown-item" href="/sponsor-discounts">Discounts</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<!-- Main navbar END -->
+
+
+				<!-- Nav right START -->
+				<ul class="nav flex-nowrap align-items-center ms-sm-3 list-unstyled">
+						<li class="nav-item ms-2">
+							<a class="btn btn-sm btn-outline-primary" href="#" role="button" data-bs-toggle="modal" data-bs-target="#modalLogIn"> Log In</a>
+						</li>
+						<li class="nav-item ms-2">
+							<a class="btn btn-sm btn-primary" href="/register"> Register</a>
+						</li>
+				</ul>
+				<!-- Nav right END -->
+
+			</div>
+		</nav>
+	</header>
+	<!-- END NAV HEADER -->
+
+		<nav class="bg-white d-lg-none navbar fixed-top flex-column portals-nav" style="top: 56px;">
+			<div class="align-items-center bluegray-100 bg-opacity-30 d-flex my-0 px-3 py-3 w-100">
+				<div style="padding-right: 1rem; width: 3rem">
+					<!-- Offcanvas Toggler START -->
+					<button class="btn blue-400 nav-link side-menu__btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
+						<div class="side-menu__icon" style="transform: scale(0.7); color:#fff;">
+							<div></div>
+						</div>
+					</button>
+					<!-- Offcanvas Toggler END -->
+				</div>
+				<div class="d-flex fw-bold text-body-2" style="max-width: calc(100vw - 116px); width: 100%;">
+					<a class="nav-link bluegray-100 bg-opacity-60 border-1 border-bluegray-100 rounded-1 px-2 text-truncate w-100" href="/pickleball" style="height: 2rem; line-height: 2rem">
+						<i class="bi bi-house-door me-2"></i>Worldwide					</a>
+				</div>
+				<div style="padding-left: 1rem; width: 3rem">
+					<!-- make this a dropdown toggle -->
+					<button class="nav-link bluegray-100 bg-opacity-60 border-1 border-bluegray-100 icon-md p-0 rounded-1" style="height: 2rem; width: 2rem;" type="button" id="portalsMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="bi bi-chevron-down"></i>
+					</button>
+					<ul class="border-0 border-top border-light-subtle dropdown-menu dropdown-menu-end rounded-0" style="box-shadow: var(--elevate-menu-down-lg); width: 100%; max-height:400px; overflow-y:auto;" aria-labelledby="portalsMenuButton">
+						<div class="align-items-center d-flex ms-1 mt-3" style="padding: 0 0.75rem;">
+		<label class="flex-grow-1 fw-bold text-muted">View By Location</label>
+		<small>
+			<a class="iframeModal" href="/index.php?option=com_tennissearch&Itemid=384&task=locationPage&currentItemID=136">change</a>
+			<i class="bi bi-pencil-square ms-2 me-2 blue-500-text"></i>
+		</small>
+	</div>
+	<li style="margin: 0 0.75rem;">
+		<a class="align-items-center border-0 border-top border-light-subtle d-flex mt-2 w-100" href="/pickleball" style="padding: 0.75rem 0;">
+			<span class="avatar avatar-sm" style="margin-right: 0.75rem;">
+				<div class="avatar-img rounded-circle bg-light"><i class="bi bi-geo-alt-fill text-body-secondary opacity-5 position-absolute top-50 start-50 translate-middle"></i></div>
+			</span>
+			<small class="fw-bold text-truncate" style="width: calc(100% - 5.5rem);">
+				Worldwide
+			</small>
+			<span class="btn btn-link" style="margin-left: 0.75rem; width: 24px;">
+				<i class="bi bi-chevron-right"></i>
+			</span>
+		</a>
+	</li>					</ul>
+				</div>
+			</div>
+		</nav>
+
+	<script>
+		function renderPlayerNotifications(markAllRead) {
+			if( !markAllRead && jQuery("#unreadNotificationsDiv").hasClass("populated") ) {
+				return;
+			}
+
+			var dataString = '';
+
+			if( markAllRead ) {
+				dataString = 'markAllRead=1';
+
+				jQuery("#unreadNotificationsDiv").html('<div style="padding-top:10px; width:100%;"><center><img src="/images/ajax-loader.gif"></center></div>');
+			}
+
+			jQuery.ajax({
+				url: "/index.php?option=com_notifications&controller=notifications&task=printUnreadNotifications&format=raw",
+				type: "GET",
+				data: dataString,
+
+				success: function (html) {
+					jQuery("#unreadNotificationsDiv").html(html);
+
+					jQuery("#unreadNotificationsDiv").addClass("populated");
+
+					updateNotificationCount();
+				},
+				error: function () {
+					console.log("Menu could not be generated.");
+				}
+			});
+		}
+
+		function updateNotificationCount()
+		{
+			var url  = "/index.php?option=com_notifications&format=raw&controller=notifications&task=unreadNotificationsCount";
+
+			jQuery.ajax({
+				url: url,
+				cache: false,
+				type: "GET",
+				success: function(count) {
+					var paCount = 0;
+					var naCount = Number(count);
+					var totalCount = paCount + naCount;
+
+					if( Number(totalCount) > 0 ) {
+						jQuery('#pan-count').show();
+
+						jQuery('#pan-count').html(totalCount);
+					}else{
+						jQuery('#pan-count').hide();
+					}
+
+					if( Number(naCount) > 0 ) {
+						jQuery('#n-badge').show();
+
+						jQuery('#n-badge-count').html(naCount);
+					}else{
+						jQuery('#n-badge').hide();
+					}
+				}
+			});
+		}
+
+		function renderCreateMenu() {
+			if( jQuery("#createMenu").hasClass("populated") ) {
+				return;
+			}
+
+			jQuery.ajax({
+				url: "/index.php?option=com_players&controller=menus&task=printCreateMenu&format=raw",
+				type: "GET",
+
+				success: function (html) {
+					jQuery("#createMenu").html(html);
+
+					jQuery("#createMenu").addClass("populated");
+				},
+				error: function () {
+					console.log("Menu could not be generated.");
+				}
+			});
+		}
+
+		function renderPlayerMenu(isRefresh) {
+			if( !isRefresh && jQuery("#playerMenu").hasClass("populated") ) {
+				return;
+			}
+	
+			var dataString = '';
+	
+			if( document.getElementById('menuActivityType') && document.getElementById('menuActivityRole') ) {
+				dataString = 'activityType=' + document.getElementById('menuActivityType').value + '&activityRole=' + document.getElementById('menuActivityRole').value;
+			}
+	
+			jQuery.ajax({
+				url: "/index.php?option=com_players&controller=menus&task=printPlayerMenu&format=raw",
+				type: "GET",
+				data: dataString,
+	
+				success: function (html) {
+					jQuery("#playerMenu").html(html);
+	
+					jQuery("#playerMenu").addClass("populated");
+				},
+				error: function () {
+					console.log("Menu could not be generated.");
+				}
+			});
+		}
+	</script>
+
+
+		
+		<div class="d-none">
+			
+			
+		</div>
+
+		<main class="mb-4">
+				<div class="container">
+					<div class="row g-0 g-lg-4">
+						<!-- Left Column -->
+													<div class="col-lg-3 vstack">
+										<nav class="navbar navbar-expand-lg mx-0">
+			<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSideNavbar">
+				
+				<!-- Offcanvas header -->
+				<div class="offcanvas-header">
+					<h5 class="offcanvas-title" id="myLinksOffCanvasLabel">Location Links</h5>
+					<button class="nav-link icon-md btn btn-light p-0" type="button" data-bs-dismiss="offcanvas" aria-label="Close" style="height: 2rem; width: 2rem;">
+						<i class="bi bi-x-lg"></i>
+					</button>
+				</div>
+	
+				<!-- Offcanvas body -->
+				<div class="offcanvas-body d-block px-2 px-lg-0">
+					<!-- Card START -->
+					<div class="card overflow-hidden">
+						<!-- Cover image -->
+						<div class="h-50px" style="background-image:url(/images/networkHeaders/imageComing.png); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+							<!-- Card body START -->
+							<div class="card-body pt-0">
+								<div class="text-center">
+								<!-- Avatar -->
+								<div class="avatar avatar-lg mt-n5 mb-3">
+									<a href="/pickleball"><img class="avatar-img rounded border border-light border-3" src="/images/buttons/map-icon.png" alt=""></a>
+								</div>
+
+								<!-- Info -->
+								<h5 class="mb-0"> <a href="/pickleball">Worldwide</a> </h5>
+
+								<small><a class="iframeModal" href="/index.php?option=com_tennissearch&Itemid=384&task=locationPage&currentItemID=136">Change location</a></small>
+							</div>
+
+							<!-- Divider -->
+							<hr>
+	
+							<!-- Side Nav START -->
+							<ul class="nav nav-link-secondary flex-column fw-bold gap-2">
+								<li class="nav-item">
+									<a class="nav-link" href="/pickleball"> <span class="bi bi-house-fill me-2"></span><span>Overview </span></a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="/discussions"> <span class="bi bi-chat me-2"></span><span>Discussions </span></a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="/pickleball-networks/networks"> <span class="bi bi-globe me-2"></span><span>Networks</span></a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="/pickleball-partners/partners"> <span class="bi bi-people-fill me-2"></span><span>Players</span></a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="/pickleball-leagues/leagues"> <span class="bi bi-list-ol me-2"></span>Leagues</span></a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="/pickleball-tournaments/tournaments"> <span class="fa fa-sitemap fa-rotate-90 me-1"></span><span>Tournaments</span></a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="/pickleball-events/events"> <span class="bi bi-calendar-check me-2"></span><span>Events</span></a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="/pickleball-courts/courts"> <span class="bi bi-map me-2"></span><span>Courts </span></a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="/pickleball-lessons"> <span class="fa fa-graduation-cap me-1"></span><span>Lessons </span></a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="/pickleball-tournaments/bracket-challenges"> <span class="bi bi-trophy-fill me-2"></span><span>Bracket Challenges </span></a>
+								</li>
+							</ul>
+							<!-- Side Nav END -->
+						</div>
+						<!-- Card body END -->
+						<!-- Card footer -->
+					</div>
+					<!-- Card END -->
+				</div>
+			</div>
+		</nav>
+		<!-- Navbar END-->
+
+	<style>
+		@media (max-width: 575.98px) {
+			body {
+				margin-bottom: 4rem !important;
+			}
+        }
+
+		#sponsorBanner {
+			transition: height 0.4s ease;
+			overflow: hidden;
+			background-color: #f8f9fa;
+			border-top: 1px solid #dee2e6;
+			box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+		}
+
+		.sponsor-images img {
+			max-height: 50px;
+		}
+	</style>
+
+	<div class="card d-none d-lg-inline mt-6">
+		<div class="card-header border-0 pb-0">
+			<h5 class="card-title">GPN Sponsors</h5>
+		</div>
+		<div class="card-body">
+			<div class="medialist medialist--flush mb-0">
+					<a href="https://www.volleybird.shop?utm_source=gpn&utm_medium=sponsorship+banner+add" class="text-decoration-none text-reset" target="_blank">
+						<div class="align-items-start medialist__item d-flex align-items-center">
+							<!-- Avatar -->
+							<div class="avatar avatar-lg flex-shrink-0 me-2 mb-4 mb-md-0">
+								<img class="rounded-3" src="/images/sponsors/logos/13-1755661941">
+							</div>
+							<div class="flex-grow-1 ps-2">
+								<h6>
+									Volleybird								</h6>
+							</div>
+						</div>
+					</a>
+					<a href="https://www.pickleball-e-referee.com?utm_source=gpn&utm_medium=sponsorship+banner+add" class="text-decoration-none text-reset" target="_blank">
+						<div class="align-items-start medialist__item d-flex align-items-center">
+							<!-- Avatar -->
+							<div class="avatar avatar-lg flex-shrink-0 me-2 mb-4 mb-md-0">
+								<img class="rounded-3" src="/images/sponsors/logos/pickleball-referee.png">
+							</div>
+							<div class="flex-grow-1 ps-2">
+								<h6>
+									Ruley, The E Referee Pickleball edition								</h6>
+							</div>
+						</div>
+					</a>
+					<a href="https://www.youshould.app?utm_source=gpn&utm_medium=sponsorship+banner+add" class="text-decoration-none text-reset" target="_blank">
+						<div class="align-items-start medialist__item d-flex align-items-center">
+							<!-- Avatar -->
+							<div class="avatar avatar-lg flex-shrink-0 me-2 mb-4 mb-md-0">
+								<img class="rounded-3" src="/images/sponsors/logos/14-1760808371">
+							</div>
+							<div class="flex-grow-1 ps-2">
+								<h6>
+									YouShould								</h6>
+							</div>
+						</div>
+					</a>
+			</div>
+
+			<div class="border border-2 py-3 border-dashed h-100 rounded text-center d-flex align-items-center justify-content-center position-relative mb-4">
+				<div>
+					<a class="stretched-link btn btn-light rounded-circle icon-md" href="/sponsors/become-a-sponsor"><i class="fa-solid fa-plus"></i></a>
+					<h6 class="mt-2 mb-0 small">Become a Sponsor</h6>
+
+					<p class="my-1" style="font-size:10px">(local sponsorships available)</p>
+				</div>
+			</div>
+
+			<a href="/sponsors" class="btn btn-sm btn-primary-soft w-100">View All</a>
+		</div>
+	</div>
+
+		<style>
+			@media (max-width: 575.98px) {
+				.sticky-bottom {
+					bottom: 65px !important;
+                }
+			}
+		</style>
+
+		<!-- The banner content -->
+		<div id="sponsorBanner" class="d-block d-lg-none fixed-bottom" style="height:65px;">
+			<div class="container py-2 text-center sponsor-images">
+				<div class="d-flex justify-content-between align-items-center mx-3">
+					<div class="align-center me-2">
+						<h5 class="mb-0 fw-normal text-muted">Sponsors</h5>
+					</div>
+<div class="text-truncate"><a class="iframeModal" href="/index.php?option=com_advertising&Itemid=384&controller=sponsors&task=viewSponsor&sponsorID=13"><img src="/images/sponsors/logos/13-1755661941" class="me-2" style="height:35px;"><span class="h6 text-secondary d-none d-sm-inline">Volleybird</span></a></div><div class="text-truncate"><a class="iframeModal" href="/index.php?option=com_advertising&Itemid=384&controller=sponsors&task=viewSponsor&sponsorID=7"><img src="/images/sponsors/logos/pickleball-referee.png" class="me-2" style="height:35px;"><span class="h6 text-secondary d-none d-sm-inline">Ruley, The E Referee Pickleball edition</span></a></div><div class="text-truncate"><a class="iframeModal" href="/index.php?option=com_advertising&Itemid=384&controller=sponsors&task=viewSponsor&sponsorID=14"><img src="/images/sponsors/logos/14-1760808371" class="me-2" style="height:35px;"><span class="h6 text-secondary d-none d-sm-inline">YouShould</span></a></div>					<div>
+						<a href="/sponsors" class="btn btn-sm btn-dark-soft text-secondary text-nowrap">
+							<span class="d-none d-md-inline">View </span>All
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+							</div>
+												<!-- End Left Column -->
+						
+						<!-- Middle Column -->
+						<div id="main-content" class="col-md-9 has-side-menu vstack gap-4">
+							
+							<!-- Middle Top -->
+														<!-- End Middle Top -->
+							
+							<!-- Main Content -->
+								
+									
+		<script language="JavaScript" type="text/javascript" src="/components/com_tennissearch/js/tennisSearch.js?v=1.59" defer></script>
+			
+		<script>
+			function toggleFavorites(courtID)
+			{
+				//jQuery('#star-'+courtID).addClass('fa-spinner');
+				//jQuery('#star-'+courtID).addClass('fa-spin');
+					
+				if( jQuery('#star-'+courtID).hasClass('bi-star-fill') ) {
+					jQuery('#star-'+courtID).removeClass('bi-star-fill');
+					
+					jQuery.ajax({
+						url: '/index.php?option=com_tenniscourts&controller=courts&task=removeFromFavoritesAjax&courtID='+courtID+'&format=raw',
+						type: 'GET',
+						dataType: 'json',
+						
+						success: function(response) {
+							if( response.status === 'success' ) {
+								//jQuery('#star-'+courtID).removeClass('fa-spinner');
+								//jQuery('#star-'+courtID).removeClass('fa-spin');
+								jQuery('#star-'+courtID).addClass('bi-star');
+							}else{
+								//jQuery('#star-'+courtID).removeClass('fa-spinner');
+								//jQuery('#star-'+courtID).removeClass('fa-spin');
+								jQuery('#star-'+courtID).addClass('bi-star-fill');
+								
+								alert(response.message);
+							}
+						},
+						error: function() {
+							//jQuery('#star-'+courtID).removeClass('fa-spinner');
+							//jQuery('#star-'+courtID).removeClass('fa-spin');
+							jQuery('#star-'+courtID).addClass('bi-star-fill');
+							
+							alert('There was an error adding this court to your favorites. Please try again.');					
+						}
+					});
+				}else{
+					jQuery('#star-'+courtID).removeClass('bi-star');
+					
+					jQuery.ajax({
+						url: '/index.php?option=com_tenniscourts&controller=courts&task=addToFavoritesAjax&courtID='+courtID+'&format=raw',
+						type: 'GET',
+						dataType: 'json',
+						
+						success: function(response) {
+							if( response.status === 'success' ) {
+								//jQuery('#star-'+courtID).removeClass('fa-spinner');
+								//jQuery('#star-'+courtID).removeClass('fa-spin');
+								jQuery('#star-'+courtID).addClass('bi-star-fill');
+							}else{
+								//jQuery('#star-'+courtID).removeClass('fa-spinner');
+								//jQuery('#star-'+courtID).removeClass('fa-spin');
+								jQuery('#star-'+courtID).addClass('bi-star');
+								
+								alert(response.message);
+							}
+						},
+						error: function() {
+							//jQuery('#star-'+courtID).removeClass('fa-spinner');
+							//jQuery('#star-'+courtID).removeClass('fa-spin');
+							jQuery('#star-'+courtID).addClass('bi-star');
+							
+							alert('There was an error removing this court from your favorites. Please try again.');					
+						}
+					});
+				}
+				
+				return false;
+			}
+			
+		</script>
+		
+		<div class="row">
+			<div id="searchResults" class="col-md-12 vstack gap-4" style="position:relative;">
+	<div class="card">
+		<div class="card-header">
+			<div class="d-flex">
+				<h1 class="h4 card-title">Pickleball Tournaments Worldwide</h1>
+				<div class="ms-auto">
+					<button class="btn btn-fab btn-sm btn-primary rounded-circle icon-md" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="bi bi-plus-lg"></i>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a class="dropdown-item" href="/pickleball-tournaments/start-a-pickleball-tournament" rel="nofollow"><i class="bi bi-plus-lg"></i> Create a tournament</a></li>
+						<li><a class="dropdown-item" href="/pickleball-tournaments/learn-more"><i class="fa fa-info-circle"></i> Learn more</a></li>
+					</ul>
+				</div>
+			</div>
+				<div class="bg-body-tertiary rounded-2 p-3 my-4">
+					<p class="mb-0 small text-body-secondary text-start">
+						<i class="fa-solid fa-location-dot text-primary me-1"></i>
+						Showing tournaments
+						across all locations.
+						<a class="iframeModal fw-semibold text-primary text-decoration-none text-nowrap ms-1"
+						   href="/index.php?option=com_tennissearch&Itemid=384&task=locationPage&currentItemID=136">
+							Change location
+						</a>
+					</p>
+				</div>
+		</div>
+		<div class="card-body">
+			<div>
+There are 2,456 pickleball tournaments worldwide that match your search criteria. Can't find one? Create a pickleball tournament for free.			</div>
+
+			<a id="resultsTop" name="resultsTop" class="anchor"></a>
+			
+			<div id="searchLoading" style="position:absolute; padding-top:50px; z-index:1000; width:100%; display:none;"><center><img src="/images/ajax-loader.gif"></center></div>
+			
+			<div class="mb-5">
+				<div id="searchOptions" class="my-4">
+					<div class="d-flex flex-row">
+						<div class="me-2">
+							<button class="btn btn-sm btn-dark-soft dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+								<i class="fa fa-filter" aria-hidden="true"></i> Filter 								<span class="caret"></span>
+							</button>
+							<div id="search-filter-dropdown" class="dropdown-menu" style="padding:10px; width:300px;">
+								<div class="mb-4">
+									<label class="form-label">Level</label>
+									<select name="tournamentLevel" id="tournamentLevel" class="form-select" onchange="document.getElementById('start').value=0;">
+										<option value="">--</option>
+										<option value="2.0" >2.0</option>
+										<option value="2.5" >2.5</option>
+										<option value="3.0" >3.0</option>
+										<option value="3.5" >3.5</option>
+										<option value="4.0" >4.0</option>
+										<option value="4.5" >4.5</option>
+										<option value="5.0" >5.0</option>
+										<option value="5.5" >5.5</option>
+										<option value="6.0" >6.0</option>
+									</select>
+								</div>
+								<div class="mb-4">
+									<label class="form-label">Gender</label>
+									<select name="tournamentGender" id="tournamentGender" class="form-select" onchange="document.getElementById('start').value=0;">
+										<option value="">--</option>
+										<option value="B" >All</option>
+										<option value="F" >Female</option>
+										<option value="M" >Male</option>
+									</select>
+								</div>
+								<div class="mb-4">
+									<label class="form-label">Completed</label>
+									<select name="tournamentYear" id="tournamentYear" class="form-select" onchange="document.getElementById('start').value=0;">
+										<option value="all">----</option>
+										<option value="active" >Not complete (active)</option>
+<option value="2026">2026</option><option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option><option value="2020">2020</option><option value="2019">2019</option><option value="2018">2018</option><option value="2017">2017</option><option value="2016">2016</option><option value="2015">2015</option><option value="2014">2014</option><option value="2013">2013</option><option value="2012">2012</option><option value="2011">2011</option><option value="2010">2010</option><option value="2009">2009</option><option value="2008">2008</option><option value="2007">2007</option><option value="2006">2006</option><option value="2005">2005</option>		  
+									</select>
+								</div>
+								<div class="d-lg-none mb-4">
+									<label class="form-label">Search by name</label>
+									<input type="text" class="form-control" title="Search Networks" value="" onkeyup="document.getElementById('tennisSearch').value=this.value;" onkeypress="if(event.keyCode === 13){document.getElementById('start').value=0; tournamentSearch(); event.preventDefault();}">
+									<input type="hidden" id="tennisSearch" name="tennisSearch" value="">
+								</div>
+								<div class="mb-4">
+									<input class="btn btn-sm btn-primary me-1" type="button" value="Apply" onclick="document.getElementById('start').value=0; tournamentSearch();">
+									<input class="btn btn-sm btn-dark-soft disabled" type="button" value="Reset" onclick="document.getElementById('tournamentLevel').value=''; document.getElementById('tournamentGender').value=''; document.getElementById('tournamentYear').value='all'; document.getElementById('tennisSearch').value=''; document.getElementById('start').value=0; tournamentSearch();">
+								</div>
+							</div>
+						</div>
+								
+						<div class="input-group input-group-sm d-none d-md-flex me-2" style="max-width: 250px;">
+							<input type="text" class="form-control form-control-sm" placeholder="Search by name..." value="" onkeyup="document.getElementById('tennisSearch').value=this.value;" onkeypress="if(event.keyCode === 13){document.getElementById('start').value=0; tournamentSearch(); event.preventDefault();}" onfocus="this.value=''; document.getElementById('tennisSearch').value='';">
+							<button class="btn btn-sm btn-dark-soft" type="button" onclick="document.getElementById('start').value=0; tournamentSearch();"><i class="bi bi-search" aria-hidden="true"></i></button>
+						</div>
+								
+						<div class="d-none d-md-flex me-2">
+							<input class="btn btn-sm btn-dark-soft disabled" type="button" value="Reset" onclick="document.getElementById('tournamentLevel').value=''; document.getElementById('tournamentGender').value=''; document.getElementById('tournamentYear').value='all'; document.getElementById('tennisSearch').value=''; document.getElementById('start').value=0; tournamentSearch();">
+						</div>
+							<div class="me-2">
+								<a class="iframeModal btn btn-sm btn-dark-soft" href="/index.php?option=com_tennissearch&Itemid=384&task=locationPage&currentItemID=136"><i class="bi bi-geo-alt-fill"></i></a>
+							</div>
+						<div class="ms-auto">
+							<button type="button" class="btn btn-sm btn-dark-soft" onclick="document.getElementById('myStatus').value='registered'; tournamentSearch();" disabled="disabled">
+								<div class="align-center d-flex text-nowrap">
+									<i class="bi bi-square fs-6 me-2" style="margin-bottom: -0.171875rem; margin-top: -0.171875rem;"></i>
+									<div class="align-self-center">
+										<span class="d-none d-sm-inline">My&nbsp;Tournaments </span><span class="d-block d-sm-none">Mine</span>
+									</div>
+								</div>
+							</button>
+							<input type="hidden" id="myStatus" value="">
+						</div>
+					</div>
+				</div>
+						<script type="application/ld+json">
+							{
+								"@context": "https://schema.org",
+								"@type": "ItemList",
+								"name": "Pickleball Tournaments",
+								"description": "A list of pickleball tournaments Worldwide.",
+								"itemListElement": [{"@type":"SportsEvent","name":"Sauble Church Round Robin 16 players 8 games","startDate":"Apr 07, 2026","endDate":"May 07, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Owen Sound","address":{"@type":"PostalAddress","addressLocality":"Owen Sound","addressRegion":"Ontario","addressCountry":"Canada"}},"image":"","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/network\/pickleball-tournament\/tournamentEvent\/4541_4129-sauble-church-round-robin-16-players-8-games"},{"@type":"SportsEvent","name":"Dress rehearsal","startDate":"Apr 10, 2026","endDate":"May 08, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Salt Lake City","address":{"@type":"PostalAddress","addressLocality":"Salt Lake City","addressRegion":"Utah","addressCountry":"United States"}},"image":"","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/pickleball-tournaments\/tournaments\/pickleball-tournament-page\/tournamentEvent\/4134-dress-rehearsal"},{"@type":"SportsEvent","name":"DUPR Gender DOUBLES Champs - Series 2","startDate":"May 02, 2026","endDate":"May 09, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Tauranga","address":{"@type":"PostalAddress","addressLocality":"Tauranga","addressRegion":null,"addressCountry":"New Zealand"}},"image":"https:\/\/www.globalpickleball.network\/images\/tournaments\/events\/5397-1775631895.png","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/network\/pickleball-tournament\/tournamentEvent\/5397_4131-dupr-gender-doubles-champs-series-2"},{"@type":"SportsEvent","name":"HSB Secunderabad Pickleball Tournament 2026","startDate":"Apr 06, 2026","endDate":"May 09, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Hyderabad","address":{"@type":"PostalAddress","addressLocality":"Hyderabad","addressRegion":null,"addressCountry":"India"}},"image":"","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/network\/pickleball-tournament\/tournamentEvent\/5586_4120-hsb-secunderabad-pickleball-tournament-2026"},{"@type":"SportsEvent","name":"2nd Habitat Rally for Roofs Pickleball Eastman Open","startDate":"May 07, 2026","endDate":"May 10, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Kingsport","address":{"@type":"PostalAddress","addressLocality":"Kingsport","addressRegion":"Tennessee","addressCountry":"United States"}},"image":"https:\/\/www.globalpickleball.network\/images\/tournaments\/events\/3544-1767540313.png","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/network\/pickleball-tournament\/tournamentEvent\/3544_3855-2nd-habitat-rally-for-roofs-pickleball-eastman-open"},{"@type":"SportsEvent","name":"SAP Sapphire Test","startDate":"Mar 27, 2026","endDate":"May 11, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Orlando","address":{"@type":"PostalAddress","addressLocality":"Orlando","addressRegion":"Florida","addressCountry":"United States"}},"image":"","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/pickleball-tournaments\/tournaments\/pickleball-tournament-page\/tournamentEvent\/4104-sap-sapphire-test"},{"@type":"SportsEvent","name":"Spring Championship Week Women's 3.5 - 3.75 2026","startDate":"Apr 14, 2026","endDate":"May 12, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Bluffton","address":{"@type":"PostalAddress","addressLocality":"Bluffton","addressRegion":"South Carolina","addressCountry":"United States"}},"image":"","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/pickleball-tournaments\/tournaments\/pickleball-tournament-page\/tournamentEvent\/4153-spring-championship-week-women-s-3-5-3-75-2026"},{"@type":"SportsEvent","name":"ARMY WAR COLLEGE Jim Thorpe Sports Days 2026","startDate":"Apr 12, 2026","endDate":"May 12, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Carlisle","address":{"@type":"PostalAddress","addressLocality":"Carlisle","addressRegion":"Pennsylvania","addressCountry":"United States"}},"image":"https:\/\/www.globalpickleball.network\/images\/tournaments\/events\/0-1776605677.png","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/pickleball-tournaments\/tournaments\/pickleball-tournament-page\/tournamentEvent\/4151-army-war-college-jim-thorpe-sports-days-2026"},{"@type":"SportsEvent","name":"Southside Pickleboleros (COPY)","startDate":"Apr 13, 2026","endDate":"May 13, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Jacksonville","address":{"@type":"PostalAddress","addressLocality":"Jacksonville","addressRegion":"Florida","addressCountry":"United States"}},"image":"","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/pickleball-tournaments\/tournaments\/pickleball-tournament-page\/tournamentEvent\/4161-southside-pickleboleros-copy"},{"@type":"SportsEvent","name":"Pigeon Pickleball Club - Friendly Tournament (COPY)","startDate":"Apr 20, 2026","endDate":"May 20, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Dumaguete City","address":{"@type":"PostalAddress","addressLocality":"Dumaguete City","addressRegion":null,"addressCountry":"Philippines"}},"image":"","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/network\/pickleball-tournament\/tournamentEvent\/5613_4183-pigeon-pickleball-club-friendly-tournament-copy"},{"@type":"SportsEvent","name":"TESTSummer2026 Kickoff Tournament (COPY)","startDate":"Apr 27, 2026","endDate":"May 27, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Richmond","address":{"@type":"PostalAddress","addressLocality":"Richmond","addressRegion":"Virginia","addressCountry":"United States"}},"image":"","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/network\/pickleball-tournament\/tournamentEvent\/4121_4195-testsummer2026-kickoff-tournament-copy"},{"@type":"SportsEvent","name":"KPC Friday Night Fight","startDate":"Sep 21, 2025","endDate":"May 29, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Kingston","address":{"@type":"PostalAddress","addressLocality":"Kingston","addressRegion":"Ontario","addressCountry":"Canada"}},"image":"https:\/\/www.globalpickleball.network\/images\/tournaments\/events\/3578-1758503689.jpg","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/network\/pickleball-tournament\/tournamentEvent\/3578_3647-kpc-friday-night-fight"},{"@type":"SportsEvent","name":"May Round Robins","startDate":"May 01, 2026","endDate":"May 31, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Sacramento","address":{"@type":"PostalAddress","addressLocality":"Sacramento","addressRegion":"California","addressCountry":"United States"}},"image":"","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/network\/pickleball-tournament\/tournamentEvent\/3596_4143-may-round-robins"},{"@type":"SportsEvent","name":"[SPRING 2026] Ranked Flex League | RCR Pickleball","startDate":"Mar 15, 2026","endDate":"May 31, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Huntsville","address":{"@type":"PostalAddress","addressLocality":"Huntsville","addressRegion":"Alabama","addressCountry":"United States"}},"image":"https:\/\/www.globalpickleball.network\/images\/tournaments\/events\/4407-1770145008.png","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/network\/pickleball-tournament\/tournamentEvent\/4407_3922-spring-2026-ranked-flex-league-rcr-pickleball"},{"@type":"SportsEvent","name":"Padel 2025","startDate":"Jul 29, 2025","endDate":"May 31, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Ka\u0161tel Novi","address":{"@type":"PostalAddress","addressLocality":"Ka\u0161tel Novi","addressRegion":null,"addressCountry":"Croatia"}},"image":"","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/pickleball-tournaments\/tournaments\/pickleball-tournament-page\/tournamentEvent\/3494-padel-2025"},{"@type":"SportsEvent","name":"Wynn Friday Social - 01-May-2026","startDate":"May 01, 2026","endDate":"Jun 01, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Mississauga","address":{"@type":"PostalAddress","addressLocality":"Mississauga","addressRegion":"Ontario","addressCountry":"Canada"}},"image":"","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/pickleball-tournaments\/tournaments\/pickleball-tournament-page\/tournamentEvent\/4208-wynn-friday-social-01-may-2026"},{"@type":"SportsEvent","name":"OSGA 55+ D10 10 2026 Pickleball Invitational sponsored by","startDate":"Jan 01, 2026","endDate":"Jul 14, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Belleville","address":{"@type":"PostalAddress","addressLocality":"Belleville","addressRegion":"Ontario","addressCountry":"Canada"}},"image":"https:\/\/www.globalpickleball.network\/images\/tournaments\/events\/4991-1777848701.jpeg","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/network\/pickleball-tournament\/tournamentEvent\/4991_3342-osga-55-d10-10-2026-pickleball-invitational-sponsored-by"},{"@type":"SportsEvent","name":"OMSC July Invitational Series","startDate":"Jul 27, 2025","endDate":"Aug 29, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Lorton","address":{"@type":"PostalAddress","addressLocality":"Lorton","addressRegion":"Virginia","addressCountry":"United States"}},"image":"https:\/\/www.globalpickleball.network\/images\/tournaments\/events\/4232-1753786057.png","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/network\/pickleball-tournament\/tournamentEvent\/4232_3489-omsc-july-invitational-series"},{"@type":"SportsEvent","name":"LY pickleball","startDate":"May 06, 2026","endDate":"Aug 31, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Hong Kong","address":{"@type":"PostalAddress","addressLocality":"Hong Kong","addressRegion":null,"addressCountry":"Hong Kong"}},"image":"","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/pickleball-tournaments\/tournaments\/pickleball-tournament-page\/tournamentEvent\/4220-ly-pickleball"},{"@type":"SportsEvent","name":"2026 Summer Doubles Tournament","startDate":"May 01, 2026","endDate":"Aug 31, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Stanley","address":{"@type":"PostalAddress","addressLocality":"Stanley","addressRegion":"North Carolina","addressCountry":"United States"}},"image":"https:\/\/www.globalpickleball.network\/images\/tournaments\/events\/4464-1774372411.jpg","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/network\/pickleball-tournament\/tournamentEvent\/4464_4092-2026-summer-doubles-tournament"},{"@type":"SportsEvent","name":"Redhill Tennis Club Pickleball Championship","startDate":"Apr 19, 2026","endDate":"Sep 12, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Redhill","address":{"@type":"PostalAddress","addressLocality":"Redhill","addressRegion":"England","addressCountry":"United Kingdom"}},"image":"","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/network\/pickleball-tournament\/tournamentEvent\/5576_4110-redhill-tennis-club-pickleball-championship"},{"@type":"SportsEvent","name":"Round Robin Fixed Partners","startDate":"May 04, 2026","endDate":"Dec 31, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"San Antonio","address":{"@type":"PostalAddress","addressLocality":"San Antonio","addressRegion":"Texas","addressCountry":"United States"}},"image":"","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/network\/pickleball-tournament\/tournamentEvent\/5462_4212-round-robin-fixed-partners"},{"@type":"SportsEvent","name":"Pickleball Karaoke Tournament","startDate":"Apr 06, 2026","endDate":"Dec 31, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"San Antonio","address":{"@type":"PostalAddress","addressLocality":"San Antonio","addressRegion":"Texas","addressCountry":"United States"}},"image":"","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/network\/pickleball-tournament\/tournamentEvent\/5462_4124-pickleball-karaoke-tournament"},{"@type":"SportsEvent","name":"Battle of 8 - Rolling Doubles Mini Tourney","startDate":"Apr 01, 2026","endDate":"Dec 31, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"San Antonio","address":{"@type":"PostalAddress","addressLocality":"San Antonio","addressRegion":"Texas","addressCountry":"United States"}},"image":"","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/network\/pickleball-tournament\/tournamentEvent\/5462_4116-battle-of-8-rolling-doubles-mini-tourney"},{"@type":"SportsEvent","name":"Woodbridge Pickleball Group Tournaments","startDate":"Mar 13, 2026","endDate":"Dec 31, 2026","eventAttendanceMode":"https:\/\/schema.org\/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Vaughan","address":{"@type":"PostalAddress","addressLocality":"Vaughan","addressRegion":"Ontario","addressCountry":"Canada"}},"image":"https:\/\/www.globalpickleball.network\/images\/tournaments\/events\/5550-1773434702.jpg","eventStatus":"https:\/\/schema.org\/EventScheduled","url":"https:\/\/www.globalpickleball.network\/network\/pickleball-tournament\/tournamentEvent\/5550_4049-woodbridge-pickleball-group-tournaments"}]							}
+						</script>
+					<hr class="mt-4 mb-0">
+
+					<div>
+						<table class="table">
+							<tbody>
+<tr id="tournament-4129"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/network/pickleball-tournament/tournamentEvent/4541_4129-sauble-church-round-robin-16-players-8-games"><img src="/images/tournaments/events/tnimageComing.jpg" class="rounded-3" alt="Sauble Church Round Robin 16 players 8 games Pickleball League" width="90" height="90"></a><div style="position:absolute; right:0px; top:40px; width:50px; height:50px;"><a href="/network/home/4541-barrett-s-social-pickleball"><img src="/images/networkLogos/tn4541-1747252646.jpg" class="avatar-img rounded-circle border border-light border-3"></a></div></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/network/pickleball-tournament/tournamentEvent/4541_4129-sauble-church-round-robin-16-players-8-games">Sauble Church Round Robin 16 players 8 games</a></h5><div class="mt-n2 mb-1"><a class="text-muted text-decoration-underline" href="/network/home/4541-barrett-s-social-pickleball">Barrett's Social Pickleball</a></div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> Apr 07, 2026 - May 07, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Owen Sound, Ontario</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 16 players</div></td></tr><tr id="tournament-4134"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/pickleball-tournaments/tournaments/pickleball-tournament-page/tournamentEvent/4134-dress-rehearsal"><img src="/images/tournaments/events/tnimageComing.jpg" class="rounded-3" alt="Dress rehearsal Pickleball League" width="90" height="90"></a></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/pickleball-tournaments/tournaments/pickleball-tournament-page/tournamentEvent/4134-dress-rehearsal">Dress rehearsal</a></h5><div class="mt-n2 mb-1 text-body-secondary">Dry run for the Utah CRE open</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> Apr 10, 2026 - May 08, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Salt Lake City, Utah</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 0 players</div></td></tr><tr id="tournament-4131"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/network/pickleball-tournament/tournamentEvent/5397_4131-dupr-gender-doubles-champs-series-2"><img src="/images/tournaments/events/tn5397-1775631895.png" class="rounded-3" alt="DUPR Gender DOUBLES Champs - Series 2 Pickleball League" width="90" height="90"></a><div style="position:absolute; right:0px; top:40px; width:50px; height:50px;"><a href="/network/home/5397-tauranga-pickleball-club"><img src="/images/networkLogos/tn5397-1767267279.png" class="avatar-img rounded-circle border border-light border-3"></a></div></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/network/pickleball-tournament/tournamentEvent/5397_4131-dupr-gender-doubles-champs-series-2">DUPR Gender DOUBLES Champs - Series 2</a></h5><div class="mt-n2 mb-1"><a class="text-muted text-decoration-underline" href="/network/home/5397-tauranga-pickleball-club">Tauranga Pickleball Club</a></div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> May 02, 2026 - May 09, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Tauranga, New Zealand</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> 2.00 to 5.04<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 48 players</div></td></tr><tr id="tournament-4120"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/network/pickleball-tournament/tournamentEvent/5586_4120-hsb-secunderabad-pickleball-tournament-2026"><img src="/images/tournaments/events/tnimageComing.jpg" class="rounded-3" alt="HSB Secunderabad Pickleball Tournament 2026 Pickleball League" width="90" height="90"></a><div style="position:absolute; right:0px; top:40px; width:50px; height:50px;"><a href="/network/home/5586-pikklle-pickleball-arena"><img src="/images/networkLogos/tnimageComing.jpg" class="avatar-img rounded-circle border border-light border-3"></a></div></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/network/pickleball-tournament/tournamentEvent/5586_4120-hsb-secunderabad-pickleball-tournament-2026">HSB Secunderabad Pickleball Tournament 2026</a></h5><div class="mt-n2 mb-1"><a class="text-muted text-decoration-underline" href="/network/home/5586-pikklle-pickleball-arena">Pikklle Pickleball Arena</a></div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> Apr 06, 2026 - May 09, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Hyderabad, India</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 6 players</div></td></tr><tr id="tournament-3855"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/network/pickleball-tournament/tournamentEvent/3544_3855-2nd-habitat-rally-for-roofs-pickleball-eastman-open"><img src="/images/tournaments/events/tn3544-1767540313.png" class="rounded-3" alt="2nd Habitat Rally for Roofs Pickleball Eastman Open Pickleball League" width="90" height="90"></a><div style="position:absolute; right:0px; top:40px; width:50px; height:50px;"><a href="/network/home/3544-state-of-franklin-pickleball"><img src="/images/networkLogos/tn3544-1738968784.jpg" class="avatar-img rounded-circle border border-light border-3"></a></div></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/network/pickleball-tournament/tournamentEvent/3544_3855-2nd-habitat-rally-for-roofs-pickleball-eastman-open">2nd Habitat Rally for Roofs Pickleball Eastman Open</a></h5><div class="mt-n2 mb-1"><a class="text-muted text-decoration-underline" href="/network/home/3544-state-of-franklin-pickleball">STATE OF FRANKLIN PICKLEBALL</a></div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> May 07, 2026 - May 10, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Kingsport, Tennessee</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 0 players</div></td></tr><tr id="tournament-4104"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/pickleball-tournaments/tournaments/pickleball-tournament-page/tournamentEvent/4104-sap-sapphire-test"><img src="/images/tournaments/events/tnimageComing.jpg" class="rounded-3" alt="SAP Sapphire Test Pickleball League" width="90" height="90"></a></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/pickleball-tournaments/tournaments/pickleball-tournament-page/tournamentEvent/4104-sap-sapphire-test">SAP Sapphire Test</a></h5><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> Mar 27, 2026 - May 11, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Orlando, Florida</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 0 players</div></td></tr><tr id="tournament-4153"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/pickleball-tournaments/tournaments/pickleball-tournament-page/tournamentEvent/4153-spring-championship-week-women-s-3-5-3-75-2026"><img src="/images/tournaments/events/tnimageComing.jpg" class="rounded-3" alt="Spring Championship Week Women's 3.5 - 3.75 2026 Pickleball League" width="90" height="90"></a></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/pickleball-tournaments/tournaments/pickleball-tournament-page/tournamentEvent/4153-spring-championship-week-women-s-3-5-3-75-2026">Spring Championship Week Women's 3.5 - 3.75 2026</a></h5><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> Apr 14, 2026 - May 12, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Bluffton, South Carolina</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 22 players</div></td></tr><tr id="tournament-4151"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/pickleball-tournaments/tournaments/pickleball-tournament-page/tournamentEvent/4151-army-war-college-jim-thorpe-sports-days-2026"><img src="/images/tournaments/events/tn0-1776605677.png" class="rounded-3" alt="ARMY WAR COLLEGE Jim Thorpe Sports Days 2026 Pickleball League" width="90" height="90"></a><div style="position:absolute; right:0px; top:40px; width:50px; height:50px;"><a href="/"><img src="/images/networkLogos/tn3977-1704147786.jpg" class="avatar-img rounded-circle border border-light border-3"></a></div></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/pickleball-tournaments/tournaments/pickleball-tournament-page/tournamentEvent/4151-army-war-college-jim-thorpe-sports-days-2026">ARMY WAR COLLEGE Jim Thorpe Sports Days 2026</a></h5><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> Apr 12, 2026 - May 12, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Carlisle, Pennsylvania</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> 3.00 to 3.99<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 32 players</div></td></tr><tr id="tournament-4161"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/pickleball-tournaments/tournaments/pickleball-tournament-page/tournamentEvent/4161-southside-pickleboleros-copy"><img src="/images/tournaments/events/tnimageComing.jpg" class="rounded-3" alt="Southside Pickleboleros (COPY) Pickleball League" width="90" height="90"></a></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/pickleball-tournaments/tournaments/pickleball-tournament-page/tournamentEvent/4161-southside-pickleboleros-copy">Southside Pickleboleros (COPY)</a></h5><div class="mt-n2 mb-1 text-body-secondary">Test Run Tournament</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> Apr 13, 2026 - May 13, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Jacksonville, Florida</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 0 players</div></td></tr><tr id="tournament-4183"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/network/pickleball-tournament/tournamentEvent/5613_4183-pigeon-pickleball-club-friendly-tournament-copy"><img src="/images/tournaments/events/tnimageComing.jpg" class="rounded-3" alt="Pigeon Pickleball Club - Friendly Tournament (COPY) Pickleball League" width="90" height="90"></a><div style="position:absolute; right:0px; top:40px; width:50px; height:50px;"><a href="/network/home/5613-ppc-pigeon-pickleball-club"><img src="/images/networkLogos/tnimageComing.jpg" class="avatar-img rounded-circle border border-light border-3"></a></div></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/network/pickleball-tournament/tournamentEvent/5613_4183-pigeon-pickleball-club-friendly-tournament-copy">Pigeon Pickleball Club - Friendly Tournament (COPY)</a></h5><div class="mt-n2 mb-1"><a class="text-muted text-decoration-underline" href="/network/home/5613-ppc-pigeon-pickleball-club">PPC - Pigeon Pickleball Club</a></div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> Apr 20, 2026 - May 20, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Dumaguete City, Philippines</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 0 players</div></td></tr><tr id="tournament-4195"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/network/pickleball-tournament/tournamentEvent/4121_4195-testsummer2026-kickoff-tournament-copy"><img src="/images/tournaments/events/tnimageComing.jpg" class="rounded-3" alt="TESTSummer2026 Kickoff Tournament (COPY) Pickleball League" width="90" height="90"></a><div style="position:absolute; right:0px; top:40px; width:50px; height:50px;"><a href="/network/home/4121-mosaic-pickleball-network"><img src="/images/networkLogos/tn4121-1690330180.jpg" class="avatar-img rounded-circle border border-light border-3"></a></div></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/network/pickleball-tournament/tournamentEvent/4121_4195-testsummer2026-kickoff-tournament-copy">TESTSummer2026 Kickoff Tournament (COPY)</a></h5><div class="mt-n2 mb-1"><a class="text-muted text-decoration-underline" href="/network/home/4121-mosaic-pickleball-network">Mosaic Pickleball Network</a></div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> Apr 27, 2026 - May 27, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Richmond, Virginia</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 0 players</div></td></tr><tr id="tournament-3647"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/network/pickleball-tournament/tournamentEvent/3578_3647-kpc-friday-night-fight"><img src="/images/tournaments/events/tn3578-1758503689.jpg" class="rounded-3" alt="KPC Friday Night Fight Pickleball League" width="90" height="90"></a><div style="position:absolute; right:0px; top:40px; width:50px; height:50px;"><a href="/network/home/3578-kingston-pickleball-players"><img src="/images/networkLogos/tn3578-1704137483.jpg" class="avatar-img rounded-circle border border-light border-3"></a></div></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/network/pickleball-tournament/tournamentEvent/3578_3647-kpc-friday-night-fight">KPC Friday Night Fight</a></h5><div class="mt-n2 mb-1"><a class="text-muted text-decoration-underline" href="/network/home/3578-kingston-pickleball-players">Kingston Pickleball Players</a></div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> Sep 21, 2025 - May 29, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Kingston, Ontario</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 64 players</div></td></tr><tr id="tournament-4143"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/network/pickleball-tournament/tournamentEvent/3596_4143-may-round-robins"><img src="/images/tournaments/events/tnimageComing.jpg" class="rounded-3" alt="May Round Robins Pickleball League" width="90" height="90"></a><div style="position:absolute; right:0px; top:40px; width:50px; height:50px;"><a href="/network/home/3596-heritage-park-pickleball-club-a-private-over-55-community"><img src="/images/networkLogos/tn3596-1617680188.jpg" class="avatar-img rounded-circle border border-light border-3"></a></div></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/network/pickleball-tournament/tournamentEvent/3596_4143-may-round-robins">May Round Robins</a></h5><div class="mt-n2 mb-1"><a class="text-muted text-decoration-underline" href="/network/home/3596-heritage-park-pickleball-club-a-private-over-55-community">Heritage Park Pickleball Club - A Private Over 55 Community</a></div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> May 01, 2026 - May 31, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Sacramento, California</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 19 players</div></td></tr><tr id="tournament-3922"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/network/pickleball-tournament/tournamentEvent/4407_3922-spring-2026-ranked-flex-league-rcr-pickleball"><img src="/images/tournaments/events/tn4407-1770145008.png" class="rounded-3" alt="[SPRING 2026] Ranked Flex League | RCR Pickleball Pickleball League" width="90" height="90"></a><div style="position:absolute; right:0px; top:40px; width:50px; height:50px;"><a href="/network/home/4407-rocket-city-rally"><img src="/images/networkLogos/tn4407-1716419893.png" class="avatar-img rounded-circle border border-light border-3"></a></div></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/network/pickleball-tournament/tournamentEvent/4407_3922-spring-2026-ranked-flex-league-rcr-pickleball">[SPRING 2026] Ranked Flex League | RCR Pickleball</a></h5><div class="mt-n2 mb-1"><a class="text-muted text-decoration-underline" href="/network/home/4407-rocket-city-rally">Rocket City Rally</a></div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> Mar 15, 2026 - May 31, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Huntsville, Alabama</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 38 players</div></td></tr><tr id="tournament-3494"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/pickleball-tournaments/tournaments/pickleball-tournament-page/tournamentEvent/3494-padel-2025"><img src="/images/tournaments/events/tnimageComing.jpg" class="rounded-3" alt="Padel 2025 Pickleball League" width="90" height="90"></a></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/pickleball-tournaments/tournaments/pickleball-tournament-page/tournamentEvent/3494-padel-2025">Padel 2025</a></h5><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> Jul 29, 2025 - May 31, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Kaštel Novi, Croatia</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 17 players</div></td></tr><tr id="tournament-4208"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/pickleball-tournaments/tournaments/pickleball-tournament-page/tournamentEvent/4208-wynn-friday-social-01-may-2026"><img src="/images/tournaments/events/tnimageComing.jpg" class="rounded-3" alt="Wynn Friday Social - 01-May-2026 Pickleball League" width="90" height="90"></a></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/pickleball-tournaments/tournaments/pickleball-tournament-page/tournamentEvent/4208-wynn-friday-social-01-may-2026">Wynn Friday Social - 01-May-2026</a></h5><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> May 01, 2026 - Jun 01, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Mississauga, Ontario</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 18 players</div></td></tr><tr id="tournament-3342"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/network/pickleball-tournament/tournamentEvent/4991_3342-osga-55-d10-10-2026-pickleball-invitational-sponsored-by"><img src="/images/tournaments/events/tn4991-1777848701.jpeg" class="rounded-3" alt="OSGA 55+ D10 10 2026 Pickleball Invitational sponsored by Pickleball League" width="90" height="90"></a><div style="position:absolute; right:0px; top:40px; width:50px; height:50px;"><a href="/network/home/4991-osga-55-district-10-members"><img src="/images/networkLogos/tn4991-1746136050.png" class="avatar-img rounded-circle border border-light border-3"></a></div></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/network/pickleball-tournament/tournamentEvent/4991_3342-osga-55-d10-10-2026-pickleball-invitational-sponsored-by">OSGA 55+ D10 10 2026 Pickleball Invitational sponsored by</a></h5><div class="mt-n2 mb-1"><a class="text-muted text-decoration-underline" href="/network/home/4991-osga-55-district-10-members">OSGA 55+ District 10 Members</a></div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> Jan 01, 2026 - Jul 14, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Belleville, Ontario</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> 2.00 to 4.99<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 13 players</div></td></tr><tr id="tournament-3489"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/network/pickleball-tournament/tournamentEvent/4232_3489-omsc-july-invitational-series"><img src="/images/tournaments/events/tn4232-1753786057.png" class="rounded-3" alt="OMSC July Invitational Series Pickleball League" width="90" height="90"></a><div style="position:absolute; right:0px; top:40px; width:50px; height:50px;"><a href="/network/home/4232-om-sports-club-network"><img src="/images/networkLogos/tn4232-1755515891.jpeg" class="avatar-img rounded-circle border border-light border-3"></a></div></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/network/pickleball-tournament/tournamentEvent/4232_3489-omsc-july-invitational-series">OMSC July Invitational Series</a></h5><div class="mt-n2 mb-1"><a class="text-muted text-decoration-underline" href="/network/home/4232-om-sports-club-network">OM Sports Club Network</a></div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> Jul 27, 2025 - Aug 29, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Lorton, Virginia</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 14 players</div></td></tr><tr id="tournament-4220"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/pickleball-tournaments/tournaments/pickleball-tournament-page/tournamentEvent/4220-ly-pickleball"><img src="/images/tournaments/events/tnimageComing.jpg" class="rounded-3" alt="LY pickleball Pickleball League" width="90" height="90"></a></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/pickleball-tournaments/tournaments/pickleball-tournament-page/tournamentEvent/4220-ly-pickleball">LY pickleball</a></h5><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> May 06, 2026 - Aug 31, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Hong Kong, Hong Kong</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 9 players</div></td></tr><tr id="tournament-4092"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/network/pickleball-tournament/tournamentEvent/4464_4092-2026-summer-doubles-tournament"><img src="/images/tournaments/events/tn4464-1774372411.jpg" class="rounded-3" alt="2026 Summer Doubles Tournament Pickleball League" width="90" height="90"></a><div style="position:absolute; right:0px; top:40px; width:50px; height:50px;"><a href="/network/home/4464-cfgc"><img src="/images/networkLogos/tn4464-1713559566.png" class="avatar-img rounded-circle border border-light border-3"></a></div></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/network/pickleball-tournament/tournamentEvent/4464_4092-2026-summer-doubles-tournament">2026 Summer Doubles Tournament</a></h5><div class="mt-n2 mb-1"><a class="text-muted text-decoration-underline" href="/network/home/4464-cfgc">CFGC</a></div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> May 01, 2026 - Aug 31, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Stanley, North Carolina</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> 2.00 to 5.04<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 76 players</div></td></tr><tr id="tournament-4110"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/network/pickleball-tournament/tournamentEvent/5576_4110-redhill-tennis-club-pickleball-championship"><img src="/images/tournaments/events/tnimageComing.jpg" class="rounded-3" alt="Redhill Tennis Club Pickleball Championship Pickleball League" width="90" height="90"></a><div style="position:absolute; right:0px; top:40px; width:50px; height:50px;"><a href="/network/home/5576-redhill-pickleball"><img src="/images/networkLogos/tn5576-1774887019.png" class="avatar-img rounded-circle border border-light border-3"></a></div></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/network/pickleball-tournament/tournamentEvent/5576_4110-redhill-tennis-club-pickleball-championship">Redhill Tennis Club Pickleball Championship</a></h5><div class="mt-n2 mb-1"><a class="text-muted text-decoration-underline" href="/network/home/5576-redhill-pickleball">Redhill Pickleball</a></div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> Apr 19, 2026 - Sep 12, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Redhill, England</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 2 players</div></td></tr><tr id="tournament-4212"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/network/pickleball-tournament/tournamentEvent/5462_4212-round-robin-fixed-partners"><img src="/images/tournaments/events/tnimageComing.jpg" class="rounded-3" alt="Round Robin Fixed Partners Pickleball League" width="90" height="90"></a><div style="position:absolute; right:0px; top:40px; width:50px; height:50px;"><a href="/network/home/5462-san-antonio-fil-am-pickleball"><img src="/images/networkLogos/tn5462-1769183929.png" class="avatar-img rounded-circle border border-light border-3"></a></div></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/network/pickleball-tournament/tournamentEvent/5462_4212-round-robin-fixed-partners">Round Robin Fixed Partners</a></h5><div class="mt-n2 mb-1"><a class="text-muted text-decoration-underline" href="/network/home/5462-san-antonio-fil-am-pickleball">San Antonio Fil-Am Pickleball</a></div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> May 04, 2026 - Dec 31, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> San Antonio, Texas</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 16 players</div></td></tr><tr id="tournament-4124"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/network/pickleball-tournament/tournamentEvent/5462_4124-pickleball-karaoke-tournament"><img src="/images/tournaments/events/tnimageComing.jpg" class="rounded-3" alt="Pickleball Karaoke Tournament Pickleball League" width="90" height="90"></a><div style="position:absolute; right:0px; top:40px; width:50px; height:50px;"><a href="/network/home/5462-san-antonio-fil-am-pickleball"><img src="/images/networkLogos/tn5462-1769183929.png" class="avatar-img rounded-circle border border-light border-3"></a></div></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/network/pickleball-tournament/tournamentEvent/5462_4124-pickleball-karaoke-tournament">Pickleball Karaoke Tournament</a></h5><div class="mt-n2 mb-1"><a class="text-muted text-decoration-underline" href="/network/home/5462-san-antonio-fil-am-pickleball">San Antonio Fil-Am Pickleball</a></div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> Apr 06, 2026 - Dec 31, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> San Antonio, Texas</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 50 players</div></td></tr><tr id="tournament-4116"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/network/pickleball-tournament/tournamentEvent/5462_4116-battle-of-8-rolling-doubles-mini-tourney"><img src="/images/tournaments/events/tnimageComing.jpg" class="rounded-3" alt="Battle of 8 - Rolling Doubles Mini Tourney Pickleball League" width="90" height="90"></a><div style="position:absolute; right:0px; top:40px; width:50px; height:50px;"><a href="/network/home/5462-san-antonio-fil-am-pickleball"><img src="/images/networkLogos/tn5462-1769183929.png" class="avatar-img rounded-circle border border-light border-3"></a></div></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/network/pickleball-tournament/tournamentEvent/5462_4116-battle-of-8-rolling-doubles-mini-tourney">Battle of 8 - Rolling Doubles Mini Tourney</a></h5><div class="mt-n2 mb-1"><a class="text-muted text-decoration-underline" href="/network/home/5462-san-antonio-fil-am-pickleball">San Antonio Fil-Am Pickleball</a></div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> Apr 01, 2026 - Dec 31, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> San Antonio, Texas</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 42 players</div></td></tr><tr id="tournament-4049"><td style="vertical-align:top; width:90px; min-width:90px; padding:10px 5px; position:relative;"><a href="/network/pickleball-tournament/tournamentEvent/5550_4049-woodbridge-pickleball-group-tournaments"><img src="/images/tournaments/events/tn5550-1773434702.jpg" class="rounded-3" alt="Woodbridge Pickleball Group Tournaments Pickleball League" width="90" height="90"></a><div style="position:absolute; right:0px; top:40px; width:50px; height:50px;"><a href="/network/home/5550-lt-woodbridge-pickleball-group"><img src="/images/networkLogos/tn5550-1773420818.jpg" class="avatar-img rounded-circle border border-light border-3"></a></div></td><td style="vertical-align:top; word-break:break-word; padding:10px 5px;"><h5 class="h6 mb-3" style="line-height: 1.2rem !important;"><a href="/network/pickleball-tournament/tournamentEvent/5550_4049-woodbridge-pickleball-group-tournaments">Woodbridge Pickleball Group Tournaments</a></h5><div class="mt-n2 mb-1"><a class="text-muted text-decoration-underline" href="/network/home/5550-lt-woodbridge-pickleball-group">LT-Woodbridge Pickleball Group</a></div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-calendar me-1" aria-hidden="true"></i> Mar 13, 2026 - Dec 31, 2026<br><i class="bi bi-geo-alt-fill text-secondary-emphasis me-1" aria-hidden="true"></i> Vaughan, Ontario</div><div class="small text-body-tertiary" style="margin-right:20px; float:left;"><i class="bi bi-graph-up text-secondary-emphasis me-1"></i> All levels<br/><i class="bi bi-people-fill text-secondary-emphasis me-1"></i> 19 players</div></td></tr>					
+							</tbody>
+							<tfoot>
+								<tr>
+									<td colspan="2">
+										<div>
+											<div class="card mt-4 p-3 text-md-start"><div class="d-flex flex-column flex-sm-row justify-content-between align-items-center"><div class="counter order-1 order-sm-0 small text-center text-sm-start w-100">Page 1 of 99 - 2456 Results</div><ul class="mb-2 mb-sm-0 pagination pagination-sm"><li class="mb-0 mx-1 page-item"><span class="page-link">&laquo;</span></li><li class="mb-0 mx-1 page-item active"><span class="page-link">1 </span></li><li class="mb-0 mx-1 page-item"><a class="page-link" href="/pickleball-tournaments/tournaments?page=2"  onclick="document.getElementById('start').value=25; window.history.pushState({}, '', '?page=2'); tournamentSearch(); return false;" title="2">2</a></li><li class="mb-0 mx-1 page-item"><a class="page-link" href="/pickleball-tournaments/tournaments?page=3"  onclick="document.getElementById('start').value=50; window.history.pushState({}, '', '?page=3'); tournamentSearch(); return false;" title="3">3</a></li><li class="mb-0 mx-1 page-item"><a class="page-link" href="/pickleball-tournaments/tournaments?page=4"  onclick="document.getElementById('start').value=75; window.history.pushState({}, '', '?page=4'); tournamentSearch(); return false;" title="4">4</a></li><li class="mb-0 mx-1 page-item"><a class="page-link" href="/pickleball-tournaments/tournaments?page=5"  onclick="document.getElementById('start').value=100; window.history.pushState({}, '', '?page=5'); tournamentSearch(); return false;" title="5">5</a></li><li class="mb-0 mx-1 page-item"><a class="page-link" href="/pickleball-tournaments/tournaments?page=2"  onclick="document.getElementById('start').value=25; window.history.pushState({}, '', '?page=2'); tournamentSearch(); return false;" title="Next">&raquo;</a></li></ul></div></div>										</div>
+									</td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+		jQuery('#search-filter-dropdown').click(function (e) {
+			e.stopPropagation();
+		});		
+	</script>
+				</div>
+		</div>
+		
+		<input type="hidden" name="itemid" id="currentItemid" value="136">
+		<input type="hidden" name="tab" id="tab" value="tournaments">
+		<input type="hidden" name="playersPage" id="playersPage" value="1">
+		<input type="hidden" name="event" id="event" value="">
+		<input type="hidden" name="start" id="start" value="0">
+
+		<input type="hidden" id="searchLocationID" name="locationID" value="0">
+		<input type="hidden" id="searchRadius" name="searchRadius" value="15">
+		<input type="hidden" id="searchCountry" name="searchCountry" value="">
+		<input type="hidden" id="searchStateID" name="stateID" value="">
+		<input type="hidden" id="searchCountryID" name="countryID" value="">
+		<input type="hidden" id="searchLatitude" name="searchLatitude" value="0">
+		<input type="hidden" id="searchLongitude" name="searchLongitude" value="0">
+
+		<input type="hidden" id="searchNetworkID" name="searchNetworkID" value="0">
+		
+		<script>
+			function goToLocationSearch()
+			{
+				jQuery('html,body').animate({
+					scrollTop: 0
+				});
+				
+				navChangeLocation();
+				
+				return false;
+			}	
+		</script>
+
+							<!-- End Main Content -->
+							
+							<!-- Middle Bottom -->
+															<div class="card"><div class="card-header border-0 pb-0"><h5 class="card-title">Other Searches</h5></div><div class="card-body"><div style="padding-top:5px; padding-bottom:5px;">1,777 <a href="/pickleball-networks/networks">pickleball networks worldwide</a><br/>616 <a href="/pickleball-leagues/leagues">pickleball leagues worldwide</a><br/>185,106 <a href="/pickleball-partners/partners">pickleball players worldwide</a><br/>5,457 <a href="/pickleball-courts/courts">pickleball courts worldwide</a><br/>318 <a href="/pickleball-lessons">pickleball lessons worldwide</a></div></div></div>
+														<!-- End Middle Bottom -->
+							
+						</div>
+						<!-- End Middle Column -->
+						
+						<!-- Right Column -->
+												<!-- End Right Column -->
+
+					</div>
+				</div>
+			
+		</main>
+	
+		
+			<footer class="border-top bg-opacity-50 bg-white">
+		<div class="container">
+			<div class="row py-3">
+				<div class="col-sm-12 col-lg-3 mt-4 mt-sm-2">
+					<!-- Footer Widget -->
+					<h6 class="mb-2">Additional Links</h6>
+
+					<div class="mb-2 small">
+						<div><a href="/sponsors/become-a-sponsor">Become a Sponsor</a></div>
+						<div>Promote your goods and service to people that play lots of pickleball.</div>
+					</div>
+
+					<div class="mb-2 small">
+						<div><a href="/affiliates" rel="nofollow">Become an Affiliate</a></div>
+						<div>Promote GPN and earn commissions.</div>
+					</div>
+					<div class="mb-2 small">
+						<div><a href="https://www.globaltennisnetwork.com">Global Tennis Network</a></div>
+						<div>Into tennis? Check out our other site.</div>
+					</div>
+
+					<div class="small">
+						<div><a href="/help-desk" rel="nofollow">Need Help?</a></div>
+						<div>Get help with any questions you have.</div>
+					</div>
+				</div>
+
+				<div class="col-sm-12 col-lg-4 mt-4 mt-sm-2">
+					<h6 class="mb-2">About Us</h6>
+					<p class="small">Global Pickleball Network has been helping clubs and players organize and play more pickleball matches since it began in 2018.. <a href="/about-us">Read more</a>.</p>
+
+					<div class="">
+						<h6 class="mb-2">Get the Web App</h6>
+<!--						<p class="small">Add --><!-- to your phone. <a href="/--><!---blog/the---><!---web-app">Learn more</a>.-->
+						<a href="/pickleball-blog/the-gpn-web-app"><img src="/images/apps/globalAppIcons.png"></a>
+					</div>
+				</div>
+
+				<div class="col-sm-12 col-lg-2 mt-4 mt-sm-2">
+					<h6 class="mb-2">Search</h6>
+					<div class="mb-2 small">
+						<p><span class="bi bi-globe me-2"></span><a href="/pickleball-networks/networks">Pickleball Networks</a></p>
+						<p><span class="bi bi-list-ol me-2"></span><a href="/pickleball-leagues/leagues">Pickleball Leagues</a></p>
+						<p><span class="fa fa-sitemap fa-rotate-90 me-2"></span><a href="/pickleball-tournaments/tournaments">Pickleball Tournaments</a></p>
+						<p><span class="bi bi-map me-2"></span><a href="/pickleball-courts/courts">Pickleball Courts</a></p>
+						<p><span class="bi bi-people-fill me-2"></span><a href="/pickleball-partners/partners">Pickleball Players</a></p>
+						<p><span class="fa fa-graduation-cap me-2"></span><a href="/pickleball-lessons">Pickleball Lessons</a></p>
+					</div>
+				</div>
+
+				<div class="col col-lg-3 mt-3 mt-sm-2">
+					<!-- Footer Widget -->
+					<h6 class="mb-2">Global Pickleball Network</h6>
+					<div class="mb-2">
+						<a href="/" target="_top"><img src="/images/logos/GPN-Flat-300.png" style="min-width: 120px; width: 200px"></a>
+					</div>
+
+					<div class="mb-2 small">
+						<div class="align-items-start d-flex">
+							<div><span class="bi bi-cursor-fill me-2"></span></div>
+							<div class="flex-grow-1">
+								<div>San Clemente, CA</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="mb-2 small">
+						<div class="align-items-start d-flex">
+							<div><span class="bi bi-person-fill me-2"></span></div>
+							<div class="flex-grow-1">
+								<div><a href="/contact-us">Contact Us</a></div>
+							</div>
+						</div>
+					</div>
+
+					<div class="mb-2 small">
+						<div class="align-items-start d-flex">
+							<div><span class="bi bi-facebook me-2"></span></div>
+							<div class="flex-grow-1">
+								<div><a href="https://www.facebook.com/globalpickleballnetwork">Facebook</a></div>
+							</div>
+						</div>
+					</div>
+
+						<div class="mb-2 small">
+							<div class="align-items-start d-flex">
+								<div><span class="bi bi-instagram me-2"></span></div>
+								<div class="flex-grow-1">
+									<div><a href="https://www.instagram.com/globalpickleballnetwork">Instagram</a></div>
+								</div>
+							</div>
+						</div>
+
+						<div class="small">
+							<div class="align-items-start d-flex">
+								<div><span class="bi bi-youtube me-2"></span></div>
+								<div class="flex-grow-1">
+									<div><a href="https://www.youtube.com/@globalpickleballnetwork">YouTube</a></div>
+								</div>
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>
+		<div class="bg-light py-3">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<!-- Copyright START -->
+						<p class="text-center mb-0 small">©2026 <a class="text-body" target="_blank" href="/"> Global Pickleball Network </a>All rights reserved.</p>
+						<!-- Copyright END -->
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-12 text-center">
+						<small><a href="/privacy-policy">Privacy Policy</a> <span style="margin:0 5px;">|</span> <a href="/terms-and-conditions">Terms &amp; Conditions</a></small>
+					</div>
+				</div>
+            </div>
+		</div>
+	</footer>
+
+		
+		
+
+		<div class="modal fade" id="iframeModalDiv" tabindex="-1" aria-labelledby="Modal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div style="width:100%; height:510px; -webkit-overflow-scrolling:touch; overflow-y:scroll;">
+							<iframe id="iframeModalIframe" frameborder="0" style="width:100%; height:500px;"></iframe>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-sm btn-outline-dark" data-bs-dismiss="modal" aria-hidden="true">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="defaultModal" tabindex="-1" aria-labelledby="Modal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body"></div>
+					<div class="modal-footer">
+						<button class="btn btn-sm btn-outline-dark" data-bs-dismiss="modal" aria-hidden="true">Close</button>
+						<button id="urlModalLink" class="btn btn-sm btn-primary" style="display:none;" aria-hidden="true">Save</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--Duplicated in Blank template-->
+		<div class="position-fixed bottom-0 mb-4 ms-4" style="z-index:3000;">
+			<div id="toast-messages" class=""></div>
+		</div>
+
+				<script>
+			jQuery(document).ready(function() {
+				setTimeout(function() {
+					var modal = new bootstrap.Modal(document.getElementById('modalLogIn'), {});
+					modal.show();
+				}, 2000);
+			});
+		</script>
+
+
+		<script src="/templates/bootstrap/js/bootstrap.bundle.min.js?v=1.0"></script>
+
+		<script>
+			document.querySelectorAll('input[type=number]').forEach(input => {
+				input.addEventListener('wheel', function (e) {
+					if (document.activeElement === this) {
+						e.preventDefault();
+					}
+				});
+			});
+		</script>
+
+		<script>
+			jQuery(document.body).on('click', '.iframeModal', function(e) {
+				e.preventDefault();
+
+				var iframeUrl = jQuery(this).attr('href');
+
+				document.getElementById('iframeModalDiv').addEventListener('show.bs.modal', function (event) {
+  					jQuery('#iframeModalIframe').attr('src', iframeUrl);
+				});
+
+				var iframeModalDiv = new bootstrap.Modal(document.getElementById('iframeModalDiv'), {});
+				iframeModalDiv.show();
+			})
+
+			document.getElementById('iframeModalDiv').addEventListener('hidden.bs.modal', function (event) {
+				jQuery('#iframeModalIframe').attr('src', '');
+			});
+		</script>
+
+		<script>
+			jQuery(document.body).on('click', '.urlModal', function(e) {
+				e.preventDefault();
+
+				const link = jQuery(this).attr('href');
+				const saveFunction = jQuery(this).attr("data-save-function");
+
+				var urlModal = new bootstrap.Modal(document.getElementById('defaultModal'), {});
+				urlModal.show();
+
+				if( saveFunction ) {
+					jQuery('#urlModalLink').show();
+					jQuery('#urlModalLink').attr("onclick", saveFunction+"();");
+				}
+
+				fetch(link).then(res => res.text()).then(html => {
+					jQuery('#defaultModal .modal-body').html(html);
+				});
+			})
+
+			document.getElementById('defaultModal').addEventListener('hidden.bs.modal', function (event) {
+				jQuery('#defaultModal .modal-body').html('');
+				jQuery('#urlModalLink').hide();
+			});
+		</script>
+
+		<script type="text/javascript">
+			// am I in an iframe ?
+			jQuery(document).ready(function() {
+				var body = document.body;
+				var html = document.documentElement;
+				var height = Math.max(body.scrollHeight, body.offsetHeight, 500); //, html.clientHeight, html.scrollHeight, html.offsetHeight);
+
+				var data = {
+					gtpniframe: {
+						height: height + 150
+					}
+				};
+
+				if( parent.postMessage ) {
+					parent.postMessage(data, "*");
+				}
+			});
+		</script>
+
+		<!--Duplicated in Blank template-->
+		<script>
+			function showToast(level, message) {
+				// Levels are: success, error, warning
+
+				var title = 'Success';
+				var icon = 'fa-check-circle text-success';
+				var delay = 4000;
+
+				if (level == 'error') {
+					title = 'Error';
+					var icon = 'fa-times-circle text-danger';
+					var delay = 7000;
+				} else if (level == 'warning') {
+					title = 'Warning';
+					var icon = 'fas fa-exclamation-circle text-warning';
+				} else if (level == 'alert') {
+					var delay = 10000;
+				} else if (level == 'notice') {
+					var delay = 2000;
+				}
+
+				var toastElement = document.createElement('div');
+				toastElement.className = 'toast shadow-lg mb-3 mt-3 me-3';
+				toastElement.setAttribute('role', 'alert');
+				toastElement.setAttribute('aria-live', 'assertive');
+				toastElement.setAttribute('aria-atomic', 'true');
+
+				if( level == 'alert' ) {
+					toastElement.innerHTML = `
+						<div class="align-items-center" style="font-size:16px; background-color: #fff;">
+							<div class="d-flex toast-body justify-content-between">
+								<div>
+									${message}
+								</div>
+								<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+							</div>
+						</div>
+					`;
+				} else if( level == 'notice' ) {
+					toastElement.innerHTML = `
+						<div class="align-items-center" style="font-size:16px; background-color: #fff;">
+							<div class="toast-body">
+								<div>
+									${message}
+								</div>
+							</div>
+						</div>
+					`;
+				} else {
+					toastElement.innerHTML = `
+						<div class="toast-header" style="font-size:16px; background-color: #fff; border-bottom: 1px solid #d8d8d8;">
+							<span class="fas ${icon} me-2"></span>
+							<strong class="me-auto">${title}</strong>
+							<small class="text-muted">just now</small>
+							<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+						</div>
+						<div class="toast-body" style="font-size:16px; background-color: #fff;">
+							${message}
+						</div>
+					`;
+				}
+
+				// Append the toast element to the container
+				document.getElementById('toast-messages').appendChild(toastElement);
+
+				// Initialize and show the toast
+				var toast = new bootstrap.Toast(toastElement, {
+					autohide: true,
+					delay: delay // Adjust delay as needed
+				});
+
+				toast.show();
+			}
+		</script>
+
+		<script>
+			window.onerror = function(message, source, lineno, colno, error) {
+				// Log to GA4
+				if (window.gtag) {
+					gtag('event', 'js_error', {
+						event_category: 'JavaScript Error',
+						event_label: `${message} at ${source}:${lineno}:${colno}`,
+						value: 1
+					});
+				}
+				return false;
+			};
+		</script>
+	</body>
+</html>
