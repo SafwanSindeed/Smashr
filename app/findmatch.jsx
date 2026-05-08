@@ -269,7 +269,10 @@ export default function FindMatch() {
       setPhase(PHASES.PLAYERS);
     } catch (err) {
       console.error(err);
-      Alert.alert("Error", "Could not get your location. Please try again.");
+      const msg = err?.code === "permission-denied"
+        ? "Firebase permissions error. Contact support."
+        : err?.message || "Something went wrong. Please try again.";
+      Alert.alert("Error", msg);
       setPhase(PHASES.START);
     }
   };

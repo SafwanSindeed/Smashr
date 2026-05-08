@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Each user can read/write their own profile
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // VsV lobby — any signed-in user can read the lobby,
+    // but can only write/delete their own slot
+    match /vsv_lobby/{userId} {
+      allow read: if request.auth != null;
+      allow write, delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Matches — any signed-in user can create and read
+    match /matches/{matchId} {
+      allow read, create: if request.auth != null;
+      allow update, delete: if request.auth != null
+        && resource.data.uid == request.auth.uid;
+    }
+
+    // Support messages — signed-in users can submit, nobody can read via app
+    match /support_messages/{docId} {
+      allow create: if request.auth != null;
+    }
+
+    // GPN / DUPR credentials stored on user doc — covered by /users above
+  }
+}
