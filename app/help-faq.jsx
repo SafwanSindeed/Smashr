@@ -8,16 +8,22 @@ import {
   Pressable,
   StyleSheet,
   ScrollView,
-  Linking,
   LayoutAnimation,
   Platform,
   UIManager,
+  Modal,
+  TextInput,
+  Alert,
+  ActivityIndicator,
+  KeyboardAvoidingView,
 } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { colors } from "../constants/colors";
+import { auth, db } from "../services/firebaseConfig";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -141,6 +147,35 @@ function FAQItem({ item }) {
 export default function HelpFAQ() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const [contactOpen, setContactOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [sending, setSending] = useState(false);
+
+  const user = auth.currentUser;
+
+  const sendMessage = async () => {
+    if (!message.trim()) {
+      Alert.alert("Empty message", "Please write your message before sending.");
+      return;
+    }
+    try {
+      setSending(true);
+      await addDoc(collection(db, "support_messages"), {
+        uid: user?.uid ?? null,
+        name: user?.displayName ?? "Anonymous",
+        email: user?.email ?? "unknown",
+        message: message.trim(),
+        createdAt: serverTimestamp(),
+      });
+      setMessage("");
+      setContactOpen(false);
+      Alert.alert("Message sent!", "We received your message and will get back to you soon.");
+    } catch (err) {
+      Alert.alert("Error", "Could not send message. Please try again.");
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safe} edges={["left", "right"]}>
@@ -183,17 +218,65 @@ export default function HelpFAQ() {
         <View style={styles.contactCard}>
           <Text style={styles.contactTitle}>Still need help?</Text>
           <Text style={styles.contactSub}>
-            Can't find the answer you're looking for? Reach out directly.
+            Can't find the answer? Send a message and the team will get back to you.
           </Text>
           <TouchableOpacity
             style={styles.contactButton}
-            onPress={() => Linking.openURL("mailto:support@smashrapp.com")}
+            onPress={() => setContactOpen(true)}
           >
             <Ionicons name="mail-outline" size={16} color={colors.white} />
-            <Text style={styles.contactButtonText}>Email Support</Text>
+            <Text style={styles.contactButtonText}>Contact Support</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
+
+      {/* ── Contact Modal ── */}
+      <Modal visible={contactOpen} transparent animationType="slide" onRequestClose={() => setContactOpen(false)}>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <Pressable style={cm.backdrop} onPress={() => setContactOpen(false)} />
+          <View style={cm.sheet}>
+            <View style={cm.handle} />
+            <Text style={cm.title}>Contact Support</Text>
+
+            <View style={cm.field}>
+              <Text style={cm.label}>From</Text>
+              <Text style={cm.readOnly}>{user?.email ?? "Not signed in"}</Text>
+            </View>
+
+            <View style={cm.field}>
+              <Text style={cm.label}>Message</Text>
+              <TextInput
+                style={cm.input}
+                value={message}
+                onChangeText={setMessage}
+                placeholder="Describe your issue or question…"
+                placeholderTextColor={colors.textGray}
+                multiline
+                maxLength={1000}
+                autoFocus
+              />
+            </View>
+
+            <TouchableOpacity
+              style={[cm.sendBtn, sending && { opacity: 0.6 }]}
+              onPress={sendMessage}
+              disabled={sending}
+            >
+              {sending ? (
+                <ActivityIndicator size="small" color={colors.white} />
+              ) : (
+                <>
+                  <Ionicons name="send-outline" size={16} color={colors.white} />
+                  <Text style={cm.sendText}>Send Message</Text>
+                </>
+              )}
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -278,4 +361,52 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   contactButtonText: { color: colors.white, fontWeight: "700", fontSize: 14 },
+});
+
+const cm = StyleSheet.create({
+  backdrop: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.35)",
+  },
+  sheet: {
+    backgroundColor: colors.white,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    padding: 24,
+    paddingBottom: 40,
+    gap: 16,
+  },
+  handle: {
+    width: 40,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: "#D1D5DB",
+    alignSelf: "center",
+    marginBottom: 8,
+  },
+  title: { fontSize: 18, fontWeight: "900", color: colors.textDark },
+  field: { gap: 6 },
+  label: { fontSize: 12, fontWeight: "700", color: colors.textGray, textTransform: "uppercase", letterSpacing: 0.6 },
+  readOnly: { fontSize: 15, color: colors.textDark, fontWeight: "600" },
+  input: {
+    backgroundColor: "#F3F4F6",
+    borderRadius: 14,
+    padding: 14,
+    fontSize: 15,
+    color: colors.textDark,
+    minHeight: 120,
+    textAlignVertical: "top",
+    fontWeight: "500",
+  },
+  sendBtn: {
+    backgroundColor: colors.primaryEnd,
+    borderRadius: 12,
+    paddingVertical: 14,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    marginTop: 4,
+  },
+  sendText: { color: colors.white, fontWeight: "700", fontSize: 15 },
 });

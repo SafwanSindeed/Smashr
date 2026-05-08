@@ -72,9 +72,10 @@ export default function Notifications() {
 
   const toggle = (id) => setPrefs((p) => ({ ...p, [id]: !p[id] }));
 
-  const allOn = Object.values(prefs).every(Boolean);
+  const allOn  = Object.values(prefs).every(Boolean);
+  const anyOn  = Object.values(prefs).some(Boolean);
   const toggleAll = () => {
-    const next = !allOn;
+    const next = !anyOn;
     const updated = {};
     Object.keys(prefs).forEach((k) => { updated[k] = next; });
     setPrefs(updated);
@@ -100,14 +101,14 @@ export default function Notifications() {
             <Ionicons name="notifications-outline" size={22} color={colors.primaryEnd} />
             <View>
               <Text style={styles.masterLabel}>All Notifications</Text>
-              <Text style={styles.masterSub}>{allOn ? "All enabled" : "Some disabled"}</Text>
+              <Text style={styles.masterSub}>{allOn ? "All enabled" : anyOn ? "Some enabled" : "All disabled"}</Text>
             </View>
           </View>
           <Switch
-            value={allOn}
+            value={anyOn}
             onValueChange={toggleAll}
             trackColor={{ false: "#E5E7EB", true: `${colors.primaryEnd}55` }}
-            thumbColor={allOn ? colors.primaryEnd : "#9CA3AF"}
+            thumbColor={anyOn ? colors.primaryEnd : "#9CA3AF"}
             ios_backgroundColor="#E5E7EB"
           />
         </View>

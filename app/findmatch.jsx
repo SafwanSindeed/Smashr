@@ -11,6 +11,7 @@ import {
   ScrollView,
   Alert,
   Animated,
+  Linking,
 } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
@@ -199,18 +200,47 @@ export default function FindMatch() {
   const startSearch = async () => {
     setPhase(PHASES.LOCATING);
     try {
-      const { status } = await Location.requestForegroundPermissionsAsync();
+      const { status, canAskAgain } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        Alert.alert("Location Required", "Please enable location access to find nearby players.");
+        if (!canAskAgain) {
+          Alert.alert(
+            "Location Blocked",
+            "Location access was denied. Open your device Settings to enable it for Smashr.",
+            [
+              { text: "Cancel", style: "cancel" },
+              { text: "Open Settings", onPress: () => Linking.openSettings() },
+            ]
+          );
+        } else {
+          Alert.alert("Location Required", "Please enable location access to find nearby players.");
+        }
         setPhase(PHASES.START);
         return;
       }
 
-      const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+      let loc = null;
+      try {
+        loc = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Balanced,
+          mayShowUserSettingsDialog: true,
+        });
+      } catch {
+        loc = await Location.getLastKnownPositionAsync();
+      }
+      if (!loc) {
+        Alert.alert("Location unavailable", "Could not get your location. Make sure GPS is enabled and try again.");
+        setPhase(PHASES.START);
+        return;
+      }
       const { latitude: lat, longitude: lng } = loc.coords;
       setMyLocation({ lat, lng });
 
       const user = auth.currentUser;
+      if (!user) {
+        Alert.alert("Not signed in", "Please log in and try again.");
+        setPhase(PHASES.START);
+        return;
+      }
       await setDoc(doc(db, "vsv_lobby", user.uid), {
         uid: user.uid,
         displayName: user.displayName || user.email?.split("@")[0] || "Player",
@@ -231,7 +261,7 @@ export default function FindMatch() {
         const data = d.data();
         if (data.uid === user.uid) return;
         const dist = distanceKm(lat, lng, data.lat, data.lng);
-        if (dist <= 50) nearby.push({ ...data, distanceKm: dist });
+        if (dist <= 25) nearby.push({ ...data, distanceKm: dist });
       });
       nearby.sort((a, b) => a.distanceKm - b.distanceKm);
 
@@ -239,7 +269,10 @@ export default function FindMatch() {
       setPhase(PHASES.PLAYERS);
     } catch (err) {
       console.error(err);
-      Alert.alert("Error", "Could not get your location. Please try again.");
+      const msg = err?.code === "permission-denied"
+        ? "Firebase permissions error. Contact support."
+        : err?.message || "Something went wrong. Please try again.";
+      Alert.alert("Error", msg);
       setPhase(PHASES.START);
     }
   };
@@ -359,7 +392,7 @@ export default function FindMatch() {
               <Text style={styles.bigSub}>
                 {phase === PHASES.LOCATING
                   ? "Allow location access when prompted"
-                  : "Scanning for players within 50 km"}
+                  : "Scanning for players within 25 km"}
               </Text>
 
               <View style={styles.loadingSteps}>
@@ -412,7 +445,7 @@ export default function FindMatch() {
                   </View>
                   <Text style={styles.emptyTitle}>No one nearby yet</Text>
                   <Text style={styles.emptyText}>
-                    No one is searching for a {meta.label} match within 50 km right now.
+                    No one is searching for a {meta.label} match within 25 km right now.
                     Share the app with friends to grow the network!
                   </Text>
                   <TouchableOpacity

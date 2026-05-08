@@ -1,5 +1,5 @@
 // components/ChatBot.jsx
-// Floating AI chat assistant powered by Gemini 1.5 Flash
+// Floating AI chat assistant powered by Gemini 3 Flash
 // Get a free API key at aistudio.google.com → paste it below
 
 import { useState, useRef, useEffect } from "react";
@@ -16,6 +16,7 @@ import {
   Animated,
   ActivityIndicator,
   Pressable,
+  Dimensions,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
@@ -23,8 +24,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../constants/colors";
 
 // ─── Gemini config ───────────────────────────────────────────────────────────
-const GEMINI_KEY = ""; // ← paste your key from aistudio.google.com (free)
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
+const GEMINI_KEY = "AIzaSyC0U25_F7mW-AzXEYaarYKl_zYewi-ACDw";
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_KEY}`;
 
 const SYSTEM_PROMPT = `You are Smashr's AI pickleball assistant — friendly, knowledgeable, and concise.
 
@@ -198,6 +199,8 @@ const GREET = {
   text: "Hey! I'm Smashr AI 🎾 Ask me anything about pickleball, how to use the app, your DUPR rating, tournaments — whatever you need!",
 };
 
+const SLIDE_OUT = Dimensions.get("window").height;
+
 export default function ChatBot({ tabBarHeight = 68 }) {
   const insets = useSafeAreaInsets();
   const [open, setOpen] = useState(false);
@@ -206,15 +209,23 @@ export default function ChatBot({ tabBarHeight = 68 }) {
   const [loading, setLoading] = useState(false);
   const listRef = useRef(null);
   const fabScale = useRef(new Animated.Value(1)).current;
-  const sheetAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(SLIDE_OUT)).current;
+  const backdropAnim = useRef(new Animated.Value(0)).current;
 
   const openSheet = () => {
     setOpen(true);
-    Animated.spring(sheetAnim, { toValue: 1, tension: 65, friction: 10, useNativeDriver: true }).start();
+    slideAnim.setValue(SLIDE_OUT);
+    Animated.parallel([
+      Animated.spring(slideAnim, { toValue: 0, tension: 58, friction: 13, useNativeDriver: true }),
+      Animated.timing(backdropAnim, { toValue: 1, duration: 280, useNativeDriver: true }),
+    ]).start();
   };
 
   const closeSheet = () => {
-    Animated.timing(sheetAnim, { toValue: 0, duration: 220, useNativeDriver: true }).start(() => setOpen(false));
+    Animated.parallel([
+      Animated.timing(slideAnim, { toValue: SLIDE_OUT, duration: 300, useNativeDriver: true }),
+      Animated.timing(backdropAnim, { toValue: 0, duration: 260, useNativeDriver: true }),
+    ]).start(() => setOpen(false));
   };
 
   const pressFab = () => {
@@ -308,17 +319,21 @@ export default function ChatBot({ tabBarHeight = 68 }) {
       <Modal
         visible={open}
         transparent
-        animationType="slide"
+        animationType="none"
         onRequestClose={closeSheet}
         statusBarTranslucent
       >
-        <Pressable style={styles.backdrop} onPress={closeSheet} />
+        {/* Fading backdrop */}
+        <Animated.View style={[styles.backdrop, { opacity: backdropAnim }]} pointerEvents="auto">
+          <Pressable style={StyleSheet.absoluteFill} onPress={closeSheet} />
+        </Animated.View>
 
         <KeyboardAvoidingView
           style={styles.sheetWrapper}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           keyboardVerticalOffset={0}
         >
+          <Animated.View style={{ transform: [{ translateY: slideAnim }] }}>
           <View style={[styles.sheet, { paddingBottom: insets.bottom + 8 }]}>
             {/* ── Header ── */}
             <LinearGradient
@@ -331,7 +346,7 @@ export default function ChatBot({ tabBarHeight = 68 }) {
                 </View>
                 <View>
                   <Text style={styles.sheetTitle}>Smashr AI</Text>
-                  <Text style={styles.sheetSubtitle}>Pickleball assistant · Powered by Gemini</Text>
+                  <Text style={styles.sheetSubtitle}>Pickleball assistant</Text>
                 </View>
               </View>
               <TouchableOpacity onPress={closeSheet} hitSlop={12} style={styles.closeBtn}>
@@ -378,6 +393,7 @@ export default function ChatBot({ tabBarHeight = 68 }) {
               </TouchableOpacity>
             </View>
           </View>
+          </Animated.View>
         </KeyboardAvoidingView>
       </Modal>
     </>
@@ -406,8 +422,8 @@ const styles = StyleSheet.create({
 
   // ── Modal overlay ──
   backdrop: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.35)",
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.38)",
   },
 
   sheetWrapper: {
@@ -422,8 +438,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F9FAFB",
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    height: "82%",
-    maxHeight: 680,
+    height: Dimensions.get("window").height * 0.88,
     overflow: "hidden",
   },
 
