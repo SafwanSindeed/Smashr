@@ -10,14 +10,13 @@
 1. [Framework](#1-framework-react-native--expo)
 2. [Navigation](#2-navigation-expo-router)
 3. [Firebase](#3-firebase-auth--firestore)
-4. [GPN API](#4-gpn-api-global-pickleball-network)
-5. [Expo Location](#5-expo-location)
-6. [Overpass API — Court Finder](#6-overpass-api-openstreetmap--court-finder)
-7. [DUPR Integration](#7-dupr-integration-pathway-built-pending-credentials)
-8. [Libraries Summary](#8-key-libraries-summary)
-9. [Full Data Flow — VsV Match](#9-data-flow--full-vsv-match)
-10. [File Structure](#10-file-structure)
-11. [Environment & Credentials](#11-environment--credentials)
+4. [Expo Location](#4-expo-location)
+5. [Overpass API — Court Finder](#5-overpass-api-openstreetmap--court-finder)
+6. [DUPR Integration](#6-dupr-integration-pathway-built-pending-credentials)
+7. [Libraries Summary](#7-key-libraries-summary)
+8. [Full Data Flow — VsV Match](#8-data-flow--full-vsv-match)
+9. [File Structure](#9-file-structure)
+10. [Environment & Credentials](#10-environment--credentials)
 
 ---
 
@@ -152,49 +151,7 @@ Once `duprSubmitted` flips to `true`, the record also stores `duprMatchId` from 
 
 ---
 
-## 4. GPN API (Global Pickleball Network)
-
-**What it is:** External REST API providing real pickleball tournament and event data.
-
-**Base URL:** `https://www.globalpickleball.network/component/api`  
-**API Key:** `264784-q4jMNhO3X` (embedded in request URLs)  
-**Method:** GET with query string parameters
-
-### Endpoints Used
-
-| Screen | Parameters | Returns |
-|---|---|---|
-| Tournaments tab | `apiCall=getTournaments&limit=100` | Array of upcoming tournaments |
-| Programs tab | `apiCall=getTournaments` | Same data, re-mapped to session format |
-| My Bookings | `apiCall=getUsersTournaments&userId=...` | Tournaments this user registered for |
-| GPN Connect | `apiCall=registerUser&firstName=...&email=...` | Creates a GPN user account |
-
-### Response Shape (Tournament Object)
-
-```jsonc
-{
-  "tournamentID": 12345,
-  "name": "Toronto Open 2026",
-  "startDate": "2026-06-15",
-  "endDate": "2026-06-16",
-  "city": "Toronto",
-  "country": "Canada",
-  "singlesDoubles": "S",      // "S" = Singles, "D" = Doubles
-  "totalPlayers": 48,
-  "maxPlayers": 64,
-  "startLevel": "3.0",
-  "endLevel": "4.5",
-  "fee": "45.00",
-  "url": "https://...",
-  "description": "..."
-}
-```
-
-The Programs page runs each object through `mapTournamentToSession()` which reshapes it into a local session format with normalized level names, spot counts, and categories.
-
----
-
-## 5. Expo Location
+## 4. Expo Location
 
 **Package:** `expo-location`  
 **Used in:** `app/findmatch.jsx`
@@ -218,7 +175,7 @@ Permission is requested once at the moment the user taps "Find Players Near Me".
 
 ---
 
-## 6. Overpass API (OpenStreetMap) — Court Finder
+## 5. Overpass API (OpenStreetMap) — Court Finder
 
 **What it is:** Free, open-source global map database. No API key required. Used to find real pickleball and tennis courts near any GPS coordinate.
 
@@ -257,7 +214,7 @@ The court with the lowest combined distance is shown first — the fairest spot 
 
 ---
 
-## 7. DUPR Integration (Pathway Built, Pending Credentials)
+## 6. DUPR Integration (Pathway Built, Pending Credentials)
 
 **What DUPR is:** Dynamic Universal Pickleball Rating — the official global rating system for pickleball.
 
@@ -311,7 +268,7 @@ Authorization: Bearer {DUPR_API_KEY}
 
 ---
 
-## 8. Key Libraries Summary
+## 7. Key Libraries Summary
 
 | Library | Version | Used For |
 |---|---|---|
@@ -323,13 +280,12 @@ Authorization: Bearer {DUPR_API_KEY}
 | `@expo/vector-icons` (Ionicons) | latest | All icons throughout the app |
 | `firebase` (Auth) | ^11 | User authentication |
 | `firebase` (Firestore) | ^11 | Cloud database for matches and lobby |
-| `GPN REST API` | — | Tournament and program data |
 | `Overpass API` | — | Finding courts on OpenStreetMap (free) |
 | `DUPR API` *(pending)* | — | Submitting match results to DUPR ratings |
 
 ---
 
-## 9. Data Flow — Full VsV Match
+## 8. Data Flow — Full VsV Match
 
 ```
 1. User opens VsV tab
@@ -345,7 +301,7 @@ Authorization: Bearer {DUPR_API_KEY}
 6. Firestore query → find other users in vsv_lobby
    where gameType == selected AND status == "searching"
       ↓
-7. Filter results to within 50 km using Haversine formula
+7. Filter results to within 25 km using Haversine formula
       ↓
 8. Player list shown — user taps "Challenge"
       ↓
@@ -366,7 +322,7 @@ Authorization: Bearer {DUPR_API_KEY}
 
 ---
 
-## 10. File Structure
+## 9. File Structure
 
 ```
 smashr/
@@ -381,8 +337,7 @@ smashr/
 │   │   ├── createAccount.jsx
 │   │   └── forgetpassword.jsx
 │   ├── (onboarding)/
-│   │   ├── duprconnect.js          Link DUPR account
-│   │   └── gpnconnect.js           Create GPN account
+│   │   └── duprconnect.js          Link DUPR account
 │   └── (tabs)/
 │       ├── _layout.js              Tab bar config (5 tabs)
 │       ├── home/homepage.jsx       VsV screen
@@ -413,16 +368,15 @@ smashr/
 
 ---
 
-## 11. Environment & Credentials
+## 10. Environment & Credentials
 
 | Credential | Where it lives | Status |
 |---|---|---|
 | Firebase API Key | `services/firebaseConfig.js` (hardcoded) | ✅ Active |
-| GPN API Key | Embedded in GPN fetch URLs | ✅ Active |
 | DUPR API Key | `services/duprService.js` (placeholder) | ⏳ Pending |
 | DUPR Club ID | `services/duprService.js` (placeholder) | ⏳ Pending |
 
-> **Security note:** Before going to production, move Firebase and GPN keys to environment variables using `expo-constants` and a `.env` file. Never commit real secrets to a public GitHub repo.
+> **Security note:** Before going to production, move the Firebase key to environment variables using `expo-constants` and a `.env` file. Never commit real secrets to a public GitHub repo.
 
 ---
 

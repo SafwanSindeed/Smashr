@@ -23,7 +23,7 @@ import {
   doc,
   setDoc,
   deleteDoc,
-  getDocs,
+  onSnapshot,
   query,
   where,
   serverTimestamp,
@@ -180,6 +180,8 @@ export default function FindMatch() {
 
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
+  const myLocationRef = useRef(null);
+  const lobbyUnsubRef = useRef(null);
 
   useEffect(() => {
     Animated.loop(
@@ -192,6 +194,7 @@ export default function FindMatch() {
     Animated.timing(fadeAnim, { toValue: 1, duration: 400, useNativeDriver: true }).start();
 
     return () => {
+      if (lobbyUnsubRef.current) lobbyUnsubRef.current();
       const uid = auth.currentUser?.uid;
       if (uid) deleteDoc(doc(db, "vsv_lobby", uid)).catch(() => {});
     };
@@ -251,22 +254,32 @@ export default function FindMatch() {
       });
 
       setPhase(PHASES.SEARCHING);
+      myLocationRef.current = { lat, lng };
 
-      const snap = await getDocs(
-        query(collection(db, "vsv_lobby"), where("gameType", "==", type), where("status", "==", "searching"))
+      // Real-time listener — both players see each other as soon as they join
+      if (lobbyUnsubRef.current) lobbyUnsubRef.current();
+      lobbyUnsubRef.current = onSnapshot(
+        query(
+          collection(db, "vsv_lobby"),
+          where("gameType", "==", type),
+          where("status", "==", "searching")
+        ),
+        (snap) => {
+          const myLoc = myLocationRef.current;
+          if (!myLoc) return;
+          const nearby = [];
+          snap.forEach((d) => {
+            const data = d.data();
+            if (data.uid === user.uid) return;
+            const dist = distanceKm(myLoc.lat, myLoc.lng, data.lat, data.lng);
+            if (dist <= 25) nearby.push({ ...data, distanceKm: dist });
+          });
+          nearby.sort((a, b) => a.distanceKm - b.distanceKm);
+          setPlayers(nearby);
+          setPhase(PHASES.PLAYERS);
+        },
+        () => setPhase(PHASES.PLAYERS)
       );
-
-      const nearby = [];
-      snap.forEach((d) => {
-        const data = d.data();
-        if (data.uid === user.uid) return;
-        const dist = distanceKm(lat, lng, data.lat, data.lng);
-        if (dist <= 25) nearby.push({ ...data, distanceKm: dist });
-      });
-      nearby.sort((a, b) => a.distanceKm - b.distanceKm);
-
-      setPlayers(nearby);
-      setPhase(PHASES.PLAYERS);
     } catch (err) {
       console.error(err);
       const msg = err?.code === "permission-denied"

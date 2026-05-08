@@ -166,7 +166,7 @@ export default function TournamentScreen() {
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <StatusBar barStyle="light-content" />
       <LinearGradient colors={[colors.primaryStart, colors.primaryEnd]} style={styles.header}>
-        <TouchableOpacity style={styles.headerBtn} onPress={() => router.push("/(tabs)/friends")}>
+        <TouchableOpacity style={styles.headerBtn} onPress={() => router.push("/(tabs)/home/homepage")}>
           <Ionicons name="arrow-back" size={24} color={colors.white} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Tournaments</Text>
