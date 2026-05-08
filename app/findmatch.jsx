@@ -222,7 +222,6 @@ export default function FindMatch() {
       try {
         loc = await Location.getCurrentPositionAsync({
           accuracy: Location.Accuracy.Balanced,
-          timeInterval: 5000,
           mayShowUserSettingsDialog: true,
         });
       } catch {
