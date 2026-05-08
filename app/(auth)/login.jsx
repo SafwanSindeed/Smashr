@@ -9,7 +9,7 @@ import {
   Animated,
   KeyboardAvoidingView,
   Platform,
-  TouchableWithoutFeedback,
+  ScrollView,
   Keyboard,
   Alert,
 } from "react-native";
@@ -23,29 +23,69 @@ import styles from "../styles";
 import { colors } from "../../constants/colors";
 import { auth } from "../../services/firebaseConfig";
 
+// Stable focus-aware input — never causes a re-render on focus/blur
+function FocusInput({ icon, errorStyle, inputRef, ...inputProps }) {
+  const borderColor = useRef(new Animated.Value(0)).current;
+
+  const onFocus = () => {
+    Animated.timing(borderColor, { toValue: 1, duration: 150, useNativeDriver: false }).start();
+    inputProps.onFocus?.();
+  };
+  const onBlur = () => {
+    Animated.timing(borderColor, { toValue: 0, duration: 150, useNativeDriver: false }).start();
+    inputProps.onBlur?.();
+  };
+
+  const animatedBorder = borderColor.interpolate({
+    inputRange: [0, 1],
+    outputRange: [colors.border, colors.primaryEnd],
+  });
+
+  return (
+    <Animated.View
+      style={[
+        ls.inputWrap,
+        errorStyle,
+        { borderColor: animatedBorder },
+      ]}
+    >
+      <Ionicons
+        name={icon}
+        size={20}
+        color={colors.textGray}
+        style={ls.inputIcon}
+      />
+      <TextInput
+        ref={inputRef}
+        placeholderTextColor={colors.textGray}
+        style={ls.input}
+        {...inputProps}
+        onFocus={onFocus}
+        onBlur={onBlur}
+      />
+    </Animated.View>
+  );
+}
+
 export default function Login() {
   const router = useRouter();
-
   const scaleLogin = useRef(new Animated.Value(1)).current;
+  const passwordRef = useRef(null);
 
   const [email, setEmail]               = useState("");
   const [password, setPassword]         = useState("");
   const [loading, setLoading]           = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [emailFocused, setEmailFocused] = useState(false);
-  const [passFocused, setPassFocused]   = useState(false);
 
   const pressIn  = () => Animated.timing(scaleLogin, { toValue: 0.97, duration: 120, useNativeDriver: true }).start();
   const pressOut = () => Animated.timing(scaleLogin, { toValue: 1,    duration: 120, useNativeDriver: true }).start();
 
   const onLogin = async () => {
     Keyboard.dismiss();
-
     if (!email.trim() || !password) {
       Alert.alert("Missing info", "Please enter your email and password.");
       return;
     }
-
     try {
       setLoading(true);
       const { user } = await signInWithEmailAndPassword(auth, email.trim().toLowerCase(), password);
@@ -68,50 +108,41 @@ export default function Login() {
 
   return (
     <SafeAreaView style={styles.safe} edges={["top", "bottom"]}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
+        contentContainerStyle={{ flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}
+      >
         <KeyboardAvoidingView
           style={{ flex: 1 }}
-          behavior={Platform.OS === "ios" ? "padding" : undefined}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
         >
           <View style={styles.screen}>
             <View style={styles.content}>
-              {/* Title */}
               <Text style={styles.title}>Log In</Text>
               <Text style={ls.subtitle}>Welcome back — sign in to continue</Text>
 
               {/* Email */}
-              <View style={[ls.inputWrap, emailFocused && ls.inputWrapFocused]}>
-                <Ionicons
-                  name="mail-outline"
-                  size={20}
-                  color={emailFocused ? colors.primaryEnd : colors.textGray}
-                  style={ls.inputIcon}
-                />
-                <TextInput
-                  placeholder="Email"
-                  placeholderTextColor={colors.textGray}
-                  value={email}
-                  onChangeText={setEmail}
-                  style={ls.input}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  keyboardType="email-address"
-                  textContentType="emailAddress"
-                  returnKeyType="next"
-                  onFocus={() => setEmailFocused(true)}
-                  onBlur={() => setEmailFocused(false)}
-                />
-              </View>
+              <FocusInput
+                icon="mail-outline"
+                placeholder="Email"
+                value={email}
+                onChangeText={setEmail}
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="email-address"
+                textContentType="emailAddress"
+                returnKeyType="next"
+                onSubmitEditing={() => passwordRef.current?.focus()}
+              />
 
               {/* Password */}
-              <View style={[ls.inputWrap, passFocused && ls.inputWrapFocused]}>
-                <Ionicons
-                  name="lock-closed-outline"
-                  size={20}
-                  color={passFocused ? colors.primaryEnd : colors.textGray}
-                  style={ls.inputIcon}
-                />
+              <Animated.View style={ls.inputWrap}>
+                <Ionicons name="lock-closed-outline" size={20} color={colors.textGray} style={ls.inputIcon} />
                 <TextInput
+                  ref={passwordRef}
                   placeholder="Password"
                   placeholderTextColor={colors.textGray}
                   value={password}
@@ -123,8 +154,6 @@ export default function Login() {
                   autoCorrect={false}
                   returnKeyType="done"
                   onSubmitEditing={onLogin}
-                  onFocus={() => setPassFocused(true)}
-                  onBlur={() => setPassFocused(false)}
                 />
                 <Pressable
                   onPress={() => setShowPassword((v) => !v)}
@@ -137,7 +166,7 @@ export default function Login() {
                     color={colors.textGray}
                   />
                 </Pressable>
-              </View>
+              </Animated.View>
 
               {/* Forgot password */}
               <Pressable onPress={() => router.push("/forgetpassword")} style={ls.forgotWrap}>
@@ -176,7 +205,7 @@ export default function Login() {
             </View>
           </View>
         </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -190,7 +219,6 @@ const ls = {
     fontWeight: "600",
     textAlign: "center",
   },
-
   inputWrap: {
     flexDirection: "row",
     alignItems: "center",
@@ -203,27 +231,15 @@ const ls = {
     paddingHorizontal: 16,
     marginBottom: 14,
   },
-
-  inputWrapFocused: {
-    borderColor: colors.primaryEnd,
-    shadowColor: colors.primaryEnd,
-    shadowOpacity: 0.18,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 3,
-  },
-
   inputIcon: {
     marginRight: 10,
   },
-
   input: {
     flex: 1,
     fontSize: 16,
     color: colors.textDark,
     fontWeight: "600",
   },
-
   eyeBtn: {
     position: "absolute",
     right: 14,
@@ -231,26 +247,22 @@ const ls = {
     justifyContent: "center",
     paddingHorizontal: 4,
   },
-
   forgotWrap: {
     alignSelf: "flex-end",
     marginBottom: 10,
     marginTop: -4,
   },
-
   forgotText: {
     fontSize: 14,
     color: colors.primaryEnd,
     fontWeight: "700",
   },
-
   bottomLink: {
     fontSize: 15,
     color: colors.textGray,
     fontWeight: "600",
     textAlign: "center",
   },
-
   bottomLinkBold: {
     color: colors.primaryEnd,
     fontWeight: "900",
