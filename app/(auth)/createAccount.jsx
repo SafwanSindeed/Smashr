@@ -249,7 +249,7 @@ export default function CreateAccount() {
                 </Pressable>
 
                 {/* ✅ DEV SHORTCUT (OPTIONAL) */}
-                {__DEV__ && (
+                {/* {__DEV__ && (
                   <Pressable
                     onPress={() => router.push("/duprconnect")}
                     style={{ marginTop: 14 }}
@@ -264,7 +264,7 @@ export default function CreateAccount() {
                       DEV: Skip to DUPR Connect
                     </Text>
                   </Pressable>
-                )}
+                )} */}
 
                 {/* ✅ DEV SHORTCUT (OPTIONAL) */}
                 {__DEV__ && (

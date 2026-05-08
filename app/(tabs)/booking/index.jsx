@@ -150,7 +150,7 @@ export default function MyBookings() {
           </Text>
           <Text style={styles.emptySubtitle}>
             {activeTab === "upcoming"
-              ? "Register for a tournament in the Programs tab"
+              ? "Register for a tournament in the Tournaments tab"
               : "Your completed tournaments will appear here"}
           </Text>
         </View>
