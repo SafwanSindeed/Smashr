@@ -1,5 +1,5 @@
 // components/ChatBot.jsx
-// Floating AI chat assistant powered by Gemini 1.5 Flash
+// Floating AI chat assistant powered by Gemini 2.5 Flash
 // Get a free API key at aistudio.google.com → paste it below
 
 import { useState, useRef, useEffect } from "react";
@@ -24,7 +24,7 @@ import { colors } from "../constants/colors";
 
 // ─── Gemini config ───────────────────────────────────────────────────────────
 const GEMINI_KEY = ""; // ← paste your key from aistudio.google.com (free)
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_KEY}`;
 
 const SYSTEM_PROMPT = `You are Smashr's AI pickleball assistant — friendly, knowledgeable, and concise.
 
@@ -331,7 +331,7 @@ export default function ChatBot({ tabBarHeight = 68 }) {
                 </View>
                 <View>
                   <Text style={styles.sheetTitle}>Smashr AI</Text>
-                  <Text style={styles.sheetSubtitle}>Pickleball assistant · Powered by Gemini</Text>
+                  <Text style={styles.sheetSubtitle}>Pickleball assistant · Gemini 2.5 Flash</Text>
                 </View>
               </View>
               <TouchableOpacity onPress={closeSheet} hitSlop={12} style={styles.closeBtn}>
