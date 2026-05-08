@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   View,
   Text,
@@ -10,7 +10,6 @@ import {
   ScrollView,
   Keyboard,
   Alert,
-  TouchableWithoutFeedback,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
@@ -76,13 +75,13 @@ export default function CreateAccount() {
 
   return (
     <SafeAreaView style={styles.safe} edges={["top", "bottom"]}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <KeyboardAvoidingView
           style={{ flex: 1 }}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
           <ScrollView
-            keyboardShouldPersistTaps="always"
+            keyboardShouldPersistTaps="handled"
+            keyboardDismissMode="on-drag"
             contentContainerStyle={{ flexGrow: 1 }}
             showsVerticalScrollIndicator={false}
           >
@@ -242,6 +241,14 @@ export default function CreateAccount() {
 
                 <View style={styles.divider} />
 
+                {__DEV__ && (
+                  <Pressable onPress={() => router.replace("/(tabs)/home/homepage")} style={{ marginBottom: 14 }}>
+                    <Text style={{ textAlign: "center", color: "red", fontWeight: "800" }}>
+                      DEV: Skip to Home
+                    </Text>
+                  </Pressable>
+                )}
+
                 <Pressable onPress={() => router.push("/login")}>
                   <Text style={cs.bottomLink}>
                     Already have an account?{" "}
@@ -252,7 +259,6 @@ export default function CreateAccount() {
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 }
