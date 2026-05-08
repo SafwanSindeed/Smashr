@@ -14,7 +14,6 @@ import {
   ActivityIndicator,
   FlatList,
   Linking,
-  Pressable,
   Alert,
   ScrollView,
 } from "react-native";
