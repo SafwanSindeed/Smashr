@@ -1,5 +1,3 @@
-// app/(tabs)/booking/index.jsx
-
 import { useState } from "react";
 import {
   View,
@@ -9,7 +7,6 @@ import {
   Pressable,
   StyleSheet,
   ActivityIndicator,
-  Linking,
 } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
@@ -24,65 +21,81 @@ const TABS = [
   { id: "past", label: "Past" },
 ];
 
+const BADGE_COLORS = {
+  tournament: { bg: "#DBEAFE", text: "#1D4ED8" },
+  program: { bg: "#F3E8FF", text: "#7C3AED" },
+};
+
 function formatDate(dateStr) {
   if (!dateStr) return "TBD";
   const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return "TBD";
   const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 }
 
+function getBadgeLabel(item) {
+  if (item.type === "tournament") {
+    return item.format === "S" ? "Singles" : item.format === "D" ? "Doubles" : "Tournament";
+  }
+  return "Program";
+}
+
 function BookingCard({ item }) {
-  const startDate = new Date(item.startDate || item.start_date || item.startdate || "");
+  const startDate = new Date(item.startDate || "");
   const isValid = !isNaN(startDate.getTime());
   const isPast = isValid && startDate < new Date();
+  const badgeLabel = getBadgeLabel(item);
+  const badgeColor = BADGE_COLORS[item.type] || BADGE_COLORS.program;
 
   return (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
-        <View style={styles.cardBadge}>
-          <Text style={styles.cardBadgeText}>Tournament</Text>
+        <View style={[styles.cardBadge, { backgroundColor: badgeColor.bg }]}>
+          <Text style={[styles.cardBadgeText, { color: badgeColor.text }]}>{badgeLabel}</Text>
         </View>
         <View style={[styles.statusDot, isPast ? styles.statusPast : styles.statusUpcoming]} />
       </View>
 
       <Text style={styles.cardTitle} numberOfLines={2}>
-        {item.name || item.tournamentName || "Tournament"}
+        {item.name || "Booking"}
       </Text>
 
       <View style={styles.cardMeta}>
-        <Ionicons name="calendar-outline" size={15} color="#6B7280" />
+        <Ionicons name="calendar-outline" size={15} color={colors.textGray} />
         <Text style={styles.cardMetaText}>
-          {isValid ? formatDate(startDate) : "Date TBD"}
+          {isValid ? formatDate(item.startDate) : "Date TBD"}
         </Text>
       </View>
 
-      {(item.venueName || item.city) ? (
+      {item.location ? (
         <View style={styles.cardMeta}>
-          <Ionicons name="location-outline" size={15} color="#6B7280" />
+          <Ionicons name="location-outline" size={15} color={colors.textGray} />
           <Text style={styles.cardMetaText} numberOfLines={1}>
-            {item.venueName || item.city}
+            {item.location}
           </Text>
         </View>
       ) : null}
 
-      {item.singlesDoubles ? (
+      {item.fee != null ? (
         <View style={styles.cardMeta}>
-          <Ionicons name="people-outline" size={15} color="#6B7280" />
+          <Ionicons name="cash-outline" size={15} color={colors.textGray} />
           <Text style={styles.cardMetaText}>
-            {item.singlesDoubles === "S" ? "Singles" : "Doubles"}
+            {item.fee === 0 ? "Free" : `$${item.fee} entry fee`}
           </Text>
         </View>
       ) : null}
 
-      {item.url ? (
-        <TouchableOpacity
-          style={styles.viewButton}
-          onPress={() => Linking.openURL(item.url)}
-        >
-          <Text style={styles.viewButtonText}>View Details</Text>
-          <Ionicons name="arrow-forward" size={14} color="#fff" />
-        </TouchableOpacity>
-      ) : null}
+      <View style={[styles.statusBanner, isPast ? styles.statusBannerPast : styles.statusBannerUpcoming]}>
+        <Ionicons
+          name={isPast ? "checkmark-circle-outline" : "time-outline"}
+          size={15}
+          color={isPast ? "#6B7280" : "#059669"}
+        />
+        <Text style={[styles.statusBannerText, { color: isPast ? "#6B7280" : "#059669" }]}>
+          {isPast ? "Completed" : "Confirmed"}
+        </Text>
+      </View>
     </View>
   );
 }
@@ -96,11 +109,11 @@ export default function MyBookings() {
 
   const now = new Date();
   const upcoming = bookings.filter((b) => {
-    const d = new Date(b.startDate || b.start_date || b.startdate || "");
+    const d = new Date(b.startDate || "");
     return isNaN(d.getTime()) || d >= now;
   });
   const past = bookings.filter((b) => {
-    const d = new Date(b.startDate || b.start_date || b.startdate || "");
+    const d = new Date(b.startDate || "");
     return !isNaN(d.getTime()) && d < now;
   });
 
@@ -146,18 +159,18 @@ export default function MyBookings() {
         <View style={styles.center}>
           <Ionicons name="calendar-outline" size={64} color="#D1D5DB" />
           <Text style={styles.emptyTitle}>
-            {activeTab === "upcoming" ? "No upcoming tournaments" : "No past tournaments"}
+            {activeTab === "upcoming" ? "No upcoming bookings" : "No past bookings"}
           </Text>
           <Text style={styles.emptySubtitle}>
             {activeTab === "upcoming"
-              ? "Register for a tournament in the Programs tab"
-              : "Your completed tournaments will appear here"}
+              ? "Sign up for tournaments or programs to see them here"
+              : "Your completed bookings will appear here"}
           </Text>
         </View>
       ) : (
         <ScrollView contentContainerStyle={styles.list}>
           {displayed.map((item, i) => (
-            <BookingCard key={item.tournamentID ?? i} item={item} />
+            <BookingCard key={item.id ?? i} item={item} />
           ))}
         </ScrollView>
       )}
@@ -167,7 +180,6 @@ export default function MyBookings() {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
-
   header: {
     width: "100%",
     paddingHorizontal: 18,
@@ -182,7 +194,6 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     letterSpacing: 0.3,
   },
-
   tabs: {
     flexDirection: "row",
     backgroundColor: colors.white,
@@ -199,7 +210,6 @@ const styles = StyleSheet.create({
   tabActive: { borderBottomColor: colors.primaryEnd },
   tabText: { fontSize: 15, fontWeight: "600", color: colors.textGray },
   tabTextActive: { color: colors.primaryEnd },
-
   center: {
     flex: 1,
     alignItems: "center",
@@ -210,9 +220,7 @@ const styles = StyleSheet.create({
   centerText: { fontSize: 15, color: colors.textGray, marginTop: 8 },
   emptyTitle: { fontSize: 18, fontWeight: "700", color: "#374151", textAlign: "center" },
   emptySubtitle: { fontSize: 14, color: "#9CA3AF", textAlign: "center", lineHeight: 20 },
-
   list: { padding: 16, gap: 12 },
-
   card: {
     backgroundColor: colors.white,
     borderRadius: 16,
@@ -233,30 +241,26 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   cardBadge: {
-    backgroundColor: "#DBEAFE",
     paddingHorizontal: 10,
     paddingVertical: 3,
     borderRadius: 8,
   },
-  cardBadgeText: { fontSize: 12, fontWeight: "700", color: "#1D4ED8" },
+  cardBadgeText: { fontSize: 12, fontWeight: "700" },
   statusDot: { width: 10, height: 10, borderRadius: 5 },
   statusUpcoming: { backgroundColor: "#22C55E" },
   statusPast: { backgroundColor: "#9CA3AF" },
-
-  cardTitle: { fontSize: 17, fontWeight: "800", color: "#212325", marginBottom: 10 },
+  cardTitle: { fontSize: 17, fontWeight: "800", color: colors.textDark, marginBottom: 10 },
   cardMeta: { flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 6 },
-  cardMetaText: { fontSize: 14, color: "#6B7280", flex: 1 },
-
-  viewButton: {
-    marginTop: 12,
-    backgroundColor: colors.primaryEnd,
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
+  cardMetaText: { fontSize: 14, color: colors.textGray, flex: 1 },
+  statusBanner: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
     gap: 6,
+    marginTop: 10,
+    padding: 8,
+    borderRadius: 8,
   },
-  viewButtonText: { color: "#fff", fontWeight: "700", fontSize: 14 },
+  statusBannerUpcoming: { backgroundColor: "#D1FAE5" },
+  statusBannerPast: { backgroundColor: "#F3F4F6" },
+  statusBannerText: { fontSize: 13, fontWeight: "600" },
 });
