@@ -11,6 +11,7 @@ import {
   ScrollView,
   Alert,
   Animated,
+  Linking,
 } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
@@ -199,9 +200,20 @@ export default function FindMatch() {
   const startSearch = async () => {
     setPhase(PHASES.LOCATING);
     try {
-      const { status } = await Location.requestForegroundPermissionsAsync();
+      const { status, canAskAgain } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        Alert.alert("Location Required", "Please enable location access to find nearby players.");
+        if (!canAskAgain) {
+          Alert.alert(
+            "Location Blocked",
+            "Location access was denied. Open your device Settings to enable it for Smashr.",
+            [
+              { text: "Cancel", style: "cancel" },
+              { text: "Open Settings", onPress: () => Linking.openSettings() },
+            ]
+          );
+        } else {
+          Alert.alert("Location Required", "Please enable location access to find nearby players.");
+        }
         setPhase(PHASES.START);
         return;
       }

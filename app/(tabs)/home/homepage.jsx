@@ -23,7 +23,7 @@ const HOW_IT_WORKS = [
     step: "1",
     icon: "location-outline",
     title: "Share Location",
-    desc: "We get your GPS to find players within 50 km",
+    desc: "We get your GPS to find players within 25 km",
     color: colors.primaryEnd,
     bg: "#EFF6FF",
   },
@@ -230,7 +230,7 @@ export default function Home() {
           </View>
           <View style={styles.factCard}>
             <Ionicons name="location-outline" size={24} color="#059669" />
-            <Text style={styles.factValue}>50 km</Text>
+            <Text style={styles.factValue}>25 km</Text>
             <Text style={styles.factLabel}>Search radius</Text>
           </View>
           <View style={styles.factCard}>

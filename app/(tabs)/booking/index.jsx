@@ -116,8 +116,8 @@ export default function MyBookings() {
           <Ionicons name="people-outline" size={28} color={colors.white} />
         </Pressable>
         <Text style={styles.headerTitle}>My Bookings</Text>
-        <Pressable hitSlop={10} onPress={() => router.push("/(tabs)/tournament")}>
-          <Ionicons name="trophy-outline" size={28} color={colors.white} />
+        <Pressable hitSlop={10} onPress={() => router.push("/(tabs)/programs")}>
+          <Ionicons name="calendar-outline" size={28} color={colors.white} />
         </Pressable>
       </LinearGradient>
 
