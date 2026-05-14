@@ -669,9 +669,9 @@ export default function FindMatch() {
                     <View style={styles.distIconWrap}>
                       <Ionicons name="git-merge-outline" size={14} color={meta.accentColor} />
                     </View>
-                    <Text style={styles.distLabel}>Distance</Text>
+                    <Text style={styles.distLabel}>Total distance</Text>
                     <Text style={[styles.distValue, { color: meta.accentColor }]}>
-                      {fmtDist(bestCourt.myDist)}
+                      {fmtDist(bestCourt.totalDist)}
                     </Text>
                   </View>
                 </View>
